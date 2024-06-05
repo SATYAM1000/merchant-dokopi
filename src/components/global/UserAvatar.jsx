@@ -1,4 +1,9 @@
 "use client";
+import React, { useState, startTransition, useEffect } from "react";
+import { signOut } from "next-auth/react";
+import Link from "next/link";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,31 +12,26 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { History,LayoutDashboard , Headphones ,  LogOut } from "lucide-react";
 
-import { signOut } from "next-auth/react";
+import { History, Headphones, LogOut, Bell } from "lucide-react";
 
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { ClipLoader } from "react-spinners";
 
 const UserAvatar = () => {
-  const currentUser = {
-    name:"satyam",
-    email:"satyam@gmail.com",
-    
-  }
-  const router = useRouter();
-  if (!currentUser) {
-    return null;
-  }
+  const [showLoader, setShowLoader] = useState(false);
+  const currentUser = useCurrentUser();
+  if (!currentUser) return null;
 
-  const handleClick = () => {
-    router.push("/dashboard");
-  };
-
-  const handleHistoryClick = () => {
-    router.push("/history");
+  const handleSignOut = () => {
+    startTransition(() => {
+      setShowLoader(true);
+      signOut({
+        callbackUrl: "/",
+      }).finally(() => {
+        setShowLoader(false);
+      });
+    });
   };
 
   return (
@@ -52,24 +52,9 @@ const UserAvatar = () => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {currentUser?.role === "USER" && (
-          <DropdownMenuItem asChild className="cursor-pointer">
-            <div onClick={handleHistoryClick} className="flex items-center">
-              <History size={17} />
-              <p className="pl-3">History</p>
-            </div>
-          </DropdownMenuItem>
-        )}
-        {currentUser?.role === "USER" && (
-          <DropdownMenuItem asChild className="cursor-pointer">
-            <div onClick={handleClick} className="flex items-center">
-              <LayoutDashboard size={17} />
-              <p className="pl-3">Dashbaord</p>
-            </div>
-          </DropdownMenuItem>
-        )}
+
         <DropdownMenuItem asChild className="cursor-pointer">
-          <Link href="/contact" className="flex items-center">
+          <Link href="/support" className="flex items-center">
             <Headphones size={17} />
             <p className="pl-3">Support</p>
           </Link>
@@ -79,14 +64,19 @@ const UserAvatar = () => {
         <DropdownMenuItem
           asChild
           className="cursor-pointer"
-          onClick={() =>
-            signOut({
-              callbackUrl: "/",
-            })
-          }
+          onClick={handleSignOut}
         >
           <div className="flex items-center">
-            <LogOut size={17} />
+            {showLoader ? (
+              <ClipLoader
+                color="black"
+                loading={showLoader}
+                size={17}
+                aria-label="Loading Spinner"
+              />
+            ) : (
+              <LogOut size={17} />
+            )}
             <p className="pl-3">Logout</p>
           </div>
         </DropdownMenuItem>
