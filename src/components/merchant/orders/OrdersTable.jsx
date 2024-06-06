@@ -79,7 +79,7 @@ const OrdersTable = () => {
               <TableCell>
                 <div
                   className={
-                    "bg-blue-500/[0.3] w-fit px-3 text-blue-600 text-sm py-0.5 rounded-xl hover:bg-blue-200  "
+                    "bg-indigo-500/[0.3] w-fit px-3 text-indigo-600 text-sm py-0.5 rounded-xl hover:bg-indigo-200  "
                   }
                 >
                   {"paid"}
@@ -98,7 +98,7 @@ const OrdersTable = () => {
                     <Button
                       variant="link"
                       size="sm"
-                      className="w-[100px] px-0 text-blue-600 underline "
+                      className="w-[100px] px-0 text-indigo-600 underline "
                     >
                       View Details
                     </Button>

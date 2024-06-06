@@ -29,7 +29,7 @@ const OrderFilter = () => {
     <div
       className={`w-full flex flex-col md:flex-row gap-4 md:gap-0 md:items-center md:justify-between bg-gray-100 p-6 border-b`}
     >
-      <h1 className="text-[22px] md:font-bold text-foreground">
+      <h1 className="text-[22px] font-medium md:font-semibold text-foreground">
         Today's Orders
       </h1>
       <div className="flex flex-col md:flex-row md:items-center gap-6">

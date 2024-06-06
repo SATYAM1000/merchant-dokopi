@@ -18,8 +18,8 @@ const OverviewComponentContainer = () => {
             onClick={onRefresh}
             className="flex items-center gap-2 cursor-pointer"
           >
-            <RotateCcwIcon className="h-3 w-3 text-blue-600" />
-            <span className="text-xs text-blue-600">Refresh</span>
+            <RotateCcwIcon className="h-3 w-3 text-indigo-600" />
+            <span className="text-xs text-indigo-600">Refresh</span>
           </div>
         </div>
         <div className="grid grid-cols-1 gap-4 mt-2 md:mt-0 md:grid-cols-4 md:gap-3">

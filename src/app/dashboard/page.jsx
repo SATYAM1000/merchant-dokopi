@@ -1,7 +1,5 @@
-export default async function Dashboard() {
-    return (
-        <div>
-            dashboard
-        </div>
-    )
+import DashboardComponent from "@/components/merchant/dashboard/Dashboard";
+
+export default async function DashboardPage() {
+  return <DashboardComponent />;
 }

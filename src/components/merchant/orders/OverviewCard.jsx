@@ -20,7 +20,7 @@ const OverviewCard = ({ title, type = "default", value, tooltipValue }) => {
             <TooltipTrigger asChild>
               <CircleHelp
                 className={`h-3 w-3 cursor-pointer ${
-                  type === "default" ? "text-blue-600" : "text-red-600"
+                  type === "default" ? "text-indigo-600" : "text-red-600"
                 }`}
               />
             </TooltipTrigger>
