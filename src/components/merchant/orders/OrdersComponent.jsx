@@ -11,6 +11,7 @@ import { API_DOMAIN } from "@/lib/constants";
 import axios from "axios";
 import io from "socket.io-client";
 import OrderCardSkelton from "./OrderCardSkelton";
+import ErrorComponent from "@/components/global/Error";
 
 const socket = io("https://api.dokopi.com");
 
@@ -24,9 +25,9 @@ const OrdersComponent = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
 
-  const fetchOrdersForXeroxStore = async () => {
+  const fetchOrdersForXeroxStore = async (loader = true) => {
     try {
-      setShowLoader(true);
+      setShowLoader(loader);
       const token = await fetchAccessToken();
 
       const { data } = await axios.get(
@@ -57,12 +58,9 @@ const OrdersComponent = () => {
   }, []);
 
   useEffect(() => {
-    fetchOrdersForXeroxStore();
-
     socket.on("paymentSuccess", (data) => {
       if (data.storeId === currentUser.storeId) {
-        console.log("Payment was successful. Refetching orders...");
-        fetchOrdersForXeroxStore();
+        fetchOrdersForXeroxStore((loader = false));
       }
     });
 
@@ -117,20 +115,30 @@ const OrdersComponent = () => {
       </div>
 
       {/* ----------right-side-------------------------- */}
-      <div className="hidden md:1/2 lg:w-3/4 h-full bg-custom-image bg-contain bg-center md:flex flex-col">
-        <UserInfoHeader order={selectedOrder} />
-
-        {/* --------------------documents-------------------- */}
-        <div className="w-full h-full">
-          <ScrollArea className="h-[calc(100vh-150px)] w-full rounded-md border bg-transparent text-black">
-            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4 p-4">
-              {selectedOrder && (
-                <DocumentInfo cartItems={selectedOrder.cartItems} />
-              )}
-            </div>
-          </ScrollArea>
+      {!selectedOrder ? (
+        <div className="hidden md:1/2 lg:w-3/4 h-full bg-custom-image bg-contain bg-center md:flex flex-col">
+          <ErrorComponent
+            title="Dokopi"
+            errorMessage="
+          No order selected"
+          />
         </div>
-      </div>
+      ) : (
+        <div className="hidden md:1/2 lg:w-3/4 h-full bg-custom-image bg-contain bg-center md:flex flex-col">
+          <UserInfoHeader order={selectedOrder} />
+
+          {/* --------------------documents-------------------- */}
+          <div className="w-full h-full">
+            <ScrollArea className="h-[calc(100vh-150px)] w-full rounded-md border bg-transparent text-black">
+              <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4 p-4">
+                {selectedOrder && (
+                  <DocumentInfo cartItems={selectedOrder.cartItems} />
+                )}
+              </div>
+            </ScrollArea>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

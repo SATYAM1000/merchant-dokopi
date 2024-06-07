@@ -1,7 +1,10 @@
 "use client";
 import React from "react";
 
-const ErrorComponent = ({ errorMessage = "Something went wrong" }) => {
+const ErrorComponent = ({
+  title = "Uh-oh!",
+  errorMessage = "Something went wrong",
+}) => {
   return (
     <section className="w-full h-screen">
       <div>
@@ -27,7 +30,7 @@ const ErrorComponent = ({ errorMessage = "Something went wrong" }) => {
             </svg>
 
             <h1 className="mt-6 text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Uh-oh!
+              {title}
             </h1>
 
             <p className="mt-4 text-gray-500">{errorMessage}</p>
