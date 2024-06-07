@@ -6,7 +6,7 @@ import OverviewComponentContainer from "./OverviewComponentContainer";
 import OrderFilter from "./Filter";
 import OrdersTable from "./OrdersTable";
 
-const  DashboardComponent = () => {
+const DashboardComponent = () => {
   return (
     <section className="min-h-[calc(100vh-64px)] w-full">
       <div className="w-full h-auto flex flex-col gap-0 ">
@@ -16,7 +16,6 @@ const  DashboardComponent = () => {
           <OverviewComponentContainer />
         </div>
         <OrderFilter />
-
         <Wrapper>
           {/* ----container---------- */}
           <OrdersTable />

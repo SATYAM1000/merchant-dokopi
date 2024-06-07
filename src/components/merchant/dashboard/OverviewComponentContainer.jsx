@@ -3,11 +3,13 @@ import { RotateCcwIcon } from "lucide-react";
 import React from "react";
 import OverviewCard from "./OverviewCard";
 import { overviewCardData } from "@/lib/constants";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 const OverviewComponentContainer = () => {
   const onRefresh = () => {
     window.location.reload();
   };
+  console.log(useCurrentUser())
   return (
     <>
       <div className="flex flex-col gap-2 w-full">
