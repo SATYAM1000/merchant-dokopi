@@ -1,53 +1,45 @@
-"use client"
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import Image from "next/image";
 import { getTimeFromISO } from "@/lib/get-time";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const OrderCard = ({ order, onOrderClick }) => {
-  if (!order) return null;
-
+const OrderCard = ({ order, onOrderClick, isSelected }) => {
   const handleClick = () => {
-    onOrderClick(order); 
+    onOrderClick(order);
   };
 
   return (
     <div
       onClick={handleClick}
-      className="text-sm p-2 h-18 hover:bg-gray-100 cursor-pointer rounded-md"
+      className={`text-sm p-2 h-18 hover:bg-gray-100 cursor-pointer rounded-md ${
+        isSelected ? "bg-gray-200" : "bg-white"
+      }`}
     >
       <div className="w-full h-full flex items-center gap-4">
         {/* User Image */}
-        <div className="h-12 w-12 rounded-full bg-gray-200">
-          {order?.userId?.image ? (
-            <Image
-              src={order?.userId?.image}
-              alt="user image"
-              width={100}
-              height={100}
-              className="rounded-full"
-            />
-          ) : (
-            // Placeholder Icon
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22">
-              <path
-                d="M16.428 15.744c-.159-.052-1.164-.505-.536-2.414h-.009c1.637-1.686 2.888-4.399 2.888-7.07 0-4.107-2.731-6.26-5.905-6.26-3.176 0-5.892 2.152-5.892 6.26 0 2.682 1.244 5.406 2.891 7.088.642 1.684-.506 2.309-.746 2.396-2.238.724-8.325 4.332-8.229 9.586h24.05c.107-5.02-4.708-8.279-8.513-9.586"
-                transform="matrix(.63167 0 0 .63167 2.846 2.999)"
-                fill="#a7a7a7"
-              />
-            </svg>
-          )}
+        <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center">
+          <Avatar>
+            <AvatarImage src={order.userId.image} />
+            <AvatarFallback>
+              {order.userId.name[0].toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
         </div>
         {/* Order Details */}
-        <div className=" h-12 w-[calc(100%-40px)] flex flex-col justify-end">
+        <div className="h-12 w-[calc(100%-40px)] flex flex-col justify-end">
           <div className="flex items-center justify-between">
             {/* Order Number */}
             <h4 className="text-[16px] font-medium leading-none">
-              {order?.orderNumber
-                ? `${order?.orderNumber}`
-                : "Invalid Order Number"}
+              {order?.orderNumber ? order.orderNumber : "Invalid Order Number"}
             </h4>
             {/* Order Time */}
-            <p className="text-xs font-medium text-green-500">
+            <p
+              className={`text-xs font-medium leading-none ${
+                order?.isViewed ? "text-gray-600" : "text-green-600"
+              }`}
+            >
               {getTimeFromISO(order?.createdAt)}
             </p>
           </div>
@@ -72,21 +64,31 @@ const OrderCard = ({ order, onOrderClick }) => {
               </div>
               <span>
                 {order?.userId && order?.totalPrice
-                  ? `${order?.userId?.name} paid ₹ ${order?.totalPrice}`
+                  ? `${order.userId.name} paid ₹ ${order.totalPrice}`
                   : "Invalid Order"}
               </span>
             </div>
             {/* Cart Item Count */}
-            <div className="text-xs h-5 w-5 font-medium flex items-center justify-center rounded-full bg-green-500 text-white">
-              <span>
-                {order?.cartItems?.length > 0 ? order?.cartItems?.length : 0}
-              </span>
+            <div
+              className={`text-xs h-5 w-5 font-medium flex items-center justify-center rounded-full ${
+                order?.isViewed
+                  ? "bg-gray-200 text-gray-600"
+                  : "bg-green-600 text-white"
+              }`}
+            >
+              <span>{order?.cartItems?.length || 0}</span>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
+};
+
+OrderCard.propTypes = {
+  order: PropTypes.object.isRequired,
+  onOrderClick: PropTypes.func.isRequired,
+  isSelected: PropTypes.bool.isRequired,
 };
 
 export default OrderCard;

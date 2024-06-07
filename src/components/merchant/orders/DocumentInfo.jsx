@@ -5,6 +5,7 @@ import { MdDownload } from "react-icons/md";
 import axios from "axios";
 
 const DocumentInfo = ({ cartItems }) => {
+  
   const handleDownload = async (item) => {
     try {
       if (!item?.fileURL) return;
@@ -22,6 +23,8 @@ const DocumentInfo = ({ cartItems }) => {
       console.error("Error downloading file:", error);
     }
   };
+
+  
   return (
     <>
       {cartItems.map((item, index) => {
