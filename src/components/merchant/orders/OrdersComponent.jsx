@@ -26,6 +26,8 @@ const OrdersComponent = () => {
       try {
         const token = await fetchAccessToken();
 
+        console.log("token is ", token);
+
         const { data } = await axios.get(
           `${API_DOMAIN}/api/v1/merchant/orders/active/${currentUser.storeId}`,
           {
