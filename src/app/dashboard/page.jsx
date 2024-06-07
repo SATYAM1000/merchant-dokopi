@@ -1,5 +1,6 @@
-import DashboardComponent from "@/components/merchant/dashboard/Dashboard";
+import DashboardComponent from "@/components/merchant/dashboard/DashboardComponent";
+import React from "react";
 
-export default async function DashboardPage() {
+export default async function MerchantDashboardPage() {
   return <DashboardComponent />;
 }

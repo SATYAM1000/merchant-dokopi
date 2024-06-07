@@ -3,10 +3,10 @@ import React from "react";
 import Wrapper from "@/components/global/Wrapper";
 
 import OverviewComponentContainer from "./OverviewComponentContainer";
-import OrderFilter from "./OrderFilter";
+import OrderFilter from "./Filter";
 import OrdersTable from "./OrdersTable";
 
-const Orders = () => {
+const  DashboardComponent = () => {
   return (
     <section className="min-h-[calc(100vh-64px)] w-full">
       <div className="w-full h-auto flex flex-col gap-0 ">
@@ -26,4 +26,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default DashboardComponent;

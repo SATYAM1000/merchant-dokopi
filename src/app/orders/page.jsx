@@ -1,6 +1,5 @@
-import Orders from "@/components/merchant/orders/OrderComponent";
-import React from "react";
+import OrdersComponent from "@/components/merchant/orders/OrdersComponent";
 
-export default async function OrderPage() {
-  return <Orders />;
+export default async function OrdersPageForMerchant() {
+  return <OrdersComponent />;
 }

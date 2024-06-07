@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { RotateCcw } from "lucide-react";
 
-import OverviewCard from "../orders/OverviewCard";
+import OverviewCard from "../dashboard/OverviewCard";
 import { analyticsOverviewData } from "@/lib/constants";
 import SelectFilter from "./SelectFilter";
 import EarningChart from "./EarningChart";

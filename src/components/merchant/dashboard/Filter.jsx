@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CalendarIcon, ChevronDownIcon } from "lucide-react";
 
-const OrderFilter = () => {
+const Filter = () => {
   const [date, setDate] = React.useState();
 
   return (
@@ -84,7 +84,10 @@ const OrderFilter = () => {
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto hover:bg-white rounded-none">
+            <Button
+              variant="outline"
+              className="ml-auto hover:bg-white rounded-none"
+            >
               <span className="text-muted-foreground font-normal">
                 Past 2 hours
               </span>{" "}
@@ -118,4 +121,4 @@ const OrderFilter = () => {
   );
 };
 
-export default OrderFilter;
+export default Filter;
