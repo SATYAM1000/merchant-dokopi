@@ -14,6 +14,8 @@ const OrdersComponent = () => {
   const currentUser = useCurrentUser();
   if (!currentUser) return null;
 
+  console.log("current user is ", currentUser);
+
   const [showLoader, setShowLoader] = useState(false);
   const [hasActiveOrders, setHasActiveOrders] = useState(false);
   const [activeOrders, setActiveOrders] = useState([]);
