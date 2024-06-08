@@ -17,7 +17,7 @@ const Analytics = () => {
     <section className="h-[calc(100vh-64px)] w-full">
       <div className="w-full h-auto flex flex-col gap-0 ">
         <div
-          className={`w-full flex items-center mb-0 justify-between bg-gray-100 px-6 py-4 border-b`}
+          className={`w-full flex items-center mb-0 justify-between px-6 py-4 border-b`}
         >
           <div className="flex flex-col gap-2 w-full">
             {/* --------heading------------ */}
@@ -50,6 +50,7 @@ const Analytics = () => {
                     type={item.type}
                     value={item.value}
                     tooltipValue={item.tooltipValue}
+                    className={"bg-[#15803d] text-white rounded-md"}
                   />
                 );
               })}
@@ -59,7 +60,7 @@ const Analytics = () => {
 
         {/* --------------bottom----------- */}
         <div
-          className={`w-[100%] grid grid-cols-1 gap-6 md:grid-cols-2 bg-gray-100 p-6 border-b`}
+          className={`w-[100%] grid grid-cols-1 gap-6 md:grid-cols-2 p-6 border-b`}
         >
           {/* --------chart------------ */}
           <div className=" bg-white overflow-hidden">

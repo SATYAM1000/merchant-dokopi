@@ -4,15 +4,14 @@ import React from "react";
 import {
   Tooltip,
   TooltipContent,
-  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-const OverviewCard = ({ title, type = "default", value, tooltipValue }) => {
+const OverviewCard = ({ title, type = "default", value, tooltipValue, className }) => {
   if (!title || !value) return null;;
   return (
     <>
-      <div className="bg-white p-4 w-full h-full flex flex-col gap-3">
+      <div className={`p-4 w-full h-full flex flex-col gap-3 ${className}`}>
         <div className="flex items-center gap-2">
           <p>{title}</p>
 

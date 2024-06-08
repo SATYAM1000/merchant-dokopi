@@ -100,17 +100,14 @@ const Filter = () => {
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 Past 2 hours
-                <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
                 Past 8 hours
-                <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
                 Past 24 hours
-                <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
             </DropdownMenuGroup>

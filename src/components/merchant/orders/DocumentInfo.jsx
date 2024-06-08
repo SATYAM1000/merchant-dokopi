@@ -3,38 +3,43 @@ import React from "react";
 import Image from "next/image";
 import { MdDownload } from "react-icons/md";
 import axios from "axios";
+import { ClipLoader } from "react-spinners";
 
 const DocumentInfo = ({ cartItems }) => {
-  
+  const [showDownloadButton, setShowDownloadButton] = React.useState(false);
+
   const handleDownload = async (item) => {
     try {
+      setShowDownloadButton(true);
       if (!item?.fileURL) return;
       const response = await axios.get(item.fileURL, {
         responseType: "blob",
       });
+
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", item.fileOriginalName);
+      link.setAttribute("download", item.fileOriginalName + ".pdf");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     } catch (error) {
       console.error("Error downloading file:", error);
+    } finally {
+      setShowDownloadButton(false);
     }
   };
 
-  
   return (
     <>
       {cartItems.map((item, index) => {
         return (
           <div
             key={index}
-            className="bg-[#d9fdd3] relative h-fit rounded-lg border-b border-gray-800/[0.25] px-1 pb-6 pt-1 "
+            className="bg-[#fff] relative rounded-lg border-b border-gray-800/[0.25] px-1 pb-6 pt-1 "
           >
             {" "}
-            <div className="  bg-[#d1f4cc] w-full rounded-sm p-4 flex flex-col">
+            <div className="  bg-gray-200 w-full rounded-sm p-4 flex flex-col">
               <div className="w-full  flex items-center justify-between">
                 <div className="flex items-center gap-4 ">
                   <Image
@@ -60,14 +65,22 @@ const DocumentInfo = ({ cartItems }) => {
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="text-gray-500 border flex items-center justify-center cursor-pointer h-8 w-8 border-gray-500 p-1 rounded-full">
+                  <div className="text-white bg-green-600 font-medium border flex items-center justify-center cursor-pointer h-8 w-8 border-green-600 p-1 rounded-full">
                     <p className="font-medium">{item?.fileCopiesCount || 1}</p>
                   </div>
                   <div
                     onClick={() => handleDownload(item)}
-                    className="text-gray-500 border flex items-center justify-center cursor-pointer h-8 w-8 border-gray-500 p-1 rounded-full"
+                    className="text-white font-medium border flex items-center justify-center cursor-pointer h-8 w-8 bg-green-600 border-green-600 p-1 rounded-full"
                   >
-                    <MdDownload className="h-5 w-5" />
+                    {showDownloadButton ? (
+                      <ClipLoader
+                        color="#968f9d"
+                        loading={showDownloadButton}
+                        size={20}
+                      />
+                    ) : (
+                      <MdDownload className="text-xl" />
+                    )}
                   </div>
                 </div>
               </div>

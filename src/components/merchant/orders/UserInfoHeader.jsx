@@ -20,7 +20,7 @@ const UserInfoHeader = ({ order }) => {
             {order?.userId?.name} Paid ₹ {order?.totalPrice}
           </span>
         </div>
-        <div className=" cursor-pointer bg-gray-200  text-gray-800 border border-gray-800/[0.4] rounded-md flex items-center justify-center px-2 py-1">
+        <div className=" cursor-pointer bg-green-600  text-white border rounded-md flex items-center justify-center px-2 py-1">
           <Download className="h-4 w-4 " />
         </div>
       </div>
