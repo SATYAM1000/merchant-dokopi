@@ -1,16 +1,16 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { MdDownload } from "react-icons/md";
 import axios from "axios";
 import { ClipLoader } from "react-spinners";
 
 const DocumentInfo = ({ cartItems }) => {
-  const [showDownloadButton, setShowDownloadButton] = React.useState(false);
+  const [loadingStates, setLoadingStates] = useState({});
 
-  const handleDownload = async (item) => {
+  const handleDownload = async (item, index) => {
     try {
-      setShowDownloadButton(true);
+      setLoadingStates((prevState) => ({ ...prevState, [index]: true }));
       if (!item?.fileURL) return;
       const response = await axios.get(item.fileURL, {
         responseType: "blob",
@@ -26,7 +26,7 @@ const DocumentInfo = ({ cartItems }) => {
     } catch (error) {
       console.error("Error downloading file:", error);
     } finally {
-      setShowDownloadButton(false);
+      setLoadingStates((prevState) => ({ ...prevState, [index]: false }));
     }
   };
 
@@ -38,10 +38,9 @@ const DocumentInfo = ({ cartItems }) => {
             key={index}
             className="bg-[#fff] relative rounded-lg border-b border-gray-800/[0.25] px-1 pb-6 pt-1 "
           >
-            {" "}
-            <div className="  bg-gray-200 w-full rounded-sm p-4 flex flex-col">
-              <div className="w-full  flex items-center justify-between">
-                <div className="flex items-center gap-4 ">
+            <div className="bg-gray-200 w-full rounded-sm p-4 flex flex-col">
+              <div className="w-full flex items-center justify-between">
+                <div className="flex items-center gap-4">
                   <Image
                     src="/file-icons/pdf.svg"
                     alt="curved dotted line"
@@ -54,7 +53,7 @@ const DocumentInfo = ({ cartItems }) => {
                       {item?.fileOriginalName || "N/A"}
                     </p>
                     <div className="flex items-center gap-2">
-                      <p className="text-xs text-gray-500 ">
+                      <p className="text-xs text-gray-500">
                         {item?.filePageCount}&nbsp;pages
                       </p>
                       <p className="text-xs text-gray-500">
@@ -69,69 +68,96 @@ const DocumentInfo = ({ cartItems }) => {
                     <p className="font-medium">{item?.fileCopiesCount || 1}</p>
                   </div>
                   <div
-                    onClick={() => handleDownload(item)}
+                    onClick={() => handleDownload(item, index)}
                     className="text-white font-medium border flex items-center justify-center cursor-pointer h-8 w-8 bg-green-600 border-green-600 p-1 rounded-full"
                   >
-                    {showDownloadButton ? (
-                      <ClipLoader
-                        color="#968f9d"
-                        loading={showDownloadButton}
-                        size={20}
-                      />
+                    {loadingStates[index] ? (
+                      <ClipLoader color="#fff" size={17} />
                     ) : (
-                      <MdDownload className="text-xl" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="lucide lucide-arrow-down-to-line"
+                      >
+                        <path d="M12 17V3" />
+                        <path d="m6 11 6 6 6-6" />
+                        <path d="M19 21H5" />
+                      </svg>
                     )}
                   </div>
                 </div>
               </div>
             </div>
-            {/* -----info------------- */}
-            <div>
-              <div className="px-4 py-2">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium">Printing Mode</p>
-                  <p className="text-sm text-gray-500">
-                    {item?.filePrintMode === "simplex" && "Single Sided"}
-                    {item?.filePrintMode === "duplex" && "Double Sided"}
-                  </p>
-                </div>
+            <div className="px-4 py-2">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-medium">Printing Mode</p>
+                <p className="text-sm text-gray-500">
+                  {item?.filePrintMode === "simplex" && "Single Sided"}
+                  {item?.filePrintMode === "duplex" && "Double Sided"}
+                </p>
+              </div>
 
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium">Printing Type</p>
-                  <p className="text-sm text-gray-500">
-                    {item?.fileColorType === "color" && "Color"}
-                    {item?.fileColorType === "black and white" &&
-                      "Black and White"}
-                    {item?.fileColorType === "mixed" && "Mixed"}
-                  </p>
-                </div>
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-medium">Printing Type</p>
+                <p className="text-sm text-gray-500">
+                  {item?.fileColorType === "color" && "Color"}
+                  {item?.fileColorType === "black and white" &&
+                    "Black and White"}
+                  {item?.fileColorType === "mixed" && "Mixed"}
+                </p>
+              </div>
 
-                {item?.fileColorType === "mixed" && (
+              {item?.fileColorType === "mixed" && (
+                <>
+                  <div>
+                    <p className="text-sm font-medium">Color Pages</p>
+                    <p className="text-sm text-gray-500">
+                      1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+                    </p>
+                  </div>
+                </>
+              )}
+
+              {item?.messageForXeroxStore !== null &&
+                item?.messageForXeroxStore.length > 0 && (
                   <>
                     <div>
-                      <p className="text-sm font-medium">Color Pages</p>
+                      <p className="text-sm font-medium">Message</p>
                       <p className="text-sm text-gray-500">
-                        1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+                        {item?.messageForXeroxStore}
                       </p>
                     </div>
                   </>
                 )}
-
-                {item?.messageForXeroxStore !== null &&
-                  item?.messageForXeroxStore.length > 0 && (
-                    <>
-                      <div>
-                        <p className="text-sm font-medium">Message</p>
-                        <p className="text-sm text-gray-500">
-                          {item?.messageForXeroxStore}
-                        </p>
-                      </div>
-                    </>
-                  )}
-              </div>
             </div>
-            <p className="text-sm text-gray-500 absolute bottom-1 right-2">
-              {index + 1}/{cartItems.length}
+            <p className="text-xs text-gray-500 absolute bottom-1 right-2 flex items-center justify-center gap-2">
+              <span className="text-green-600">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-check-check"
+                >
+                  <path d="M18 6 7 17l-5-5" />
+                  <path d="m22 10-7.5 7.5L13 16" />
+                </svg>
+              </span>
+              <span className="font-medium">
+                {index + 1}/{cartItems.length}
+              </span>
             </p>
           </div>
         );

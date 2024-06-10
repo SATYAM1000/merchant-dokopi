@@ -1,94 +1,148 @@
 "use client";
-import React, { useState } from "react";
-import { RotateCcw } from "lucide-react";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import React, { useEffect, useState } from "react";
 
-import OverviewCard from "../dashboard/OverviewCard";
-import { analyticsOverviewData } from "@/lib/constants";
-import SelectFilter from "./SelectFilter";
-import EarningChart from "./EarningChart";
-import OrderChart from "./OrderChart";
+import AnalyticsCard from "./AnalyticsCard";
+import FilterData from "./FilterData";
+import axios from "axios";
+import { fetchAccessToken } from "@/actions/access-token";
+import { API_DOMAIN } from "@/lib/constants";
+import AnalyticsCardSkelton from "./AnalyticsCardSkelton";
+import EarningsChart from "./EarningsChart";
+import OrdersChart from "./OrdersChart";
+import ChartsSkelton from "./ChartsSkelton";
 
 const Analytics = () => {
-  const onRefresh = () => {
-    window.location.reload();
+  const currentUser = useCurrentUser();
+
+  const [selectedOption, setSelectedOption] = useState({
+    value: "today",
+    label: "Today",
+  });
+
+  const [analyticsData, setAnalyticsData] = useState(null);
+  const [dataToShow, setDataToShow] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setDataToShow(getDataToShow(selectedOption.value, analyticsData));
+  }, [selectedOption, analyticsData]);
+
+  const fetchAnalyticsData = async () => {
+    try {
+      setLoading(true);
+      const { data } = await axios.get(
+        `${API_DOMAIN}/api/v1/chart/analytics/${currentUser.storeId}/${selectedOption.value}`,
+        {
+          headers: {
+            Authorization: `Bearer ${await fetchAccessToken()}`,
+          },
+        }
+      );
+
+      setAnalyticsData(data);
+
+      console.log(data.earningsChartData);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
+  useEffect(() => {
+    fetchAnalyticsData();
+  }, [selectedOption]);
+
   return (
-    <section className="h-[calc(100vh-64px)] w-full">
-      <div className="w-full h-auto flex flex-col gap-0 ">
-        <div
-          className={`w-full flex items-center mb-0 justify-between px-6 py-4 border-b`}
-        >
-          <div className="flex flex-col gap-2 w-full">
-            {/* --------heading------------ */}
-            <div className="flex items-center border-b w-[100%] gap-4">
-              <div className="flex items-center justify-between w-full">
-                <div className="flex items-center gap-3">
-                  <p className="font-medium">Payment Overview</p>
-                  <div
-                    onRefresh={onRefresh}
-                    className="flex items-center gap-2 cursor-pointer"
-                  >
-                    <RotateCcw className="h-3 w-3 text-blue-600" />
-                    <span className="text-xs text-blue-600">Refresh</span>
-                  </div>
-                </div>
-
-                <SelectFilter
-                  title="Filter by"
-                  values={["Today", "Last Week", "Last Month", "Custom"]}
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-1 gap-4 mt-2 md:mt-0 md:grid-cols-4 md:gap-3">
-              {/* -----------------total earnings-------------- */}
-              {analyticsOverviewData.map((item, index) => {
-                return (
-                  <OverviewCard
-                    key={index}
-                    title={item.title}
-                    type={item.type}
-                    value={item.value}
-                    tooltipValue={item.tooltipValue}
-                    className={"bg-[#15803d] text-white rounded-md"}
-                  />
-                );
-              })}
-            </div>
-          </div>
+    <section className="w-full p-6 h-[calc(100vh-64px)] bg-slate-100 flex flex-col gap-8">
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between">
+          <p className="flex items-center ">
+            <span className=" font-semibold">
+              Hey 👋{currentUser?.name.split(" ")[0]}
+            </span>
+            <span className="font-medium text-black">
+              &nbsp;- here's what's happening with your store today
+            </span>
+          </p>
+          <FilterData
+            selectedOption={selectedOption}
+            setSelectedOption={setSelectedOption}
+          />
         </div>
-
-        {/* --------------bottom----------- */}
-        <div
-          className={`w-[100%] grid grid-cols-1 gap-6 md:grid-cols-2 p-6 border-b`}
-        >
-          {/* --------chart------------ */}
-          <div className=" bg-white overflow-hidden">
-            <div className="w-full flex items-end justify-end">
-              <SelectFilter
-                title="Filter by"
-                className={"bg-gray-100 mr-6 mt-4 text-primary"}
-                values={["Daily", "Weekly", "Monthly", "Custom"]}
-              />
-            </div>
-            <EarningChart />
-          </div>
-          <div>
-            <div className="flex  bg-white  flex-col">
-              <div className="w-full flex items-end justify-end">
-                <SelectFilter
-                  title="Filter by"
-                  className={"bg-gray-100 mr-6 mt-4 text-primary"}
-                  values={["Daily", "Weekly", "Monthly", "Custom"]}
-                />
-              </div>
-              <OrderChart />
-            </div>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-2 gap-6 md:gap-12">
+          {dataToShow
+            ? dataToShow.map((item, i) => <AnalyticsCard key={i} item={item} />)
+            : Array.from({ length: 4 }).map((_, i) => (
+                <AnalyticsCardSkelton key={i} />
+              ))}
         </div>
+      </div>
+
+      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+        {analyticsData ? (
+          <EarningsChart
+            data={analyticsData?.earningsChartData}
+            filter={selectedOption?.value}
+          />
+        ) : (
+          <ChartsSkelton />
+        )}
+
+        {analyticsData ? (
+          <OrdersChart
+            data={analyticsData?.ordersChartData}
+            filter={selectedOption?.value}
+          />
+        ) : (
+          <ChartsSkelton />
+        )}
       </div>
     </section>
   );
 };
 
 export default Analytics;
+
+function getDataToShow(selectedOption, analyticsData) {
+  if (!analyticsData) return null;
+
+  const timePeriods = {
+    today: "Today's",
+    yesterday: "Yesterday's",
+    thisweek: "Week's",
+    thismonth: "Month's",
+    year: "Year's",
+  };
+
+  const prefix = timePeriods[selectedOption];
+
+  if (!prefix) return null;
+
+  return [
+    {
+      title: `${prefix} Earning`,
+      value: `₹ ${analyticsData.totalEarnings}`,
+      change: `${analyticsData?.percentageChangeEarnings.toFixed(1)}`,
+      toolTipData:"This is your total earning amount",
+    },
+    {
+      title: `${prefix} Orders`,
+      value: analyticsData.totalOrders,
+      change: `${analyticsData?.percentageChangeOrders.toFixed(1)}`,
+      toolTipData:"This is your total order amount",
+    },
+    {
+      title: `${prefix} Pages Printed`,
+      value: analyticsData.totalPagesPrinted,
+      change: `${analyticsData?.percentageChangePagesPrinted.toFixed(1)}`,
+      toolTipData:"This is your total pages printed",
+    },
+    {
+      title: `Last Settlement`,
+      value: "N/A",
+      change: `N/A`,
+    },
+  ];
+}

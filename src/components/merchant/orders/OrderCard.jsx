@@ -18,7 +18,7 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
     >
       <div className="w-full h-full flex items-center gap-4">
         {/* User Image */}
-        <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center">
+        <div className="h-13 w-13 rounded-full bg-green-600 flex items-center justify-center">
           <Avatar>
             <AvatarImage src={order.userId.image} />
             <AvatarFallback>
@@ -43,7 +43,7 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
             </p>
           </div>
           <div className="flex items-center justify-between mt-1">
-            <div className="text-sm text-gray-500 leading-none flex items-center gap-1">
+            <div className="text-sm text-gray-600 leading-none flex items-center gap-1">
               {/* Order Information */}
               <div className="flex items-center text-blue-500">
                 <svg
@@ -61,7 +61,7 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
                   <path d="m22 10-7.5 7.5L13 16" />
                 </svg>
               </div>
-              <span>
+              <span className="text-gray-600">
                 {order?.userId && order?.totalPrice
                   ? `${order.userId.name} paid ₹ ${order.totalPrice}`
                   : "Invalid Order"}

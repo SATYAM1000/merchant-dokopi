@@ -16,12 +16,15 @@ const UserInfoHeader = ({ order }) => {
       <div className="flex w-full justify-between">
         <div className=" font-medium flex flex-col ">
           <p>{order?.orderNumber}</p>
-          <span className="text-gray-500 text-sm font-normal">
+          <span className="text-gray-700 text-sm font-normal">
             {order?.userId?.name} Paid ₹ {order?.totalPrice}
           </span>
         </div>
-        <div className=" cursor-pointer bg-green-600  text-white border rounded-md flex items-center justify-center px-2 py-1">
-          <Download className="h-4 w-4 " />
+        <div className=" cursor-pointer bg-green-600 text-sm text-white font-medium border rounded-md flex items-center justify-center px-4 py-1">
+          <div className="flex items-center gap-2">
+            <span>Download All</span>
+            <Download className="h-4 w-4" />
+          </div>
         </div>
       </div>
     </section>
