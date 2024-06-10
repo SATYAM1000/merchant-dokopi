@@ -1,9 +1,10 @@
 "use client";
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Download } from "lucide-react";
+import { Download, X } from "lucide-react";
 import axios from "axios";
 import { ClipLoader } from "react-spinners";
+import { toast } from "sonner";
 
 const UserInfoHeader = ({ order }) => {
   const [isDownloading, setIsDownloading] = React.useState(false);
@@ -13,9 +14,13 @@ const UserInfoHeader = ({ order }) => {
 
   const onDownloadAllClick = async () => {
     try {
+      let downloaded = 0;
       setIsDownloading(true);
       for (const item of order?.cartItems) {
         const res = await axios.get(item?.fileURL, { responseType: "blob" });
+        if (res.status === 200) {
+          downloaded++;
+        }
         const url = window.URL.createObjectURL(new Blob([res.data]));
         const link = document.createElement("a");
         link.href = url;
@@ -23,6 +28,10 @@ const UserInfoHeader = ({ order }) => {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+      }
+
+      if (downloaded === order?.cartItems?.length) {
+        toast.success("All files downloaded successfully");
       }
     } catch (error) {
       console.log(error);
@@ -46,17 +55,19 @@ const UserInfoHeader = ({ order }) => {
             successfully paid ₹ {order?.totalPrice}
           </span>
         </div>
-        <div
-          onClick={onDownloadAllClick}
-          className=" cursor-pointer bg-green-600 text-sm text-white font-medium border rounded-md flex items-center justify-center px-4 py-1"
-        >
-          <div className="flex items-center gap-2">
-            <span className="sm:hidden lg:flex">Download All</span>
-            {isDownloading ? (
-              <ClipLoader color="white" size={16} />
-            ) : (
-              <Download className="h-4 w-4" />
-            )}
+        <div className="flex items-center justify-center gap-4">
+          <div
+            onClick={onDownloadAllClick}
+            className=" h-full cursor-pointer bg-green-600 text-sm text-white font-medium border rounded-md flex items-center justify-center px-4 py-1"
+          >
+            <div className="flex items-center gap-2">
+              <span className="sm:hidden lg:flex">Download All</span>
+              {isDownloading ? (
+                <ClipLoader color="white" size={16} />
+              ) : (
+                <Download className="h-4 w-4" />
+              )}
+            </div>
           </div>
         </div>
       </div>
