@@ -40,6 +40,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.image = token.picture || token.image;
         session.user.role = token.role;
         session.user.storeId = token.storeId;
+        session.user.storeStatus = token.storeStatus;
       }
 
       return session;
@@ -61,6 +62,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.email = user.email;
         token.image = user.image;
         token.storeId = storeInfo._id;
+        token.storeStatus = storeInfo.storeCurrentStatus;
       }
       return token;
     },

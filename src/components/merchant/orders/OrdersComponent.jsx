@@ -12,6 +12,8 @@ import axios from "axios";
 import io from "socket.io-client";
 import OrderCardSkelton from "./OrderCardSkelton";
 import ErrorComponent from "@/components/global/Error";
+import { formatDate } from "@/lib/format-date";
+import { toast } from "sonner";
 
 const socket = io("https://api.dokopi.com");
 
@@ -24,20 +26,24 @@ const OrdersComponent = () => {
   const [activeOrders, setActiveOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
+  const [date, setDate] = React.useState();
 
   const fetchOrdersForXeroxStore = async (loader = true) => {
     try {
       setShowLoader(loader);
       const token = await fetchAccessToken();
 
-      const { data } = await axios.get(
-        `${API_DOMAIN}/api/v1/merchant/orders/active/${currentUser.storeId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      let url = `${API_DOMAIN}/api/v1/merchant/orders/${currentUser.storeId}`;
+      if (date) {
+        const formattedDate = formatDate(date);
+        url += `?date=${encodeURIComponent(formattedDate)}`;
+      }
+
+      const { data } = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (data?.data?.length > 0) {
         setHasActiveOrders(true);
@@ -48,6 +54,14 @@ const OrdersComponent = () => {
       }
     } catch (error) {
       console.log("Error while fetching orders ", error);
+      if (error.response?.status === 404) {
+        setHasActiveOrders(false);
+        setActiveOrders([]);
+        return;
+      }
+      toast.error(
+        error.response?.data?.msg || error.message || "Something went wrong"
+      );
     } finally {
       setShowLoader(false);
     }
@@ -55,12 +69,12 @@ const OrdersComponent = () => {
 
   useEffect(() => {
     fetchOrdersForXeroxStore();
-  }, []);
+  }, [date]);
 
   useEffect(() => {
     socket.on("paymentSuccess", (data) => {
       if (data.storeId === currentUser.storeId) {
-        fetchOrdersForXeroxStore((false));
+        fetchOrdersForXeroxStore(false);
       }
     });
 
@@ -97,11 +111,11 @@ const OrdersComponent = () => {
   };
 
   return (
-    <div className="w-full h-auto md:h-[calc(100vh-64px)] bg-slate-200 text-black/[0.90] overflow-hidden flex ">
+    <div className="w-full h-auto md:h-[calc(100vh-64px)] bg-gray-300 text-black/[0.90] overflow-hidden flex ">
       {/* ----------left-side----------------- */}
-      <div className="w-full md:w-2/5  lg:w-1/4  h-full ">
+      <div className="w-full md:w-9/20  lg:w-1/4  h-full ">
         <div className="w-full h-full flex flex-col gap-4 px-6 py-4 bg-white border-r ">
-          <Header />
+          <Header date={date} setDate={setDate} />
           {showLoader ? (
             <OrderCardSkelton />
           ) : (
@@ -116,7 +130,7 @@ const OrdersComponent = () => {
 
       {/* ----------right-side-------------------------- */}
       {!selectedOrder ? (
-        <div className="hidden md:3/5 lg:w-3/4 h-full bg-custom-image bg-contain bg-center md:flex flex-col">
+        <div className="hidden md:11/20 lg:w-3/4 h-full bg-custom-image bg-contain bg-center md:flex flex-col">
           <ErrorComponent
             title="Dokopi"
             errorMessage="
@@ -124,12 +138,12 @@ const OrdersComponent = () => {
           />
         </div>
       ) : (
-        <div className="hidden md:3/5 lg:w-3/4 h-full bg-custom-image bg-contain bg-center md:flex flex-col">
+        <div className="hidden md:11/20 lg:w-3/4 h-full w-full bg-custom-image bg-contain bg-center md:flex flex-col">
           <UserInfoHeader order={selectedOrder} />
 
           {/* --------------------documents-------------------- */}
           <div className="w-full h-full">
-            <ScrollArea className="h-[calc(100vh-150px)] w-full rounded-md border bg-transparent text-black">
+            <ScrollArea className="h-[calc(100vh-150px)] w-full rounded-md bg-transparent text-black">
               <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4 p-4">
                 {selectedOrder && (
                   <DocumentInfo cartItems={selectedOrder.cartItems} />
