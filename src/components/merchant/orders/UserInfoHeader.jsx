@@ -24,7 +24,10 @@ const UserInfoHeader = ({ order }) => {
         const url = window.URL.createObjectURL(new Blob([res.data]));
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", item.fileOriginalName + ".pdf");
+        link.setAttribute(
+          "download",
+          item.fileOriginalName + `.${item.fileExtension}`
+        );
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -32,9 +35,12 @@ const UserInfoHeader = ({ order }) => {
 
       if (downloaded === order?.cartItems?.length) {
         toast.success("All files downloaded successfully");
+      } else {
+        toast.error("Failed to download all files");
       }
     } catch (error) {
       console.log(error);
+      toast.error("Failed to download all files");
     } finally {
       setIsDownloading(false);
     }
@@ -52,7 +58,7 @@ const UserInfoHeader = ({ order }) => {
             <span className="font-semibold capitalize underline underline-offset-4">
               {order?.userId?.name}
             </span>{" "}
-            successfully paid ₹ {order?.totalPrice}
+            paid ₹ {order?.totalPrice}
           </span>
         </div>
         <div className="flex items-center justify-center gap-4">

@@ -19,7 +19,7 @@ const DocumentInfo = ({ cartItems }) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", item.fileOriginalName + ".pdf");
+      link.setAttribute("download", item.fileOriginalName + `.${item.fileExtension}`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -42,7 +42,7 @@ const DocumentInfo = ({ cartItems }) => {
               <div className="w-full flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <Image
-                    src="/file-icons/pdf.svg"
+                    src={`${item?.fileIconPath}`}
                     alt="curved dotted line"
                     width={32}
                     height={32}
