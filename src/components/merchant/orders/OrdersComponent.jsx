@@ -130,13 +130,7 @@ const OrdersComponent = () => {
 
       {/* ----------right-side-------------------------- */}
       {!selectedOrder ? (
-        <div className="hidden md:w-1/2 lg:w-2/3 h-full bg-custom-image bg-contain bg-center md:flex flex-col">
-          <ErrorComponent
-            title="Dokopi"
-            errorMessage="
-          No order selected"
-          />
-        </div>
+        <div className="hidden md:w-1/2 lg:w-2/3 h-full bg-custom-image bg-contain bg-center  md:flex flex-col"></div>
       ) : (
         <div className="hidden md:w-1/2 lg:w-3/4 h-full w-full bg-custom-image bg-contain bg-center md:flex flex-col">
           <UserInfoHeader order={selectedOrder} />

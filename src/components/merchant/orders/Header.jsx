@@ -3,18 +3,13 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { Search } from "lucide-react";
 import React from "react";
 
-import { format } from "date-fns";
-import { Calendar as CalendarIcon } from "lucide-react";
-
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { formatDate } from "@/lib/format-date";
+import { format } from 'date-fns';
 
 const Header = ({ date, setDate }) => {
   const currentUser = useCurrentUser();
@@ -59,8 +54,8 @@ const Header = ({ date, setDate }) => {
           </Popover>
         </div>
       </div>
-      <p className="text-sm">Welcome to Merchant Dashboard</p>
-      <div className="w-full overflow-hidden flex items-center rounded-sm bg-white border  border-gray-800/[0.30] mt-4 gap-2 px-3 py-1">
+      <p className="text-sm">{formatDateWithOrdinal(date || new Date())}</p>
+      <div className="w-full overflow-hidden flex items-center bg-white border border-black/[0.15] rounded-3xl mt-4 gap-2 px-3 py-1.5 hover:bg-gray-100">
         <Search className="w-4 h-4 text-gray-800" />
         <input
           type="text"
@@ -73,3 +68,26 @@ const Header = ({ date, setDate }) => {
 };
 
 export default Header;
+
+const getOrdinalSuffix = (day) => {
+  if (day > 3 && day < 21) return "th";
+  switch (day % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+};
+
+// Function to format date
+const formatDateWithOrdinal = (date) => {
+  const day = format(date, "d");
+  const month = format(date, "MMMM");
+  const year = format(date, "yyyy");
+  const ordinalSuffix = getOrdinalSuffix(parseInt(day));
+  return `${day}${ordinalSuffix} ${month} ${year}`;
+};
