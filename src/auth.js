@@ -57,12 +57,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           storeOwner: token.sub,
         });
         if (!user) return token;
+        if (storeInfo) {
+          token.storeId = storeInfo._id;
+          token.storeStatus = storeInfo?.storeCurrentStatus || "closed";
+        }
         token.role = user.role;
         token.name = user.name;
         token.email = user.email;
         token.image = user.image;
-        token.storeId = storeInfo._id;
-        token.storeStatus = storeInfo?.storeCurrentStatus || "closed";
       }
       return token;
     },
