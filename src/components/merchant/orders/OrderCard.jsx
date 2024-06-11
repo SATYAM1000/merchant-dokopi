@@ -10,11 +10,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const OrderCard = ({ order, onOrderClick, isSelected }) => {
+  const [showCheckBox, setShowCheckBox] = React.useState(false);
+  const [checkboxCSS, setCheckboxCSS] = React.useState("hidden");
   const handleClick = () => {
     onOrderClick(order);
   };
@@ -39,11 +41,24 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
       >
         {/* User Image */}
         <div className="flex items-center justify-center">
-          <Avatar className="h-11 w-11">
+          <Avatar className="h-11 w-11 relative">
             <AvatarImage src={order.userId.image} />
             <AvatarFallback>
               {order.userId.name[0].toUpperCase()}
             </AvatarFallback>
+            <div
+              onMouseEnter={() => {
+                setShowCheckBox(true);
+                setCheckboxCSS("inline-flex");
+              }}
+              onMouseLeave={() => {
+                setShowCheckBox(false);
+                setCheckboxCSS("hidden");
+              }}
+              className={`absolute top-0 right-0 z-5 bg-black/[0.5] rounded-full h-full w-full flex items-center justify-center text-white text-xs font-medium ${checkboxCSS}`}
+            >
+              <Checkbox checked={order.isViewed} className=" h-5 w-5" />
+            </div>
           </Avatar>
         </div>
         {/* Order Details */}

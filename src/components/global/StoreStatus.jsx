@@ -10,6 +10,7 @@ import { toast } from "sonner";
 
 const StoreStatus = () => {
   const currentUser = useCurrentUser();
+  if(!currentUser) return null;
   const [active, setActive] = React.useState(
     currentUser.storeStatus === "open"
   );
