@@ -62,7 +62,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.email = user.email;
         token.image = user.image;
         token.storeId = storeInfo._id;
-        token.storeStatus = storeInfo.storeCurrentStatus;
+        token.storeStatus = storeInfo?.storeCurrentStatus || "closed";
       }
       return token;
     },
