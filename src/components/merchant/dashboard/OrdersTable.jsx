@@ -12,8 +12,8 @@ import {
 
 import { columns } from "./table/tableColumns";
 import TopTableFilter from "./table/TopTableFilter";
-import TablePagination from "./table/tablePagination";
 import ShowTableRow from "./table/ShowTableRow";
+import TablePagination from "./table/TablePagination";
 
 const data = [
   {
