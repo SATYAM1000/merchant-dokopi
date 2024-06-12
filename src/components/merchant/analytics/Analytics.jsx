@@ -55,7 +55,7 @@ const Analytics = () => {
   }, [selectedOption]);
 
   return (
-    <section className="w-full p-6 h-[calc(100vh-64px)] bg-slate-100 flex flex-col gap-8">
+    <section className="w-full p-6 h-[calc(100vh-64px)] bg-white flex flex-col gap-8">
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <p className="flex items-center ">

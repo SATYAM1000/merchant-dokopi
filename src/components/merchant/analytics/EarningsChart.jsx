@@ -124,6 +124,7 @@ const EarningsChart = ({ data, filter = "today" }) => {
         },
         grid: {
           color: "rgba(0, 0, 0, 0.1)", // X-axis grid line color
+          borderDash: [5, 5], // Make X-axis grid lines dashed
         },
       },
       y: {
@@ -136,13 +137,14 @@ const EarningsChart = ({ data, filter = "today" }) => {
         },
         grid: {
           color: "rgba(0, 0, 0, 0.1)", // Y-axis grid line color
+          borderDash: [5, 5], // Make Y-axis grid lines dashed
         },
       },
     },
   };
 
   return (
-    <div className="w-full h-auto p-6 border bg-white shadow-sm rounded-md flex flex-col gap-4 ">
+    <div className="w-full h-auto p-6 border bg-white shadow-sm rounded-md flex flex-col gap-4">
       <p>
         <b>Earnings</b>
       </p>

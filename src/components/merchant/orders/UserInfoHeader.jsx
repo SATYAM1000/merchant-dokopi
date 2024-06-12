@@ -5,6 +5,7 @@ import { Download, X } from "lucide-react";
 import axios from "axios";
 import { ClipLoader } from "react-spinners";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 const UserInfoHeader = ({ order }) => {
   const [isDownloading, setIsDownloading] = React.useState(false);
@@ -62,19 +63,13 @@ const UserInfoHeader = ({ order }) => {
           </span>
         </div>
         <div className="flex items-center justify-center gap-4">
-          <div
-            onClick={onDownloadAllClick}
-            className=" h-full cursor-pointer bg-green-600 text-sm text-white font-medium border rounded-md flex items-center justify-center px-4 py-1"
-          >
-            <div className="flex items-center gap-2">
-              <span className="sm:hidden lg:flex">Download All</span>
-              {isDownloading ? (
-                <ClipLoader color="white" size={16} />
-              ) : (
-                <Download className="h-4 w-4" />
-              )}
-            </div>
-          </div>
+          <Button onClick={onDownloadAllClick} variant="outline">
+            {isDownloading ? (
+              <ClipLoader color="white" size={16} />
+            ) : (
+              <Download className="h-5 w-5" />
+            )}
+          </Button>
         </div>
       </div>
     </section>
