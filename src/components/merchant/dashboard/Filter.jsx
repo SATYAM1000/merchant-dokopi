@@ -17,67 +17,41 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CalendarIcon, ChevronDownIcon } from "lucide-react";
 
 const Filter = () => {
   const [date, setDate] = React.useState();
-
+  console.log(date)
   return (
     <div
       className={`w-full flex flex-col md:flex-row gap-4 md:gap-0 md:items-center md:justify-between bg-gray-100 p-6 border-b`}
     >
-      <h1 className="text-[22px] font-medium md:font-semibold text-foreground">
+      <h1 className="text-[22px] font-medium md:font-semibold text-foreground max-md:text-center">
         Today's Orders
       </h1>
       <div className="flex flex-col md:flex-row md:items-center gap-6">
-        <div className="flex items-center justify-center gap-3">
+        <div className="flex items-center justify-center gap-3 ">
           <Popover>
             <PopoverTrigger asChild>
               <Button
                 variant={"outline"}
                 className={cn(
-                  "w-[140px] hover:bg-white md:w-[240px] rounded-none justify-start text-left font-normal",
+                  "w-[140px] hover:bg-white md:w-[280px] rounded-none justify-start text-left font-normal max-md:w-full",
                   !date && "text-muted-foreground"
                 )}
               >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {date ? format(date, "PPP") : <span>Pick a date</span>}
+                <CalendarIcon className="mr-1 h-4 w-5" size={20} />
+                {date && date.from && date.to ? <>{format(date.from, "PP")} - {format(date.to, "PP")} </> : <span>Pick a date</span>}
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
+            <PopoverContent className="w-auto p-0 " align="start">
               <Calendar
-                mode="single"
+                mode="range"
                 selected={date}
                 onSelect={setDate}
-                initialFocus
-              />
-            </PopoverContent>
-          </Popover>
-
-          <p>To</p>
-
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button
-                variant={"outline"}
-                className={cn(
-                  "w-[140px] md:w-[240px] rounded-none border hover:bg-white justify-start text-left font-normal",
-                  !date && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                {date ? format(date, "PPP") : <span>Pick a date</span>}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0" align="start">
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                initialFocus
+                numberOfMonths={2}
               />
             </PopoverContent>
           </Popover>
@@ -86,7 +60,7 @@ const Filter = () => {
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="ml-auto hover:bg-white rounded-none"
+              className="ml-auto hover:bg-white rounded-none max-md:w-full"
             >
               <span className="text-muted-foreground font-normal">
                 Past 2 hours
