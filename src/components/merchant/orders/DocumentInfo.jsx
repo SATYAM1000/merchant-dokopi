@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import { MdDownload } from "react-icons/md";
 import axios from "axios";
 import { ClipLoader } from "react-spinners";
+import { LiaCheckDoubleSolid } from "react-icons/lia";
 
 const DocumentInfo = ({ cartItems }) => {
   const [loadingStates, setLoadingStates] = useState({});
@@ -19,7 +19,10 @@ const DocumentInfo = ({ cartItems }) => {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", item.fileOriginalName + `.${item.fileExtension}`);
+      link.setAttribute(
+        "download",
+        item.fileOriginalName + `.${item.fileExtension}`
+      );
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -139,21 +142,7 @@ const DocumentInfo = ({ cartItems }) => {
             </div>
             <p className="text-xs text-gray-500 absolute bottom-1 right-2 flex items-center justify-center gap-2">
               <span className="text-green-600">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-check-check"
-                >
-                  <path d="M18 6 7 17l-5-5" />
-                  <path d="m22 10-7.5 7.5L13 16" />
-                </svg>
+                <LiaCheckDoubleSolid size={18} />
               </span>
               <span className="font-medium">
                 {index + 1}/{cartItems.length}

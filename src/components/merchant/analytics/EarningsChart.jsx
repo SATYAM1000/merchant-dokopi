@@ -6,6 +6,7 @@ import "chartjs-adapter-date-fns";
 Chart.register(...registerables);
 
 const EarningsChart = ({ data, filter = "today" }) => {
+  console.log("data is ", data);
   const aggregateEarnings = (data) => {
     return data.reduce((acc, item) => {
       const date = new Date(item.date).toLocaleDateString();
@@ -30,7 +31,6 @@ const EarningsChart = ({ data, filter = "today" }) => {
       }
       hourlyData[hourRange] += item.earnings;
     });
-
     return hourlyData;
   };
 

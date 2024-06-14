@@ -9,10 +9,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
-const Header = ({ date, setDate }) => {
+const Header = ({ date, setDate, setSelectedOrder }) => {
   const currentUser = useCurrentUser();
+  const handleDateClick = (d) => {
+    setDate(d);
+    setSelectedOrder(null);
+  };
   return (
     <section className="w-full">
       <div className="flex items-center justify-between">
@@ -44,10 +48,10 @@ const Header = ({ date, setDate }) => {
               <Calendar
                 mode="single"
                 selected={date ? new Date(date) : new Date()}
-                onSelect={setDate}
+                onSelect={handleDateClick}
                 initialFocus
                 disabled={(date) =>
-                  date > new Date() || date < new Date("1900-01-01")
+                  date > new Date() || date < new Date("2024-06-01")
                 }
               />
             </PopoverContent>

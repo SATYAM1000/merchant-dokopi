@@ -11,7 +11,6 @@ import { API_DOMAIN } from "@/lib/constants";
 import axios from "axios";
 import io from "socket.io-client";
 import OrderCardSkelton from "./OrderCardSkelton";
-import ErrorComponent from "@/components/global/Error";
 import { formatDate } from "@/lib/format-date";
 import { toast } from "sonner";
 
@@ -78,6 +77,8 @@ const OrdersComponent = () => {
       }
     });
 
+    
+
     return () => {
       socket.off("paymentSuccess");
     };
@@ -109,13 +110,12 @@ const OrdersComponent = () => {
       }
     }
   };
-
   return (
     <div className="w-full h-auto md:h-[calc(100vh-64px)] bg-gray-300 text-black/[0.90] overflow-hidden flex ">
       {/* ----------left-side----------------- */}
       <div className="w-full md:w-1/2 lg:w-1/4  h-full ">
         <div className="w-full h-full flex flex-col gap-4 px-6 py-4 bg-white border-r ">
-          <Header date={date} setDate={setDate} />
+          <Header date={date} setDate={setDate} setSelectedOrder={setSelectedOrder}  />
           {showLoader ? (
             <OrderCardSkelton />
           ) : (
@@ -123,6 +123,7 @@ const OrdersComponent = () => {
               activeOrders={activeOrders}
               onOrderClick={handleOrderClick}
               selectedOrderId={selectedOrderId}
+              date={date}
             />
           )}
         </div>
