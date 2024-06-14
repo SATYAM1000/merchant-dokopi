@@ -15,7 +15,6 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 
 const OrderCard = ({ order, onOrderClick, isSelected }) => {
-  const [showCheckBox, setShowCheckBox] = React.useState(false);
   const [checkboxCSS, setCheckboxCSS] = React.useState("hidden");
   const handleClick = () => {
     onOrderClick(order);
@@ -24,7 +23,6 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
   const handleChevronClick = (e) => {
     e.stopPropagation();
     console.log("Chevron clicked");
-    // Additional logic for Chevron click can be added here
   };
 
   return (

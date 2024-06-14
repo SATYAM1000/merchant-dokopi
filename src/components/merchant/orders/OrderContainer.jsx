@@ -1,5 +1,7 @@
 "use client";
 import React from "react";
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+
 import { ScrollArea } from "@/components/ui/scroll-area";
 import OrderCard from "./OrderCard";
 
@@ -11,9 +13,11 @@ const OrdersContainer = ({ activeOrders, onOrderClick, selectedOrderId }) => {
       </div>
     );
 
+  const [animationParent] = useAutoAnimate();
+
   return (
     <ScrollArea className="h-[calc(100vh-120px)] w-full mt-0">
-      <div className="flex flex-col gap-1">
+      <div ref={animationParent} className="flex flex-col gap-1">
         {activeOrders.map((order) => (
           <OrderCard
             key={order.orderNumber}
