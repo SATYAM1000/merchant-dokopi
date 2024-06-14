@@ -17,7 +17,6 @@ const DashboardComponent = () => {
         </div>
         <OrderFilter />
         <Wrapper>
-          {/* ----container---------- */}
           <OrdersTable />
         </Wrapper>
       </div>
