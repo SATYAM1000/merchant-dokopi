@@ -16,9 +16,16 @@ const OrdersContainer = ({
     return (
       <div>
         <p>
-          No orders found on{" "}
-          <span className="font-medium underline underline-offset-4 text-blue-600">
-            {formatDateWithOrdinal(date)}
+          No orders found{" "}
+          <span>
+            {date ? (
+              <>
+                <span>on </span>
+                {formatDateWithOrdinal(date)}
+              </>
+            ) : (
+              "today"
+            )}
           </span>
         </p>
       </div>

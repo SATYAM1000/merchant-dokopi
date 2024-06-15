@@ -126,23 +126,28 @@ function getDataToShow(selectedOption, analyticsData) {
       value: `₹ ${analyticsData.totalEarnings}`,
       change: `${analyticsData?.percentageChangeEarnings.toFixed(1)}`,
       toolTipData:"This is your total earning amount",
+      image:"/analytics/earning.svg"
     },
     {
       title: `${prefix} Orders`,
       value: analyticsData.totalOrders,
       change: `${analyticsData?.percentageChangeOrders.toFixed(1)}`,
       toolTipData:"This is your total order amount",
+      image:"/analytics/orders.svg"
     },
     {
       title: `${prefix} Pages Printed`,
       value: analyticsData.totalPagesPrinted,
       change: `${analyticsData?.percentageChangePagesPrinted.toFixed(1)}`,
       toolTipData:"This is your total pages printed",
+      image:"/analytics/page.svg"
     },
     {
       title: `Last Settlement`,
       value: "N/A",
       change: `N/A`,
+      toolTipData:"This is your last settlement amount",
+      image:"/analytics/settlement.svg"
     },
   ];
 }

@@ -14,8 +14,6 @@ import OrderCardSkelton from "./OrderCardSkelton";
 import { formatDate } from "@/lib/format-date";
 import { toast } from "sonner";
 
-const socket = io("https://api.dokopi.com");
-
 const OrdersComponent = () => {
   const currentUser = useCurrentUser();
   if (!currentUser) return null;
@@ -25,7 +23,7 @@ const OrdersComponent = () => {
   const [activeOrders, setActiveOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
-  const [date, setDate] = React.useState();
+  const [date, setDate] = useState(null);
 
   const fetchOrdersForXeroxStore = async (loader = true) => {
     try {
@@ -52,7 +50,6 @@ const OrdersComponent = () => {
         setActiveOrders([]);
       }
     } catch (error) {
-      console.log("Error while fetching orders ", error);
       if (error.response?.status === 404) {
         setHasActiveOrders(false);
         setActiveOrders([]);
@@ -71,18 +68,27 @@ const OrdersComponent = () => {
   }, [date]);
 
   useEffect(() => {
+    const socket = io("https://api.dokopi.com");
+
+    socket.on("connect", () => {
+      if (currentUser) {
+        socket.emit("userConnect", { userId: currentUser.id });
+      }
+    });
+
     socket.on("paymentSuccess", (data) => {
       if (data.storeId === currentUser.storeId) {
         fetchOrdersForXeroxStore(false);
       }
     });
 
-    
-
     return () => {
       socket.off("paymentSuccess");
+      socket.disconnect();
     };
-  }, [currentUser.storeId]);
+  }, [currentUser]);
+
+
 
   const handleOrderClick = async (order) => {
     setSelectedOrder(order);
@@ -110,12 +116,17 @@ const OrdersComponent = () => {
       }
     }
   };
+
   return (
     <div className="w-full h-auto md:h-[calc(100vh-64px)] bg-gray-300 text-black/[0.90] overflow-hidden flex ">
       {/* ----------left-side----------------- */}
       <div className="w-full md:w-1/2 lg:w-1/4  h-full ">
         <div className="w-full h-full flex flex-col gap-4 px-6 py-4 bg-white border-r ">
-          <Header date={date} setDate={setDate} setSelectedOrder={setSelectedOrder}  />
+          <Header
+            date={date}
+            setDate={setDate}
+            setSelectedOrder={setSelectedOrder}
+          />
           {showLoader ? (
             <OrderCardSkelton />
           ) : (
