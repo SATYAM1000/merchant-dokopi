@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React from "react";
 import { Bar, Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
@@ -7,6 +7,7 @@ import "chartjs-adapter-date-fns";
 Chart.register(...registerables);
 
 const EarningsChart = ({ data, filter = "today" }) => {
+
   const aggregateEarnings = (data) => {
     return data.reduce((acc, item) => {
       const date = new Date(item.date).toLocaleDateString();
@@ -120,7 +121,7 @@ const EarningsChart = ({ data, filter = "today" }) => {
       x: {
         type: "category",
         ticks: {
-          color: "#7f7f7f", // X-axis tick color
+          color: '#7f7f7f', // X-axis tick color
           font: {
             size: 12, // Font size of x-axis ticks
           },

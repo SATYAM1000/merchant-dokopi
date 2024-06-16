@@ -1,5 +1,5 @@
 "use client";
-import { CircleHelp } from "lucide-react";
+import { CircleHelp, IndianRupee } from "lucide-react";
 import React from "react";
 
 import {
@@ -15,16 +15,10 @@ const AnalyticsCard = ({ item }) => {
   }
 
   return (
-    <div className="w-full bg-white h-24 border rounded-lg p-4 hover:bg-gray-100">
+    <div className={`w-full h-24 border rounded-lg p-4 ${item?.change > 0 ? "bg-green-100 border-green-300" : "bg-red-100 border-red-300"}`}>
       <div className="flex items-center justify-items-start gap-4">
-        <div>
-          <Image
-            src={item?.image}
-            alt="image"
-            width={40}
-            height={40}
-            
-          />
+        <div className={`w-9 h-9 p-1  text-white rounded-md flex items-center justify-center ${item?.change > 0 ? "bg-green-500" : "bg-red-500"}`}>
+          {item?.icon}
         </div>
         <div>
           <div className="flex items-center gap-2 ">
@@ -34,7 +28,7 @@ const AnalyticsCard = ({ item }) => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <CircleHelp
-                  className={`h-3 w-3 cursor-pointer text-blue-600 `}
+                  className={`h-3 w-3 cursor-pointer text-black/[0.6] `}
                 />
               </TooltipTrigger>
               <TooltipContent>
@@ -93,7 +87,7 @@ const AnalyticsCard = ({ item }) => {
                 }`}
               >
                 {item?.change} % &nbsp;
-                <span className=" text-[#7f7f7f]">last period</span>
+                <span>last period</span>
               </p>
             </div>
           </div>

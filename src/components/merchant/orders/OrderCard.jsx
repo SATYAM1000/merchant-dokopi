@@ -45,9 +45,9 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
           className="flex items-center justify-center transition-all"
         >
           <Avatar className="h-11 w-11 relative">
-            <AvatarImage src={order.userId.image} />
+            <AvatarImage src={order.userId?.image} />
             <AvatarFallback>
-              {order.userId.name[0].toUpperCase()}
+              {order?.userId?.name[0].toUpperCase()}
             </AvatarFallback>
             <div
               className={`absolute transition-all top-0 right-0 z-5 bg-black/[0.5] rounded-full h-full w-full flex items-center justify-center text-white text-xs font-medium leading-none ${checkboxCSS}`}

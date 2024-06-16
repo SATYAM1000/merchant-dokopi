@@ -11,6 +11,14 @@ import AnalyticsCardSkelton from "./AnalyticsCardSkelton";
 import EarningsChart from "./EarningsChart";
 import OrdersChart from "./OrdersChart";
 import ChartsSkelton from "./ChartsSkelton";
+import {
+  IndianRupee,
+  Landmark,
+  ListOrdered,
+  Notebook,
+  PiggyBankIcon,
+} from "lucide-react";
+import BalanceCard from "./BalanceCard";
 
 const Analytics = () => {
   const currentUser = useCurrentUser();
@@ -57,8 +65,8 @@ const Analytics = () => {
   return (
     <section className="w-full p-6 h-[calc(100vh-64px)] bg-white flex flex-col gap-8">
       <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between">
-          <p className="flex items-center ">
+        <div className="flex items-center justify-end md:justify-between">
+          <p className=" hidden md:flex items-center ">
             <span className=" font-semibold">
               Hey 👋{currentUser?.name.split(" ")[0]}
             </span>
@@ -72,11 +80,18 @@ const Analytics = () => {
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-2 gap-6 md:gap-12">
-          {dataToShow
-            ? dataToShow.map((item, i) => <AnalyticsCard key={i} item={item} />)
-            : Array.from({ length: 4 }).map((_, i) => (
-                <AnalyticsCardSkelton key={i} />
+          {dataToShow ? (
+            <>
+              {dataToShow.map((item, i) => (
+                <AnalyticsCard key={i} item={item} />
               ))}
+              <BalanceCard />
+            </>
+          ) : (
+            Array.from({ length: 4 }).map((_, i) => (
+              <AnalyticsCardSkelton key={i} />
+            ))
+          )}
         </div>
       </div>
 
@@ -125,29 +140,25 @@ function getDataToShow(selectedOption, analyticsData) {
       title: `${prefix} Earning`,
       value: `₹ ${analyticsData.totalEarnings}`,
       change: `${analyticsData?.percentageChangeEarnings.toFixed(1)}`,
-      toolTipData:"This is your total earning amount",
-      image:"/analytics/earning.svg"
+      toolTipData: "This is your total earning amount",
+      image: "/analytics/earning.svg",
+      icon: <IndianRupee className="w-5 h-5" />,
     },
     {
       title: `${prefix} Orders`,
       value: analyticsData.totalOrders,
       change: `${analyticsData?.percentageChangeOrders.toFixed(1)}`,
-      toolTipData:"This is your total order amount",
-      image:"/analytics/orders.svg"
+      toolTipData: "This is your total order amount",
+      image: "/analytics/orders.svg",
+      icon: <ListOrdered className="w-5 h-5" />,
     },
     {
       title: `${prefix} Pages Printed`,
       value: analyticsData.totalPagesPrinted,
       change: `${analyticsData?.percentageChangePagesPrinted.toFixed(1)}`,
-      toolTipData:"This is your total pages printed",
-      image:"/analytics/page.svg"
-    },
-    {
-      title: `Last Settlement`,
-      value: "N/A",
-      change: `N/A`,
-      toolTipData:"This is your last settlement amount",
-      image:"/analytics/settlement.svg"
+      toolTipData: "This is your total pages printed",
+      image: "/analytics/page.svg",
+      icon: <Notebook className="w-5 h-5" />,
     },
   ];
 }
