@@ -28,7 +28,7 @@ const AnalyticsCard = ({ item }) => {
         </div>
         <div>
           <div className="flex items-center gap-2 ">
-            <p className=" font-medium text-[#7f7f7f] text-[15px] ">
+            <p className=" font-medium text-black text-[15px] ">
               {item?.title}
             </p>
             <Tooltip>

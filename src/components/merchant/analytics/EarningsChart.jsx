@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React from "react";
 import { Bar, Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
@@ -7,7 +7,6 @@ import "chartjs-adapter-date-fns";
 Chart.register(...registerables);
 
 const EarningsChart = ({ data, filter = "today" }) => {
-
   const aggregateEarnings = (data) => {
     return data.reduce((acc, item) => {
       const date = new Date(item.date).toLocaleDateString();
@@ -39,7 +38,7 @@ const EarningsChart = ({ data, filter = "today" }) => {
   let ChartComponent;
 
   if (filter === "today" || filter === "yesterday") {
-    ChartComponent = Bar;
+    ChartComponent = Line;
     const hourlyData = aggregateEarningsByHour(data);
     chartData = {
       labels: Object.keys(hourlyData),
@@ -47,13 +46,17 @@ const EarningsChart = ({ data, filter = "today" }) => {
         {
           label: "Earnings",
           data: Object.values(hourlyData),
-          backgroundColor: gradientColor,
-          borderRadius: 5, // Decreased border radius for bars
-          borderWidth: 0, // Remove bar border
-          barPercentage: 0.6, // Adjust bar width within category space
-          categoryPercentage: 0.6, // Adjust bar width within category space
-          maxBarThickness: 40, // Max bar thickness
-          minBarLength: 5, // Min bar length
+          backgroundColor: (context) => {
+            const ctx = context.chart.ctx;
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, gradientColor);
+            gradient.addColorStop(1, "rgba(37, 99, 235, 0)");
+            return gradient;
+          },
+          borderColor: gradientColor,
+          borderWidth: 2, // Line width
+          fill: true, // Fill the area under the line
+          tension: 0, // Smoothing of the line
         },
       ],
     };
@@ -117,7 +120,7 @@ const EarningsChart = ({ data, filter = "today" }) => {
       x: {
         type: "category",
         ticks: {
-          color: '#7f7f7f', // X-axis tick color
+          color: "#7f7f7f", // X-axis tick color
           font: {
             size: 12, // Font size of x-axis ticks
           },

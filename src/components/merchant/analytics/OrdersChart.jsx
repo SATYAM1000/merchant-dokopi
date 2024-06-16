@@ -40,7 +40,7 @@ const OrdersChart = ({ data, filter = "today" }) => {
   let ChartComponent;
 
   if (filter === "today" || filter === "yesterday") {
-    ChartComponent = Bar;
+    ChartComponent = Line;
     const hourlyData = aggregateOrdersByHour(data);
     chartData = {
       labels: Object.keys(hourlyData),
@@ -48,13 +48,18 @@ const OrdersChart = ({ data, filter = "today" }) => {
         {
           label: "Orders",
           data: Object.values(hourlyData),
-          backgroundColor: gradientColor,
-          borderRadius: 5, // Decreased border radius for bars
-          borderWidth: 0, // Remove bar border
-          barPercentage: 0.6, // Adjust bar width within category space
-          categoryPercentage: 0.6, // Adjust bar width within category space
-          maxBarThickness: 40, // Max bar thickness
-          minBarLength: 5, // Min bar length
+          backgroundColor: (context) => {
+            const ctx = context.chart.ctx;
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, gradientColor);
+            gradient.addColorStop(0.5, "rgba(37, 99, 235, 0.5)");
+            gradient.addColorStop(1, "rgba(37, 99, 235, 0)");
+            return gradient;
+          },
+          borderColor: gradientColor,
+          borderWidth: 2, // Line width
+          fill: true, // Fill the area under the line
+          tension: 0.1, // Smoothing of the line
         },
       ],
     };
