@@ -62,7 +62,7 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
               </div>
               <span className="text-gray-700">
                 {order?.userId && order?.totalPrice
-                  ? `${order.userId.name} paid ₹ ${order.totalPrice}`
+                  ? `${order.userId.name} paid ₹ ${order.totalPrice - order.platformFee}`
                   : "Invalid Order"}
               </span>
             </div>
