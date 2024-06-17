@@ -1,4 +1,3 @@
-"use client"
 import React from "react";
 import { Bar, Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
@@ -33,7 +32,7 @@ const EarningsChart = ({ data, filter = "today" }) => {
     return hourlyData;
   };
 
-  const gradientColor = "rgb(37, 99, 235)";
+  const gradientColor = "rgb(99, 102, 241)";
 
   let chartData;
   let ChartComponent;
@@ -51,7 +50,7 @@ const EarningsChart = ({ data, filter = "today" }) => {
             const ctx = context.chart.ctx;
             const gradient = ctx.createLinearGradient(0, 0, 0, 400);
             gradient.addColorStop(0, gradientColor);
-            gradient.addColorStop(1, "rgba(37, 99, 235, 0)");
+            gradient.addColorStop(1, "rgba(99, 102, 241, 0)");
             return gradient;
           },
           borderColor: gradientColor,
@@ -74,7 +73,7 @@ const EarningsChart = ({ data, filter = "today" }) => {
             const ctx = context.chart.ctx;
             const gradient = ctx.createLinearGradient(0, 0, 0, 400);
             gradient.addColorStop(0, gradientColor);
-            gradient.addColorStop(1, "rgba(37, 99, 235, 0)");
+            gradient.addColorStop(1, "rgba(99, 102, 241, 0)");
             return gradient;
           },
           borderColor: gradientColor,

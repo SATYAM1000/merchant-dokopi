@@ -49,6 +49,12 @@ const DocumentInfo = ({ cartItems }) => {
         toast.error("File can not be downloaded");
         return;
       }
+      if(error?.response?.status === 404){
+        setLoadingStates((prevState) => ({ ...prevState, [index]: false }));
+        setProgressStates((prevState) => ({ ...prevState, [index]: 0 }));
+        toast.error("File not found");
+        return;
+      }
     } finally {
       setLoadingStates((prevState) => ({ ...prevState, [index]: false }));
       setProgressStates((prevState) => ({ ...prevState, [index]: 0 }));

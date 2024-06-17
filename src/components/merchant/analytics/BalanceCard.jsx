@@ -9,7 +9,7 @@ import {
 
 const BalanceCard = () => {
   return (
-    <div className={`w-full h-24 border rounded-lg p-4 bg-blue-600 shadow-sm `}>
+    <div className={`w-full h-24 border rounded-lg p-4 bg-indigo-600 shadow-sm `}>
       <div className="flex items-center justify-items-start gap-4">
         <div
           className={`w-9 h-9 p-1 bg-white  text-blue-600 rounded-md flex items-center justify-center `}

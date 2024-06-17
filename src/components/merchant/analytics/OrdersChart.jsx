@@ -34,7 +34,7 @@ const OrdersChart = ({ data, filter = "today" }) => {
     return hourlyData;
   };
 
-  const gradientColor = "rgb(37, 99, 235)";
+  const gradientColor = "rgb(99, 102, 241)";
 
   let chartData;
   let ChartComponent;

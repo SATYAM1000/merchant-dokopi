@@ -62,7 +62,7 @@ const UserInfoHeader = ({ order }) => {
   };
 
   return (
-    <section className="w-full min-h-20 bg-[#fff] p-4 flex items-center gap-6 border-b">
+    <section className="w-full min-h-14 bg-[#fff] p-2 pr-6 flex items-center gap-6 border-b">
       <Avatar>
         <AvatarImage src={order?.userId?.image} />
         <AvatarFallback>{order?.userId?.name[0]?.toUpperCase()}</AvatarFallback>

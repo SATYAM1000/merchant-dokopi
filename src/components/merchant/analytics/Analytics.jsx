@@ -70,7 +70,7 @@ const Analytics = () => {
             <span className=" font-semibold">
               Hey 👋{currentUser?.name.split(" ")[0]}
             </span>
-            <span className="font-medium text-black">
+            <span className=" text-gray-600">
               &nbsp;- here's what's happening with your store today
             </span>
           </p>
