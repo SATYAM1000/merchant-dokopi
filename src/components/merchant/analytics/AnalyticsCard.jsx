@@ -7,7 +7,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import Image from "next/image";
 
 const AnalyticsCard = ({ item }) => {
   if (!item) {
@@ -15,9 +14,9 @@ const AnalyticsCard = ({ item }) => {
   }
 
   return (
-    <div className={`w-full h-24 border rounded-lg p-4 ${item?.change > 0 ? "bg-green-100 border-green-300" : "bg-gray-100 border-gray-300"}`}>
+    <div className={`w-full h-24 border rounded-lg p-4 ${item?.change > 0 ? "bg-white" : "bg-white"}`}>
       <div className="flex items-center justify-items-start gap-4">
-        <div className={`w-9 h-9 p-1  text-white rounded-md flex items-center justify-center ${item?.change > 0 ? "bg-green-500" : "bg-gray-500"}`}>
+        <div className={`w-9 h-9 p-1  text-white rounded-md flex items-center justify-center ${item?.change > 0 ? "bg-indigo-500" : "bg-indigo-500"}`}>
           {item?.icon}
         </div>
         <div>
@@ -43,7 +42,7 @@ const AnalyticsCard = ({ item }) => {
 
             <div
               className={` flex items-center justify-center gap-2 ${
-                item?.change > 0 ? "text-green-600" : "text-gray-600"
+                item?.change < 0 ? "text-red-600" : "text-green-600"
               }`}
             >
               <div className="flex items-center justify-center  rounded-md">
@@ -83,7 +82,7 @@ const AnalyticsCard = ({ item }) => {
               </div>
               <p
                 className={`text-sm font-medium ${
-                  Number(item?.change) < 0 ? "text-gray-600" : "text-green-600"
+                  Number(item?.change) < 0 ? "text-red-600" : "text-green-600"
                 }`}
               >
                 {item?.change} % &nbsp;

@@ -13,10 +13,8 @@ import OrdersChart from "./OrdersChart";
 import ChartsSkelton from "./ChartsSkelton";
 import {
   IndianRupee,
-  Landmark,
   ListOrdered,
   Notebook,
-  PiggyBankIcon,
 } from "lucide-react";
 import BalanceCard from "./BalanceCard";
 
@@ -24,8 +22,8 @@ const Analytics = () => {
   const currentUser = useCurrentUser();
 
   const [selectedOption, setSelectedOption] = useState({
-    value: "today",
-    label: "Today",
+    value: "thismonth",
+    label: "This Month",
   });
 
   const [analyticsData, setAnalyticsData] = useState(null);
