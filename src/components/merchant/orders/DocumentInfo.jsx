@@ -49,7 +49,7 @@ const DocumentInfo = ({ cartItems }) => {
         toast.error("File can not be downloaded");
         return;
       }
-      if(error?.response?.status === 404){
+      if (error?.response?.status === 404) {
         setLoadingStates((prevState) => ({ ...prevState, [index]: false }));
         setProgressStates((prevState) => ({ ...prevState, [index]: 0 }));
         toast.error("File not found");
@@ -79,7 +79,9 @@ const DocumentInfo = ({ cartItems }) => {
                 />
                 <div>
                   <p className="text-sm font-medium">
-                    {item?.fileOriginalName || "N/A"}
+                    {item?.fileOriginalName.length > 15
+                      ? item?.fileOriginalName.slice(0, 15) + "..."
+                      : item?.fileOriginalName}
                   </p>
                   <div className="flex items-center gap-2">
                     <p className="text-xs text-gray-500">
@@ -133,7 +135,6 @@ const DocumentInfo = ({ cartItems }) => {
             </div>
           </div>
           <div className="px-4 py-2">
-            
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium">Printing Mode</p>
               <p className="text-sm text-gray-500">
