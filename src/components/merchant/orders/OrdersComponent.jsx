@@ -68,9 +68,21 @@ const OrdersComponent = () => {
   }, [date]);
 
   useEffect(() => {
-    const socket = io("https://api.dokopi.com");
+    if (Notification.permission !== "granted") {
+      Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
+          console.log("Notification permission granted.");
+        }
+      });
+    }
+
+    const socket = io("https://api.dokopi.com", {
+      reconnectionAttempts: 5, 
+      reconnectionDelay: 3000,
+    });
 
     socket.on("connect", () => {
+      console.log("Connected to Socket.IO server");
       if (currentUser) {
         socket.emit("userConnect", { userId: currentUser.id });
       }
@@ -79,7 +91,36 @@ const OrdersComponent = () => {
     socket.on("paymentSuccess", (data) => {
       if (data.storeId === currentUser.storeId) {
         fetchOrdersForXeroxStore(false);
+        
+        if (Notification.permission === "granted") {
+          const notification = new Notification("New Order", {
+            body: `You have a new order.`,
+            icon: '/vercel.svg', 
+          });
+
+          
+          const audio = new Audio('/audio/notification.mp3'); 
+          audio.play();
+        }
       }
+    });
+
+    socket.on("disconnect", () => {
+      console.warn("Disconnected from Socket.IO server");
+    });
+
+    socket.on("reconnect_attempt", () => {
+      console.log("Attempting to reconnect to Socket.IO server");
+    });
+
+    socket.on("reconnect_failed", () => {
+      console.error("Failed to reconnect to Socket.IO server");
+      toast.error("Unable to reconnect to the server. Please check your internet connection.");
+    });
+
+    socket.on("error", (error) => {
+      console.error("Socket.IO error:", error);
+      toast.error("A connection error occurred. Please check your internet connection.");
     });
 
     return () => {
@@ -87,8 +128,6 @@ const OrdersComponent = () => {
       socket.disconnect();
     };
   }, [currentUser]);
-
-
 
   const handleOrderClick = async (order) => {
     setSelectedOrder(order);
