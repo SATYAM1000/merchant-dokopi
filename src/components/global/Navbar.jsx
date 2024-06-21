@@ -90,7 +90,6 @@ const Navbar = () => {
         </SheetContent>
       </Sheet>
       <div className="flex items-center justify-center  gap-4 md:ml-auto md:gap-2 lg:gap-5 ">
-        <NotificationIcon />
         <UserAvatar />
       </div>
     </header>

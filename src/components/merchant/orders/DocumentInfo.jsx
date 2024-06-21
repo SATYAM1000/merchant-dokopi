@@ -66,7 +66,7 @@ const DocumentInfo = ({ cartItems }) => {
       {cartItems.map((item, index) => (
         <div
           key={index}
-          className="bg-[#d9fdd3] relative rounded-lg border-b border-gray-800/[0.25] px-1 pb-6 pt-1 "
+          className="bg-[#d9fdd3] relative rounded-lg border-b border-gray-800/[0.25] px-1 pb-6 pt-1 shadow "
         >
           <div className="bg-[#d1f4cc] w-full rounded-sm p-4 flex flex-col">
             <div className="w-full flex items-center justify-between">
