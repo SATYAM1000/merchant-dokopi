@@ -63,7 +63,7 @@ const Navbar = () => {
               <Package2 className="h-6 w-6" />
               <span className="sr-only">Dokopi</span>
             </Link>
-            <Link href="/orders" className="hover:text-foreground">
+            <Link href="/" className="hover:text-foreground">
               Orders
             </Link>
 
