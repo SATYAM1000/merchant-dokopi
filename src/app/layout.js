@@ -3,7 +3,7 @@ import "./globals.css";
 const archivo = Archivo({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "DoKopi",
+  title: "DoKopi - Merchant",
   description: "Print with ease. Anywhere. Anytime.",
 };
 
