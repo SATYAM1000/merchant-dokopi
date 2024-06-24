@@ -1,10 +1,14 @@
+import OrdersComponent from "@/components/merchant/orders/OrdersComponent";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
-import { fetchAccessToken } from "@/actions/access-token";
-export default async function Home() {
-  const token = await fetchAccessToken();
-  if (!token) {
+
+export default async function OrdersPageForMerchant() {
+  const session = await auth();
+  if (!session) {
     redirect("/auth/sign-in");
-  } else {
-    redirect("/orders");
   }
+  if (session && !session?.user?.storeId) {
+    redirect("/settings");
+  }
+  return <OrdersComponent />;
 }

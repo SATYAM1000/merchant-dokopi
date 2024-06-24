@@ -25,7 +25,7 @@ const OverviewComponentContainer = () => {
           </div>
         </div>
         <div className="grid grid-cols-1 gap-4 mt-2 md:mt-0 md:grid-cols-4 md:gap-3">
-          {overviewCardData.map((item, index) => {
+          {overviewCardData && overviewCardData.map((item, index) => {
             return (
               <OverviewCard
                 key={index}

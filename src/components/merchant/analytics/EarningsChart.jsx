@@ -6,6 +6,7 @@ import "chartjs-adapter-date-fns";
 Chart.register(...registerables);
 
 const EarningsChart = ({ data, filter = "today" }) => {
+
   const aggregateEarnings = (data) => {
     return data.reduce((acc, item) => {
       const date = new Date(item.date).toLocaleDateString();
@@ -19,28 +20,25 @@ const EarningsChart = ({ data, filter = "today" }) => {
 
   const aggregateEarningsByHour = (data) => {
     const hourlyData = {};
-
-    data.forEach(item => {
+    data.forEach((item) => {
       const date = new Date(item.date);
       const hour = date.getHours();
       const hourRange = `${hour}:00 - ${hour + 1}:00`;
-      
       if (!hourlyData[hourRange]) {
         hourlyData[hourRange] = 0;
       }
       hourlyData[hourRange] += item.earnings;
     });
-
     return hourlyData;
   };
 
-  const gradientColor = "rgb(37, 99, 235)";
+  const gradientColor = "rgb(99, 102, 241)";
 
   let chartData;
   let ChartComponent;
 
   if (filter === "today" || filter === "yesterday") {
-    ChartComponent = Bar;
+    ChartComponent = Line;
     const hourlyData = aggregateEarningsByHour(data);
     chartData = {
       labels: Object.keys(hourlyData),
@@ -48,12 +46,17 @@ const EarningsChart = ({ data, filter = "today" }) => {
         {
           label: "Earnings",
           data: Object.values(hourlyData),
-          backgroundColor: gradientColor,
-          borderWidth: 0, // Remove bar border
-          barPercentage: 0.6, // Adjust bar width within category space
-          categoryPercentage: 0.6, // Adjust bar width within category space
-          maxBarThickness: 60, // Max bar thickness
-          minBarLength: 2, // Min bar length
+          backgroundColor: (context) => {
+            const ctx = context.chart.ctx;
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, gradientColor);
+            gradient.addColorStop(1, "rgba(99, 102, 241, 0)");
+            return gradient;
+          },
+          borderColor: gradientColor,
+          borderWidth: 2, // Line width
+          fill: true, // Fill the area under the line
+          tension: 0, // Smoothing of the line
         },
       ],
     };
@@ -70,12 +73,12 @@ const EarningsChart = ({ data, filter = "today" }) => {
             const ctx = context.chart.ctx;
             const gradient = ctx.createLinearGradient(0, 0, 0, 400);
             gradient.addColorStop(0, gradientColor);
-            gradient.addColorStop(1, "rgba(37, 99, 235, 0)");
+            gradient.addColorStop(1, "rgba(99, 102, 241, 0)");
             return gradient;
           },
           borderColor: gradientColor,
           borderWidth: 2, // Line width
-          fill: false, // Fill the area under the line
+          fill: true, // Fill the area under the line
           tension: 0, // Smoothing of the line
         },
       ],
@@ -117,7 +120,7 @@ const EarningsChart = ({ data, filter = "today" }) => {
       x: {
         type: "category",
         ticks: {
-          color: "black", // X-axis tick color
+          color: '#7f7f7f', // X-axis tick color
           font: {
             size: 12, // Font size of x-axis ticks
           },
@@ -125,12 +128,13 @@ const EarningsChart = ({ data, filter = "today" }) => {
         grid: {
           color: "rgba(0, 0, 0, 0.1)", // X-axis grid line color
           borderDash: [5, 5], // Make X-axis grid lines dashed
+          drawBorder: false, // Optionally, remove the axis line
         },
       },
       y: {
         beginAtZero: true,
         ticks: {
-          color: "black", // Y-axis tick color
+          color: "#7f7f7f", // Y-axis tick color
           font: {
             size: 12, // Font size of y-axis ticks
           },
@@ -138,6 +142,7 @@ const EarningsChart = ({ data, filter = "today" }) => {
         grid: {
           color: "rgba(0, 0, 0, 0.1)", // Y-axis grid line color
           borderDash: [5, 5], // Make Y-axis grid lines dashed
+          drawBorder: false, // Optionally, remove the axis line
         },
       },
     },

@@ -34,7 +34,7 @@ const OrdersChart = ({ data, filter = "today" }) => {
     return hourlyData;
   };
 
-  const gradientColor = "rgb(37, 99, 235)";
+  const gradientColor = "rgb(99, 102, 241)";
 
   let chartData;
   let ChartComponent;
@@ -49,34 +49,31 @@ const OrdersChart = ({ data, filter = "today" }) => {
           label: "Orders",
           data: Object.values(hourlyData),
           backgroundColor: gradientColor,
+          borderRadius: 5, // Decreased border radius for bars
           borderWidth: 0, // Remove bar border
           barPercentage: 0.6, // Adjust bar width within category space
           categoryPercentage: 0.6, // Adjust bar width within category space
-          maxBarThickness: 60, // Max bar thickness
-          minBarLength: 2, // Min bar length
+          maxBarThickness: 40, // Max bar thickness
+          minBarLength: 5, // Min bar length
         },
       ],
     };
   } else {
     const aggregatedData = aggregateOrders(data);
-    ChartComponent = Line;
+    ChartComponent = Bar;
     chartData = {
       labels: Object.keys(aggregatedData),
       datasets: [
         {
           label: "Orders",
           data: Object.values(aggregatedData),
-          backgroundColor: (context) => {
-            const ctx = context.chart.ctx;
-            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, gradientColor);
-            gradient.addColorStop(1, "rgba(37, 99, 235, 0)");
-            return gradient;
-          },
-          borderColor: gradientColor,
-          borderWidth: 2, // Line width
-          fill: false, // Fill the area under the line
-          tension: 0.1, // Smoothing of the line
+          backgroundColor: gradientColor,
+          borderRadius: 5, // Decreased border radius for bars
+          borderWidth: 0, // Remove bar border
+          barPercentage: 0.6, // Adjust bar width within category space
+          categoryPercentage: 0.6, // Adjust bar width within category space
+          maxBarThickness: 40, // Max bar thickness
+          minBarLength: 5, // Min bar length
         },
       ],
     };
@@ -117,32 +114,36 @@ const OrdersChart = ({ data, filter = "today" }) => {
       x: {
         type: "category",
         ticks: {
-          color: "black", // X-axis tick color
+          color: "#7f7f7f", // X-axis tick color
           font: {
             size: 12, // Font size of x-axis ticks
           },
         },
         grid: {
           color: "rgba(0, 0, 0, 0.1)", // X-axis grid line color
+          borderDash: [5, 5], // Make X-axis grid lines dashed
+          drawBorder: false, // Optionally, remove the axis line
         },
       },
       y: {
         beginAtZero: true,
         ticks: {
-          color: "black", // Y-axis tick color
+          color: "#7f7f7f", // Y-axis tick color
           font: {
             size: 12, // Font size of y-axis ticks
           },
         },
         grid: {
           color: "rgba(0, 0, 0, 0.1)", // Y-axis grid line color
+          borderDash: [5, 5], // Make Y-axis grid lines dashed
+          drawBorder: false, // Optionally, remove the axis line
         },
       },
     },
   };
 
   return (
-    <div className="w-full h-auto p-6 border bg-white shadow-sm rounded-md flex flex-col gap-4 ">
+    <div className="w-full h-auto p-6 border bg-white shadow-sm rounded-md flex flex-col gap-4">
       <p>
         <b>Orders</b>
       </p>

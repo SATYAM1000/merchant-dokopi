@@ -42,7 +42,7 @@ const StoreStatus = () => {
         id="store-status"
         checked={active}
         onCheckedChange={handleStoreStatus}
-        className="bg-blue-600"
+        className="bg-indigo-600"
       />
 
       <Label htmlFor="store-status">{active ? "Open" : "Close"}</Label>

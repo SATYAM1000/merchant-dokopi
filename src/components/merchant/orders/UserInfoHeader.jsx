@@ -1,14 +1,16 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Download, X } from "lucide-react";
+import { Download } from "lucide-react";
 import axios from "axios";
-import { ClipLoader } from "react-spinners";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
 
 const UserInfoHeader = ({ order }) => {
-  const [isDownloading, setIsDownloading] = React.useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadProgress, setDownloadProgress] = useState(0);
+
   if (!order) {
     return null;
   }
@@ -17,21 +19,32 @@ const UserInfoHeader = ({ order }) => {
     try {
       let downloaded = 0;
       setIsDownloading(true);
+      setDownloadProgress(0);
+
       for (const item of order?.cartItems) {
-        const res = await axios.get(item?.fileURL, { responseType: "blob" });
+        const res = await axios.get(item?.fileURL, {
+          responseType: "blob",
+          onDownloadProgress: (progressEvent) => {
+            const progress = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setDownloadProgress(progress);
+          },
+        });
+
         if (res.status === 200) {
           downloaded++;
+          const url = window.URL.createObjectURL(new Blob([res.data]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute(
+            "download",
+            `${item.fileOriginalName}.${item.fileExtension}`
+          );
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
         }
-        const url = window.URL.createObjectURL(new Blob([res.data]));
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute(
-          "download",
-          item.fileOriginalName + `.${item.fileExtension}`
-        );
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
       }
 
       if (downloaded === order?.cartItems?.length) {
@@ -40,20 +53,22 @@ const UserInfoHeader = ({ order }) => {
         toast.error("Failed to download all files");
       }
     } catch (error) {
-      console.log(error);
+      console.error("Failed to download all files:", error);
       toast.error("Failed to download all files");
     } finally {
       setIsDownloading(false);
+      setDownloadProgress(0);
     }
   };
+
   return (
-    <section className="w-full min-h-20 bg-[#fff] p-4 flex items-center gap-6 border-b ">
+    <section className="w-full min-h-14 bg-[#fff] p-2 pr-6 flex items-center gap-6 border-b">
       <Avatar>
         <AvatarImage src={order?.userId?.image} />
-        <AvatarFallback>{order?.userId?.name[0].toUpperCase()}</AvatarFallback>
+        <AvatarFallback>{order?.userId?.name[0]?.toUpperCase()}</AvatarFallback>
       </Avatar>
       <div className="flex w-full justify-between">
-        <div className=" font-medium flex flex-col ">
+        <div className="font-medium flex flex-col">
           <p>{order?.orderNumber}</p>
           <span className="text-gray-700 text-sm font-normal">
             <span className="font-semibold capitalize underline underline-offset-4">
@@ -63,13 +78,24 @@ const UserInfoHeader = ({ order }) => {
           </span>
         </div>
         <div className="flex items-center justify-center gap-4">
-          <Button onClick={onDownloadAllClick} variant="outline">
+          <div
+            onClick={onDownloadAllClick}
+            className="cursor-pointer p-2 border border-black/[0.15] rounded-md"
+          >
             {isDownloading ? (
-              <ClipLoader color="white" size={16} />
+              <div className="w-6 h-6">
+                <CircularProgressbar
+                  value={downloadProgress}
+                  styles={buildStyles({
+                    pathColor: "#000",
+                    trailColor: "rgba(0, 0, 0, 0.2)",
+                  })}
+                />
+              </div>
             ) : (
               <Download className="h-5 w-5" />
             )}
-          </Button>
+          </div>
         </div>
       </div>
     </section>

@@ -3,19 +3,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { getTimeFromISO } from "@/lib/get-time";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ChevronDown } from "lucide-react";
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
+import { LiaCheckDoubleSolid } from "react-icons/lia";
 
 const OrderCard = ({ order, onOrderClick, isSelected }) => {
-  const [showCheckBox, setShowCheckBox] = React.useState(false);
   const [checkboxCSS, setCheckboxCSS] = React.useState("hidden");
   const handleClick = () => {
     onOrderClick(order);
@@ -24,7 +15,6 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
   const handleChevronClick = (e) => {
     e.stopPropagation();
     console.log("Chevron clicked");
-    // Additional logic for Chevron click can be added here
   };
 
   return (
@@ -35,26 +25,17 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
       } `}
     >
       <div
-        className={`w-full h-full rounded-md flex items-center gap-4 p-2 hover:bg-gray-100 ${
-          isSelected ? "bg-gray-200" : "bg-white"
+        className={`w-full h-full rounded-md flex items-center gap-4 p-2 hover:bg-gray-200  ${
+          isSelected ? "bg-gray-200 border-l-4 border-green-500" : "bg-white"
         } `}
       >
         {/* User Image */}
-        <div
-          onMouseEnter={() => setCheckboxCSS("block")}
-          onMouseLeave={() => setCheckboxCSS("hidden")}
-          className="flex items-center justify-center transition-all"
-        >
+        <div className="flex items-center justify-center transition-all">
           <Avatar className="h-11 w-11 relative">
-            <AvatarImage src={order.userId.image} />
+            <AvatarImage src={order.userId?.image} />
             <AvatarFallback>
-              {order.userId.name[0].toUpperCase()}
+              {order?.userId?.name[0].toUpperCase()}
             </AvatarFallback>
-            <div
-              className={`absolute transition-all top-0 right-0 z-5 bg-black/[0.5] rounded-full h-full w-full flex items-center justify-center text-white text-xs font-medium leading-none ${checkboxCSS}`}
-            >
-              <Checkbox checked={order.isViewed} className=" h-5 w-5" />
-            </div>
           </Avatar>
         </div>
         {/* Order Details */}
@@ -77,24 +58,11 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
             <div className="text-sm text-gray-700 leading-none flex items-center gap-1">
               {/* Order Information */}
               <div className="flex items-center text-blue-500">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M18 6 7 17l-5-5" />
-                  <path d="m22 10-7.5 7.5L13 16" />
-                </svg>
+                <LiaCheckDoubleSolid size={18} />
               </div>
               <span className="text-gray-700">
                 {order?.userId && order?.totalPrice
-                  ? `${order.userId.name} paid ₹ ${order.totalPrice}`
+                  ? `${order.userId.name} paid ₹ ${order.totalPrice - order.platformFee}`
                   : "Invalid Order"}
               </span>
             </div>
@@ -109,59 +77,6 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
               >
                 <span>{order?.cartItems?.length || 0}</span>
               </div>
-
-              <Popover>
-                <PopoverTrigger asChild>
-                  <ChevronDown
-                    className="h-4 w-4"
-                    onClick={handleChevronClick}
-                  />
-                </PopoverTrigger>
-                <PopoverContent className="w-30">
-                  <div className="grid gap-4">
-                    <div className="space-y-2">
-                      <h4 className="font-medium leading-none">Dimensions</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Set the dimensions for the layer.
-                      </p>
-                    </div>
-                    <div className="grid gap-2">
-                      <div className="grid grid-cols-3 items-center gap-4">
-                        <Label htmlFor="width">Width</Label>
-                        <Input
-                          id="width"
-                          defaultValue="100%"
-                          className="col-span-2 h-8"
-                        />
-                      </div>
-                      <div className="grid grid-cols-3 items-center gap-4">
-                        <Label htmlFor="maxWidth">Max. width</Label>
-                        <Input
-                          id="maxWidth"
-                          defaultValue="300px"
-                          className="col-span-2 h-8"
-                        />
-                      </div>
-                      <div className="grid grid-cols-3 items-center gap-4">
-                        <Label htmlFor="height">Height</Label>
-                        <Input
-                          id="height"
-                          defaultValue="25px"
-                          className="col-span-2 h-8"
-                        />
-                      </div>
-                      <div className="grid grid-cols-3 items-center gap-4">
-                        <Label htmlFor="maxHeight">Max. height</Label>
-                        <Input
-                          id="maxHeight"
-                          defaultValue="none"
-                          className="col-span-2 h-8"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </PopoverContent>
-              </Popover>
             </div>
           </div>
         </div>
