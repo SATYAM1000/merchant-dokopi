@@ -12,7 +12,7 @@ import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+// import { Checkbox } from "@/components/ui/checkbox"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -22,30 +22,31 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import ViewDetails from "../view-details/ViewDetails";
+import { format } from "date-fns";
 export const columns = [
     //checkbox
-    {
-        id: "select",
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && "indeterminate")
-                }
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Select all"
-            />
-        ),
-        cell: ({ row }) => (
-            <Checkbox
-                checked={row.getIsSelected()}
-                onCheckedChange={(value) => row.toggleSelected(!!value)}
-                aria-label="Select row"
-            />
-        ),
-        enableSorting: false,
-        enableHiding: false,
-    },
+    // {
+    //     id: "select",
+    //     header: ({ table }) => (
+    //         <Checkbox
+    //             checked={
+    //                 table.getIsAllPageRowsSelected() ||
+    //                 (table.getIsSomePageRowsSelected() && "indeterminate")
+    //             }
+    //             onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+    //             aria-label="Select all"
+    //         />
+    //     ),
+    //     cell: ({ row }) => (
+    //         <Checkbox
+    //             checked={row.getIsSelected()}
+    //             onCheckedChange={(value) => row.toggleSelected(!!value)}
+    //             aria-label="Select row"
+    //         />
+    //     ),
+    //     enableSorting: false,
+    //     enableHiding: false,
+    // },
     //SNo
     {
         accessorKey: "SNo",
@@ -64,11 +65,19 @@ export const columns = [
         ),
     },
     // Time 
-
+    {
+        accessorKey: "Transaction Time",
+        header: "Transaction Time",
+        cell: ({ row }) => {
+            // TODO: 
+            const date = new Date(new Date() + row.index);
+            return <div className="capitalize">{format(date, "PP")}</div>
+        },
+    },
     //Status
     {
-        accessorKey: "Status",
-        header: "Status",
+        accessorKey: "Payment Status",
+        header: "Payment Status",
         cell: ({ row }) => {
             const Rowdata = row.original
             const className = (Rowdata.status === "paid") ? "bg-green-500/[0.3] hover:bg-green-200 text-green-600" : "bg-red-500/[0.3] hover:bg-red-200 text-red-600"
@@ -152,6 +161,27 @@ export const columns = [
             </Sheet>
         ),
     },
+    //Status
+    {
+        accessorKey: "status",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Status
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+        // header: "",
+        cell: ({ row }) => {
+            const Rowdata = row.original
+            const className = (Rowdata.status === "paid") ? "bg-green-500/[0.3] hover:bg-green-200 text-green-600" : "bg-red-500/[0.3] hover:bg-red-200 text-red-600"
+            return <div className={`w-fit px-3  text-sm py-0.5 rounded-xl ${className} transition-all delay-200`}>{Rowdata.status == 'paid' ? 'Completed' : 'Pending'}</div>
+        },
+    },
     //Actions
     {
         id: "actions",
@@ -184,4 +214,4 @@ export const columns = [
             )
         },
     },
-]
+]   

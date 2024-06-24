@@ -23,7 +23,6 @@ import { CalendarIcon, ChevronDownIcon } from "lucide-react";
 
 const Filter = () => {
   const [date, setDate] = React.useState();
-  console.log(date)
   return (
     <div
       className={`w-full flex flex-col md:flex-row gap-4 md:gap-0 md:items-center md:justify-between bg-gray-100 p-6 border-b`}

@@ -75,7 +75,7 @@ const AnalyticsCard = ({ item }) => {
           </div>
           <p
             className={`text-sm font-medium ${
-              Number(item?.change) < 0 ? "text-red-500" : "text-green-500"
+              Number(item?.change) <= 0 ? "text-red-500" : "text-green-500"
             }`}
           >
             {item?.change} % &nbsp;from last period

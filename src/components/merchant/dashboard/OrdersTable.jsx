@@ -201,7 +201,6 @@ function DataTableDemo() {
   const [columnFilters, setColumnFilters] = React.useState(
     []
   )
-  console.log(sorting)
   const [columnVisibility, setColumnVisibility] =
     React.useState({})
   const [rowSelection, setRowSelection] = React.useState({})

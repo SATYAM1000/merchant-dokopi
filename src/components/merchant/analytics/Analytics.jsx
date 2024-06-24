@@ -75,8 +75,8 @@ const Analytics = () => {
           {dataToShow
             ? dataToShow.map((item, i) => <AnalyticsCard key={i} item={item} />)
             : Array.from({ length: 4 }).map((_, i) => (
-                <AnalyticsCardSkelton key={i} />
-              ))}
+              <AnalyticsCardSkelton key={i} />
+            ))}
         </div>
       </div>
 
@@ -125,19 +125,19 @@ function getDataToShow(selectedOption, analyticsData) {
       title: `${prefix} Earning`,
       value: `₹ ${analyticsData.totalEarnings}`,
       change: `${analyticsData?.percentageChangeEarnings.toFixed(1)}`,
-      toolTipData:"This is your total earning amount",
+      toolTipData: "This is your total earning amount",
     },
     {
       title: `${prefix} Orders`,
       value: analyticsData.totalOrders,
       change: `${analyticsData?.percentageChangeOrders.toFixed(1)}`,
-      toolTipData:"This is your total order amount",
+      toolTipData: "This is your total order amount",
     },
     {
       title: `${prefix} Pages Printed`,
       value: analyticsData.totalPagesPrinted,
       change: `${analyticsData?.percentageChangePagesPrinted.toFixed(1)}`,
-      toolTipData:"This is your total pages printed",
+      toolTipData: "This is your total pages printed",
     },
     {
       title: `Last Settlement`,

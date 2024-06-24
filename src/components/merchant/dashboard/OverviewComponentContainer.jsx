@@ -9,7 +9,7 @@ const OverviewComponentContainer = () => {
   const onRefresh = () => {
     window.location.reload();
   };
-  console.log(useCurrentUser())
+  // console.log(useCurrentUser())
   return (
     <>
       <div className="flex flex-col gap-2 w-full">
