@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CalendarIcon, ChevronDownIcon } from "lucide-react";
 
-const Filter = () => {
+const OrderFilter = () => {
   const [date, setDate] = React.useState();
   return (
     <div
@@ -91,4 +91,4 @@ const Filter = () => {
   );
 };
 
-export default Filter;
+export default OrderFilter;

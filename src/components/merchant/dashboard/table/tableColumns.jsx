@@ -50,6 +50,7 @@ export const columns = [
     //SNo
     {
         accessorKey: "SNo",
+        enableHiding: false,
         header: "SNo.",
         cell: ({ row }) => {
             const formatted = new Intl.NumberFormat().format(row.index + 1);
@@ -58,41 +59,49 @@ export const columns = [
     },
     //Order Id
     {
-        accessorKey: "Order Id",
+        accessorKey: "Order_Id",
         header: "Order Id",
         cell: ({ row }) => (
-            <div className="capitalize">#{row.getValue("id")}</div>
+            <div className="capitalize">{row.getValue("Order_Id")}</div>
         ),
     },
-    // Time 
+    //Transaction Time 
     {
-        accessorKey: "Transaction Time",
+        accessorKey: "Transaction_Time",
+        enableHiding: false,
         header: "Transaction Time",
-        cell: ({ row }) => {
-            // TODO: 
-            const date = new Date(new Date() + row.index);
-            return <div className="capitalize">{format(date, "PP")}</div>
-        },
+        cell: ({ row }) => (
+            <div className="capitalize">{format(row.getValue("Transaction_Time"), "PP")}</div>
+        ),
     },
-    //Status
+    // Payment Status
     {
-        accessorKey: "Payment Status",
-        header: "Payment Status",
+        accessorKey: "paymentStatus",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Payment Status
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
         cell: ({ row }) => {
-            const Rowdata = row.original
-            const className = (Rowdata.status === "paid") ? "bg-green-500/[0.3] hover:bg-green-200 text-green-600" : "bg-red-500/[0.3] hover:bg-red-200 text-red-600"
-            return <div className={`w-fit px-3  text-sm py-0.5 rounded-xl ${className} transition-all delay-200`}>{Rowdata.status}</div>
+            const className = (row.getValue("paymentStatus")
+                === "success") ? "bg-green-500/[0.3] hover:bg-green-200 text-green-600" : "bg-red-500/[0.3] hover:bg-red-200 text-red-600"
+            return <div className={`w-fit px-3  text-sm py-0.5 rounded-xl ${className} transition-all delay-200`}>{row.getValue("paymentStatus")}</div>
         },
     },
     //Transaction Id
     {
-        accessorKey: "transaction_id",
+        accessorKey: "TransactionId",
         header: "Transaction ID",
-        cell: ({ row }) => {
-            return (
-                <div>{row.getValue('transaction_id')}</div>
-            )
-        },
+        cell: ({ row }) => (
+            <div>{row.getValue("TransactionId")}</div>
+        )
+        ,
     },
     //amount
     {
@@ -110,7 +119,6 @@ export const columns = [
         },
         cell: ({ row }) => {
             const amount = parseFloat(row.getValue("amount"))
-
             // Format the amount as a indian amount
             const formatted = new Intl.NumberFormat("en-IN", {
                 style: "currency",
@@ -122,18 +130,17 @@ export const columns = [
     },
     //FilesRecvd
     {
-        accessorKey: "File Received",
+        accessorKey: "FilesRecvd",
         header: "FilesRecvd",
-        cell: ({ row }) => {
-            const RowData = row.original
-            return (
-                <div className="capitalize ml-5">{(RowData.id).slice(6, 7)}</div>
-            )
-        },
+        cell: ({ row }) => (
+            <div className="capitalize ml-5">{row.getValue("FilesRecvd")}</div>
+        )
+        ,
     },
     //View Details
     {
         accessorKey: "View Details",
+        enableHiding: false,
         header: "View Details",
         cell: ({ row }) => (
             <Sheet>
@@ -163,7 +170,7 @@ export const columns = [
     },
     //Status
     {
-        accessorKey: "status",
+        accessorKey: "Status",
         header: ({ column }) => {
             return (
                 <Button
@@ -177,19 +184,17 @@ export const columns = [
         },
         // header: "",
         cell: ({ row }) => {
-            const Rowdata = row.original
-            const className = (Rowdata.status === "paid") ? "bg-green-500/[0.3] hover:bg-green-200 text-green-600" : "bg-red-500/[0.3] hover:bg-red-200 text-red-600"
-            return <div className={`w-fit px-3  text-sm py-0.5 rounded-xl ${className} transition-all delay-200`}>{Rowdata.status == 'paid' ? 'Completed' : 'Pending'}</div>
+            const className = (row.getValue("Status") === "success") ? "bg-green-500/[0.3] hover:bg-green-200 text-green-600" : "bg-red-500/[0.3] hover:bg-red-200 text-red-600"
+            return <div className={`w-fit px-3  text-sm py-0.5 rounded-xl ${className} transition-all delay-200`}>{row.getValue("Status")}</div>
         },
     },
     //Actions
     {
-        id: "actions",
+        id: "action",
         enableHiding: false,
         header: 'Actions',
         cell: ({ row }) => {
             const Rowdata = row.original
-
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -201,14 +206,14 @@ export const columns = [
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuItem onClick={() => {
-                            navigator.clipboard.writeText(Rowdata.id); toast("Order Id has been copied", { duration: 1000 })
+                            navigator.clipboard.writeText(Rowdata?.Order_Id); toast("Order Id has been copied", { duration: 1000 })
                         }} className="cursor-pointer">Copy Order ID</DropdownMenuItem>
                         <DropdownMenuItem onClick={() => {
-                            navigator.clipboard.writeText(Rowdata.email); toast("Email has been copied.", { duration: 1000 })
+                            navigator.clipboard.writeText(Rowdata?.action?.email); toast("Email has been copied.", { duration: 1000 })
                         }} className="cursor-pointer">Copy Customer Email</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem className="cursor-pointer">View customer</DropdownMenuItem>
-                        <DropdownMenuItem className="cursor-pointer">View payment details</DropdownMenuItem>
+                        {/* <DropdownMenuSeparator /> */}
+                        {/* <DropdownMenuItem className="cursor-pointer">View customer</DropdownMenuItem> */}
+                        {/* <DropdownMenuItem className="cursor-pointer">View payment details</DropdownMenuItem> */}
                     </DropdownMenuContent>
                 </DropdownMenu>
             )
