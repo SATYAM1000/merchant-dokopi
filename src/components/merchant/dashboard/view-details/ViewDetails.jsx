@@ -20,7 +20,7 @@ const ViewDetails = ({ RecvdDocument = [] }) => {
           </div>
           {RecvdDocument.length && RecvdDocument.map((docs) => (
             <div key={docs._id}>
-              <div key={docs} className="text-sm p-4">
+              <div className="text-sm p-4">
                 <ReceivedDocument docs={docs} />
               </div>
               <Separator className="my-2" />

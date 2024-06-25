@@ -1,4 +1,6 @@
+'use client'
 import { X } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 const ReceivedDocument = ({ docs }) => {
@@ -15,7 +17,7 @@ const ReceivedDocument = ({ docs }) => {
             className="h-16 w-16 rounded object-contain"
           />
           <div className="w-full">
-            <h3 className="text-[15px] font-medium text-gray-900">
+            <h3 className="text-[15px] font-medium text-gray-900 ">
               {docs?.fileOriginalName}
             </h3>
             <dl className="mt-0.5 w-full space-y-px text-[11px] text-gray-700">
@@ -46,6 +48,7 @@ const ReceivedDocument = ({ docs }) => {
                   {docs?.additionalServices}
                 </dd>
               </div>
+                <Link href={docs.fileURL} target="_blank"> Click to get Documents</Link>
             </dl>
           </div>
         </li>
