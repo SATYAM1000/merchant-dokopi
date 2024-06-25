@@ -20,13 +20,13 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
   return (
     <div
       onClick={handleClick}
-      className={`text-sm h-18 hover:border-none transition-all cursor-pointer ${
-        isSelected ? "border-none" : "border-b"
+      className={`text-sm h-18 hover:border-none transition-all duration-500 cursor-pointer ${
+        isSelected ? "border-white" : "border-b"
       } `}
     >
       <div
-        className={`w-full h-full rounded-md flex items-center gap-4 p-2 hover:bg-gray-200  ${
-          isSelected ? "bg-gray-200 border-l-4 border-green-500" : "bg-white"
+        className={`w-full h-full rounded-md flex items-center gap-4 p-2 hover:bg-gray-100  ${
+          isSelected ? "bg-gray-100 border-l-4 border-green-500" : "bg-white"
         } `}
       >
         {/* User Image */}
@@ -42,13 +42,13 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
         <div className="h-12 w-[calc(100%-40px)] flex flex-col justify-end">
           <div className="flex items-center justify-between">
             {/* Order Number */}
-            <h4 className="text-[16px] font-medium leading-none">
+            <h4 className="text-[16px] font-medium text-black leading-none">
               {order?.orderNumber ? order.orderNumber : "Invalid Order Number"}
             </h4>
             {/* Order Time */}
             <p
               className={`text-xs font-medium leading-none ${
-                order?.isViewed ? "text-gray-700" : "text-green-600"
+                order?.isViewed ? "text-gray-600" : "text-green-600"
               }`}
             >
               {getTimeFromISO(order?.createdAt)}
@@ -60,7 +60,7 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
               <div className="flex items-center text-blue-500">
                 <LiaCheckDoubleSolid size={18} />
               </div>
-              <span className="text-gray-700">
+              <span className="text-gray-600">
                 {order?.userId && order?.totalPrice
                   ? `${order.userId.name} paid ₹ ${order.totalPrice - order.platformFee}`
                   : "Invalid Order"}
@@ -71,7 +71,7 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
               <div
                 className={`text-xs h-5 w-5 font-medium flex items-center justify-center rounded-full ${
                   order?.isViewed
-                    ? "bg-gray-200 text-gray-700"
+                    ? "bg-gray-100 text-gray-600"
                     : "bg-green-600 text-white"
                 }`}
               >

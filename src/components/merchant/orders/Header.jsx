@@ -23,7 +23,7 @@ const Header = ({ date, setDate, setSelectedOrder }) => {
         <h1 className="text-xl font-bold capitalize">
           Hello, 👋 {currentUser?.name.split(" ")[0]}
         </h1>
-        <div className="flex items-center text-gray-500 justify-center p-1 hover:bg-gray-200 rounded-sm transition-all cursor-pointer">
+        <div className="flex items-center text-gray-800 justify-center p-1 hover:bg-gray-100 rounded-sm transition-all cursor-pointer">
           <Popover>
             <PopoverTrigger asChild>
               <svg
@@ -58,8 +58,8 @@ const Header = ({ date, setDate, setSelectedOrder }) => {
           </Popover>
         </div>
       </div>
-      <p className="text-sm">{formatDateWithOrdinal(date || new Date())}</p>
-      <div className="w-full overflow-hidden flex items-center bg-white border border-black/[0.15] rounded-3xl mt-4 gap-2 px-3 py-1.5 hover:bg-gray-100">
+      <p className="text-sm font-medium">{formatDateWithOrdinal(date || new Date())}</p>
+      <div className="w-full overflow-hidden flex items-center bg-white border border-black/[0.3] rounded-3xl mt-4 gap-2 px-3 py-1.5">
         <Search className="w-4 h-4 text-gray-800" />
         <input
           type="text"

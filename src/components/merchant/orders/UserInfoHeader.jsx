@@ -5,11 +5,13 @@ import { Download } from "lucide-react";
 import axios from "axios";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { ClipLoader } from "react-spinners";
 import { toast } from "sonner";
 
 const UserInfoHeader = ({ order }) => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0);
+  const [loader, setLoader] = useState(false);
 
   if (!order) {
     return null;
@@ -19,6 +21,7 @@ const UserInfoHeader = ({ order }) => {
     try {
       let downloaded = 0;
       setIsDownloading(true);
+      setLoader(true);
       setDownloadProgress(0);
 
       for (const item of order?.cartItems) {
@@ -28,6 +31,10 @@ const UserInfoHeader = ({ order }) => {
             const progress = Math.round(
               (progressEvent.loaded * 100) / progressEvent.total
             );
+
+            if (loader) {
+              setLoader(false);
+            }
             setDownloadProgress(progress);
           },
         });
@@ -62,7 +69,7 @@ const UserInfoHeader = ({ order }) => {
   };
 
   return (
-    <section className="w-full min-h-14 bg-[#fff] p-2 pr-6 flex items-center gap-6 border-b">
+    <section className="w-full min-h-14 bg-[#fff] px-4 py-5  flex items-center gap-6 border-b">
       <Avatar>
         <AvatarImage src={order?.userId?.image} />
         <AvatarFallback>{order?.userId?.name[0]?.toUpperCase()}</AvatarFallback>

@@ -65,9 +65,9 @@ export default async function RootLayout({ children }) {
 
               {/* Main Content */}
               <div className="flex flex-col flex-1 min-h-[100vh]">
-                <main>
-                  <div className="">
-                    <div className=" mx-auto max-w-8xl  ">{children}</div>
+                <main className="w-full h-full">
+                  <div className="w-full h-full">
+                    <div className=" mx-auto max-w-8xl w-full h-full ">{children}</div>
                   </div>
                 </main>
               </div>

@@ -5,6 +5,7 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import OrderCard from "./OrderCard";
 import { format } from "date-fns";
+import Image from "next/image";
 
 const OrdersContainer = ({
   activeOrders,
@@ -14,8 +15,14 @@ const OrdersContainer = ({
 }) => {
   if (!activeOrders || activeOrders.length === 0)
     return (
-      <div>
-        <p>
+      <div className="flex flex-col items-center justify-center mt-16">
+        <Image
+          src="/main/no-orders.svg"
+          width={200}
+          height={200}
+          alt="No orders"
+        />
+        <p className="font-medium">
           No orders found{" "}
           <span>
             {date ? (
@@ -33,7 +40,7 @@ const OrdersContainer = ({
   const [animationParent] = useAutoAnimate();
 
   return (
-    <ScrollArea className="h-[calc(100vh-120px)] w-full mt-0">
+    <ScrollArea type="scroll" className="h-[calc(100vh-150px)] w-full mt-1">
       <div ref={animationParent} className="flex flex-col gap-1">
         {activeOrders.map((order) => (
           <OrderCard
