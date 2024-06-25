@@ -11,9 +11,9 @@ import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { Toaster } from "sonner";
 
-
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "@/components/global/Navbar";
+import NextTopLoader from "nextjs-toploader";
 
 export default async function RootLayout({ children }) {
   const session = await auth();
@@ -21,6 +21,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={archivo.className}>
+        <NextTopLoader color="#4f46e5" showSpinner={false} />
         <SessionProvider session={session}>
           <TooltipProvider>
             <div className="flex min-h-screen w-full flex-col">

@@ -19,7 +19,7 @@ const Navbar = () => {
           <span className="sr-only">Dokopi</span>
         </Link>
         <Link
-          href="/orders"
+          href="/"
           className="text-foreground transition-colors hover:text-foreground"
         >
           Orders
