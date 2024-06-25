@@ -38,7 +38,6 @@ const ShowTableRow = ({ table, columns }) => {
                         table.getRowModel().rows.map((row) => (
                             <TableRow
                                 key={row.id}
-                                data-state={row.getIsSelected() && "selected"}
                             >
                                 {row.getVisibleCells().map((cell) => (
                                     <TableCell key={cell.id}>
@@ -56,7 +55,7 @@ const ShowTableRow = ({ table, columns }) => {
                                 colSpan={columns.length}
                                 className="h-24 text-center"
                             >
-                                No results.
+                                No Orders.
                             </TableCell>
                         </TableRow>
                     )}

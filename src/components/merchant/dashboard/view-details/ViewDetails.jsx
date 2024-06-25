@@ -7,7 +7,8 @@ const tags = Array.from({ length: 50 }).map(
   (_, i, a) => `v1.2.0-beta.${a.length - i}`
 );
 
-const ViewDetails = () => {
+const ViewDetails = ({ RecvdDocument = [] }) => {
+  console.log(RecvdDocument)
   return (
     <section className="mt-6 w-full h-full">
       <ScrollArea className="h-[calc(100vh-120px)] w-full rounded-md border">
@@ -17,13 +18,13 @@ const ViewDetails = () => {
               Received Documents
             </h4>
           </div>
-          {tags.map((tag) => (
-            <>
-              <div key={tag} className="text-sm p-4">
-                <ReceivedDocument />
+          {RecvdDocument.length && RecvdDocument.map((docs) => (
+            <div key={docs._id}>
+              <div className="text-sm p-4">
+                <ReceivedDocument docs={docs} />
               </div>
               <Separator className="my-2" />
-            </>
+            </div>
           ))}
         </div>
       </ScrollArea>

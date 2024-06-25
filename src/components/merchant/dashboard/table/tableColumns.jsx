@@ -156,14 +156,13 @@ export const columns = [
                 <SheetContent>
                     <SheetHeader>
                         <SheetTitle>
-                            Order Details&nbsp;&nbsp;&nbsp;
-                            {row.getValue('email')}
+                            Order Details for <span className="text-black">{row?.original?.Order_Id}</span>
                         </SheetTitle>
                         <SheetDescription>
                             View customer order details here.
                         </SheetDescription>
                     </SheetHeader>
-                    <ViewDetails />
+                    <ViewDetails RecvdDocument={row?.original?.ViewDetail} />
                 </SheetContent>
             </Sheet>
         ),

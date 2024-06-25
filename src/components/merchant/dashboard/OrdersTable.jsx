@@ -45,10 +45,9 @@ function DataTableDemo({ data }) {
       rowSelection,
     },
   })
-
   return (
     <div className="w-full">
-      <TopTableFilter table={table} />
+      <TopTableFilter table={table} sorting={sorting} setSorting={setSorting} />
       <ShowTableRow table={table} columns={columns} />
       <TablePagination table={table} />
     </div>
