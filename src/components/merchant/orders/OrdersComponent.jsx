@@ -157,7 +157,7 @@ const OrdersComponent = () => {
   };
 
   return (
-    <div className="w-full h-auto md:h-[calc(100vh-64px)] bg-gray-100 text-black/[0.90] overflow-hidden flex ">
+    <div className="w-full h-full bg-gray-100 text-black/[0.90] overflow-hidden flex ">
       {/* ----------left-side----------------- */}
       <div className="w-full md:w-1/2 lg:w-1/4  h-full ">
         <div className="w-full h-full flex flex-col gap-4 px-6 py-4 bg-white border-r ">
