@@ -11,6 +11,7 @@ import { API_DOMAIN } from "@/lib/constants";
 import mongoose from "mongoose";
 import { toast } from "sonner";
 import { fetchAccessToken } from "@/actions/access-token";
+import TableSkeleton from "./TableSkeleton";
 
 const DashboardComponent = () => {
   const { storeId } = useCurrentUser();
@@ -30,19 +31,16 @@ const DashboardComponent = () => {
       }
       else {
         setData(data.data)
+        console.log(data.data)
       }
     } catch (error) {
-      console.log(error)
       toast.error("failed to fetch the orders details")
     } finally {
       setisLoading(true)
     }
   }
   useEffect(() => {
-    console.log(mongoose.Types.ObjectId.isValid(storeId))
-
     if (mongoose.Types.ObjectId.isValid(storeId)) {
-      console.log("cale")
       fetchOrdersData()
     }
 
@@ -58,12 +56,9 @@ const DashboardComponent = () => {
         <OrderFilter />
         <Wrapper>
           {
-            !isLoading && <span>Loading Data</span>
+            isLoading ? <OrdersTable data={data} /> : <TableSkeleton />
           }
-          {
-            isLoading &&
-            <OrdersTable data={data} />
-          }
+
         </Wrapper>
       </div>
     </section>
