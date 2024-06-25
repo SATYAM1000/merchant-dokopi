@@ -5,10 +5,10 @@ const TableSkeleton = () => {
     return (
         <div className='py-4 flex flex-col gap-5'>
 
-            <div className='flex justify-between'>
+            <div className='flex justify-between max-md:flex-col max-md:gap-3'>
                 <Skeleton className="h-10 w-96 rounded-xl" />
-                <div className='flex gap-4'>
-                    <Skeleton className="h-10 w-40 rounded-xl" />
+                <div className='flex gap-4 '>
+                    <Skeleton className="h-10 w-40 rounded-xl max-md:ml-auto"/>
                 </div>
 
             </div>
