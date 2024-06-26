@@ -76,11 +76,11 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
             </Avatar>
 
             {/* ----checkbox-------- */}
-            <div className="w-6 h-6 absolute -bottom-1 -right-4 border-black/[0.20] rounded-full cursor-pointer bg-gray-100 border mr-3 flex items-center justify-center">
+            <div className="w-6 h-6 absolute -bottom-1 -right-4 border-white rounded-full cursor-pointer bg-gray-200 border-2 mr-3 flex items-center justify-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
+                width="20"
+                height="20"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -88,10 +88,13 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 className={`${
-                  orderStatus === "delivered" ? "block" : "hidden"
+                  orderStatus === "delivered"
+                    ? "block text-green-600"
+                    : "hidden"
                 }`}
               >
-                <path d="M20 6 9 17l-5-5" />
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <path d="m9 11 3 3L22 4" />
               </svg>
             </div>
           </div>

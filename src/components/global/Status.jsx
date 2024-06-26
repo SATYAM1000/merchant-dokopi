@@ -11,7 +11,7 @@ const Status = () => {
   return (
     <>
       <label className="themeSwitcherThree relative inline-flex cursor-pointer select-none items-center mt-4">
-        <div className="shadow-card flex h-auto w-[46px] items-center justify-center gap-1 flex-col rounded-md border bg-white py-1">
+        <div className="shadow-card flex h-auto w-[46px] items-center justify-center gap-1 flex-col rounded-md border bg-gray-100 py-1">
           <span
             className={`flex h-9 w-9 items-center justify-center rounded ${
               status === "closed" ? "bg-red-500 text-white" : "text-body-color hover:bg-gray-100"

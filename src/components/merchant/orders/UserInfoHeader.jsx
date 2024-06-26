@@ -86,10 +86,50 @@ const UserInfoHeader = ({ order }) => {
             paid ₹ {order?.totalPrice}
           </span>
         </div>
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex items-center justify-center gap-6">
+          <div className="flex items-center justify-center  border rounded p-1.5 gap-1.5">
+            <div className="flex items-center justify-center cursor-pointer">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-square-check-big"
+              >
+                <path d="m9 11 3 3L22 4" />
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+              </svg>
+            </div>
+
+            <div className="h-6 w-0.5 bg-gray-200"></div>
+
+            <div className="flex items-center justify-center cursor-pointer">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-ban"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="m4.9 4.9 14.2 14.2" />
+              </svg>
+            </div>
+          </div>
+
           <div
             onClick={onDownloadAllClick}
-            className="cursor-pointer p-2 border border-black/[0.15] rounded-md"
+            className="cursor-pointer p-2 border rounded"
           >
             {isDownloading ? (
               <div className="w-6 h-6">

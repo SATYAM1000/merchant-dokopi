@@ -11,11 +11,7 @@ import AnalyticsCardSkelton from "./AnalyticsCardSkelton";
 import EarningsChart from "./EarningsChart";
 import OrdersChart from "./OrdersChart";
 import ChartsSkelton from "./ChartsSkelton";
-import {
-  IndianRupee,
-  ListOrdered,
-  Notebook,
-} from "lucide-react";
+import { IndianRupee, ListOrdered, Notebook } from "lucide-react";
 import BalanceCard from "./BalanceCard";
 
 const Analytics = () => {
@@ -61,12 +57,12 @@ const Analytics = () => {
   }, [selectedOption]);
 
   return (
-    <section className="w-full p-6 h-[calc(100vh-64px)] bg-white flex flex-col gap-8">
+    <section className="w-full p-4 h-full bg-[#f8f8f8] flex flex-col gap-8">
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-end md:justify-between">
-          <p className=" hidden md:flex items-center ">
+          <p className=" hidden md:flex items-center text-lg ">
             <span className=" font-semibold">
-              Hey 👋{currentUser?.name.split(" ")[0]}
+              👋 Hey {currentUser?.name.split(" ")[0]}
             </span>
             <span className=" text-gray-600">
               &nbsp;- here's what's happening with your store today
