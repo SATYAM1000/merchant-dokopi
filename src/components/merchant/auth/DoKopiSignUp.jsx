@@ -29,8 +29,8 @@ const DoKopiSignUp = () => {
     });
   };
   return (
-    <section className="w-full h-auto">
-      <div className={" w-full mt-40 flex items-center justify-center"}>
+    <section className="w-full h-full">
+      <div className={" w-full h-full flex items-center justify-center"}>
         <Card className="w-[350px] shadow-md border-2 rounded-3xl border-r-8 border-black border-b-8">
           <CardHeader>
             <CardTitle>Sign up</CardTitle>

@@ -150,8 +150,8 @@ const EarningsChart = ({ data, filter = "today" }) => {
 
   return (
     <div className="w-full h-auto p-6 border bg-white shadow-sm rounded-md flex flex-col gap-4">
-      <p>
-        <b>Earnings</b>
+      <p className="text-xl font-bold text-gray-900 ">
+        Earnings
       </p>
       <ChartComponent data={chartData} options={options} />
     </div>

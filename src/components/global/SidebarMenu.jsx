@@ -5,14 +5,14 @@ import { usePathname } from "next/navigation";
 
 const SidebarMenu = () => {
   const pathname = usePathname();
-  console.log(pathname);
   return (
     <>
       {menuItems.map((item, index) => (
         <Link
+          key={index}
           href={item.path}
           className={`flex items-center justify-center px-4 py-2.5 text-sm font-medium transition-all duration-200 text-gray-900 rounded-lg hover:bg-gray-200 ${
-            pathname === item.path ? "bg-indigo-600 text-white" : ""
+            pathname === item.path ? "bg-gray-200 " : ""
           }`}
         >
           {item.icon}

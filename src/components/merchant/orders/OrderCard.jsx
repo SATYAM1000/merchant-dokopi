@@ -3,24 +3,48 @@ import React from "react";
 import PropTypes from "prop-types";
 import { getTimeFromISO } from "@/lib/get-time";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
 import { LiaCheckDoubleSolid } from "react-icons/lia";
+import axios from "axios";
+import { API_DOMAIN } from "@/lib/constants";
+import { fetchAccessToken } from "@/actions/access-token";
+import { toast } from "sonner";
 
 const OrderCard = ({ order, onOrderClick, isSelected }) => {
-  const [checkboxCSS, setCheckboxCSS] = React.useState("hidden");
-  const handleClick = () => {
-    onOrderClick(order);
+  const [isCheckboxChecked, setIsCheckboxChecked] = React.useState(
+    order?.orderStatus === "delivered" ? true : false
+  );
+
+  const handleCustomCheckBoxClick = async (e) => {
+    e.stopPropagation();
+    setIsCheckboxChecked(!isCheckboxChecked);
+    try {
+      const { data } = await axios.put(
+        `${API_DOMAIN}/api/v1/merchant/orders/change-status/${order._id}/${
+          isCheckboxChecked ? "processing" : "delivered"
+        }`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${await fetchAccessToken()}`,
+          },
+        }
+      );
+
+      toast.success(data?.msg || "Status changed successfully");
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.msg || "Something went wrong");
+    }
   };
 
-  const handleChevronClick = (e) => {
-    e.stopPropagation();
-    console.log("Chevron clicked");
+  const handleClick = () => {
+    onOrderClick(order);
   };
 
   return (
     <div
       onClick={handleClick}
-      className={`text-sm h-18 hover:border-none transition-all duration-500 cursor-pointer ${
+      className={`text-sm h-18 cursor-default hover:border-none transition-all duration-500 ${
         isSelected ? "border-white" : "border-b"
       } `}
     >
@@ -31,8 +55,29 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
       >
         {/* User Image */}
         <div className="flex items-center justify-center transition-all">
+          <div
+            onClick={handleCustomCheckBoxClick}
+            className="w-6 h-6 rounded cursor-pointer bg-gray-100 border border-black/[0.20] mr-3 flex items-center justify-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={`${isCheckboxChecked ? "block" : "hidden"}`}
+            >
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+          </div>
           <Avatar className="h-11 w-11 relative">
-            <AvatarImage src={order.userId?.image} />
+            <AvatarImage
+              src={order.userId?.image || "https://github.com/shadcn.png"}
+            />
             <AvatarFallback>
               {order?.userId?.name[0].toUpperCase()}
             </AvatarFallback>
@@ -62,7 +107,9 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
               </div>
               <span className="text-gray-600">
                 {order?.userId && order?.totalPrice
-                  ? `${order.userId.name} paid ₹ ${order.totalPrice - order.platformFee}`
+                  ? `${order.userId.name.split(" ")[0]} paid ₹ ${
+                      order.totalPrice - order.platformFee
+                    }`
                   : "Invalid Order"}
               </span>
             </div>
