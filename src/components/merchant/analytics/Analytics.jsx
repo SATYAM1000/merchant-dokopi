@@ -59,10 +59,10 @@ const Analytics = () => {
   }, [selectedOption]);
 
   return (
-    <section className="w-full p-4 h-full bg-[#f8f8f8] flex flex-col gap-8">
+    <section className="w-full p-4 h-full bg-[#f5f5f5] flex flex-col gap-8">
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-end md:justify-between">
-          <p className=" hidden md:flex items-center text-lg ">
+          <p className=" hidden md:flex items-center ">
             <span className=" font-semibold">
               👋 Hey {currentUser?.name.split(" ")[0]}
             </span>

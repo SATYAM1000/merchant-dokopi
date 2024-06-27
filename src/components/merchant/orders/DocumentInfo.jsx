@@ -66,9 +66,9 @@ const DocumentInfo = ({ cartItems }) => {
       {cartItems.map((item, index) => (
         <div
           key={index}
-          className="bg-[#d9fdd3] relative rounded-lg border-b border-gray-800/[0.25] px-1 pb-6 pt-1 shadow "
+          className="bg-[#fff] relative rounded-lg border-b border-gray-800/[0.25] px-1 pb-6 pt-1 shadow "
         >
-          <div className="bg-[#d1f4cc] w-full rounded-sm p-4 flex flex-col">
+          <div className="bg-[#f3f3f3] w-full rounded-sm p-4 flex flex-col">
             <div className="w-full flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <Image
@@ -95,12 +95,12 @@ const DocumentInfo = ({ cartItems }) => {
                 </div>
               </div>
               <div className="flex items-center gap-4">
-                <div className="text-white bg-green-600 font-medium border flex items-center justify-center cursor-pointer h-8 w-8 border-green-600 p-1 rounded-full">
+                <div className="text-white bg-emerald-500 font-medium flex items-center justify-center cursor-pointer h-8 w-8 p-1 rounded-full">
                   <p className="font-medium">{item?.fileCopiesCount || 1}</p>
                 </div>
                 <div
                   onClick={() => handleDownload(item, index)}
-                  className="text-white font-medium border flex items-center justify-center cursor-pointer h-8 w-8 bg-green-600 border-green-600 p-1 rounded-full"
+                  className="text-white font-medium flex items-center justify-center cursor-pointer h-8 w-8 bg-emerald-500  p-1 rounded-full"
                 >
                   {loadingStates[index] ? (
                     <div className="w-6 h-6">
@@ -168,14 +168,6 @@ const DocumentInfo = ({ cartItems }) => {
                 </div>
               )}
           </div>
-          <p className="text-xs text-gray-500 absolute bottom-1 right-2 flex items-center justify-center gap-2">
-            <span className="text-green-600">
-              <LiaCheckDoubleSolid size={18} />
-            </span>
-            <span className="font-medium">
-              {index + 1}/{cartItems.length}
-            </span>
-          </p>
         </div>
       ))}
     </>

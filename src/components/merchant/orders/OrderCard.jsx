@@ -46,18 +46,18 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
     <div
       onClick={handleClick}
       className={`text-sm h-18 cursor-default hover:border-none transition-all duration-500 ${
-        isSelected ? "border-white" : "border-b"
+        isSelected ? " border-b border-white" : "border-b"
       } `}
     >
       <div
-        className={`w-full h-full rounded-md flex items-center gap-4 p-2 ${
+        className={`w-full h-full rounded-md flex items-center gap-4 p-2 border-l-4 border-white ${
           isSelected
-            ? "bg-gray-100 border-l-4 border-green-500"
+            ? "bg-[#f5f5f5] border-l-4 border-emerald-500"
             : orderStatus === "delivered"
-            ? "bg-white hover:bg-gray-100"
+            ? "bg-white hover:bg-[#f5f5f5] hover:border-[#f5f5f5]"
             : orderStatus === "rejected"
             ? "bg-red-100"
-            : "bg-white hover:bg-gray-100"
+            : "bg-white hover:bg-[#f5f5f5] hover:border-[#f5f5f5]"
         }`}
       >
         {/* User Image */}
@@ -76,7 +76,11 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
             </Avatar>
 
             {/* ----checkbox-------- */}
-            <div className={`w-6 h-6 absolute -bottom-1 -right-4 border-white rounded-full cursor-pointer border-2 mr-3 flex items-center justify-center ${orderStatus === "delivered" ? "bg-white" : "bg-gray-200"}`}>
+            <div
+              className={`w-6 h-6 absolute -bottom-1 -right-4 border-white rounded-full cursor-pointer border-2 mr-3 flex items-center justify-center ${
+                orderStatus === "delivered" ? "bg-white" : "bg-gray-100"
+              }`}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -89,7 +93,7 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
                 strokeLinejoin="round"
                 className={`${
                   orderStatus === "delivered"
-                    ? "block text-green-600"
+                    ? "block text-emerald-500"
                     : "hidden"
                 }`}
               >
@@ -121,7 +125,7 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
               <div className="flex items-center text-blue-500">
                 <LiaCheckDoubleSolid size={18} />
               </div>
-              <span className="text-gray-700">
+              <span className=" text-[14px]">
                 {order?.userId && order?.totalPrice
                   ? `${order.userId.name} paid ₹ ${
                       order.totalPrice - order.platformFee
