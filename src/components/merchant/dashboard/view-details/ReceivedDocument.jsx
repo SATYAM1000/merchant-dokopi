@@ -1,15 +1,16 @@
 'use client'
-import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
 
 const ReceivedDocument = ({ docs }) => {
+  console.log(docs)
   return (
-    <div className="mt-6 space-y-6 w-[100%]  max-h-[67vh] overflow-hidden rounded-md  overflow-y-scroll relative hide-scrollbar flex flex-col mb-6 gap-2">
-      <ul className="space-y-4 bg-gray-100 rounded-md    ">
+    <div className="space-y-6 w-[100%] max-h-[67vh] rounded-md relative hide-scrollbar flex flex-col gap-2">
+      <ul className="space-y-4 rounded-md">
         <li
           key={docs.id}
-          className="flex p-2 rounded-md items-center gap-4 pb-4 min-w-full border-b border-gray-300"
+          className="flex p-2 rounded-md items-center gap-4 pb-4 min-w-full"
         >
           <img
             src={docs?.fileIconPath}
@@ -34,10 +35,12 @@ const ReceivedDocument = ({ docs }) => {
                   className="cursor-pointer"
                   onClick={() => removeFromCartHandler(docs?.id)}
                 >
-                  <X className="h-4 w-4" />
                 </div>
               </div>
-              <div className="flex items-center gap-2 text-gray-700 text-[11px] ">
+              <div className="flex items-center flex-wrap gap-2 text-gray-700 text-[11px] ">
+                <dd className="inline capitalize">
+                  {docs?.filePaperType}
+                </dd>
                 <dd className="inline capitalize ">
                   {docs?.filePrintMode}
                 </dd>
@@ -47,8 +50,13 @@ const ReceivedDocument = ({ docs }) => {
                 <dd className="inline capitalize">
                   {docs?.additionalServices}
                 </dd>
+
               </div>
-                <Link href={docs.fileURL} target="_blank"> Click to get Documents</Link>
+              <div className="flex">
+                <Button variant="link" size="xs" className="ml-auto">
+                  <Link href={docs.fileURL} target="_blank" className="text-blue-800">Download</Link>
+                </Button>
+              </div>
             </dl>
           </div>
         </li>

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
@@ -9,20 +9,35 @@ import {
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { CalendarIcon, ChevronDownIcon } from "lucide-react";
-
-const OrderFilter = () => {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { CalendarIcon } from "lucide-react";
+const OrderFilter = ({ setData, data }) => {
   const [date, setDate] = React.useState();
+  const [duration, setDuration] = React.useState()
+  const getPreviousMonthDate = () => {
+    var TodayDate = new Date();
+    return new Date(TodayDate.getFullYear(), TodayDate.getMonth() - 1);
+  }
+
+  const filterDatesInRange = (dataSet) => {
+    return dataSet.filter(dateString => {
+      const dateFromDate = new Date(dateString.Transaction_Time);
+      const StartDate = date.from
+      const EndDate = new Date(date.to.getFullYear(), date.to.getMonth(), date.to.getDate(), 23, 59, 59)
+      return dateFromDate >= StartDate && dateFromDate <= EndDate;
+    });
+  };
+  const showFilterData = () => {
+    const filterdata = filterDatesInRange(data)
+    setData(filterdata)
+  }
   return (
     <div
       className={`w-full flex flex-col md:flex-row gap-4 md:gap-0 md:items-center md:justify-between bg-gray-100 p-6 border-b`}
@@ -32,6 +47,7 @@ const OrderFilter = () => {
       </h1>
       <div className="flex flex-col md:flex-row md:items-center gap-6">
         <div className="flex items-center justify-center gap-3 ">
+          <button onClick={showFilterData}>Apply</button>
           <Popover>
             <PopoverTrigger asChild>
               <Button
@@ -51,41 +67,24 @@ const OrderFilter = () => {
                 selected={date}
                 onSelect={setDate}
                 numberOfMonths={2}
+                disabled={{ after: new Date() }}
+                defaultMonth={getPreviousMonthDate()}
               />
             </PopoverContent>
           </Popover>
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              className="ml-auto hover:bg-white rounded-none max-md:w-full"
-            >
-              <span className="text-muted-foreground font-normal">
-                Past 2 hours
-              </span>{" "}
-              <ChevronDownIcon className="ml-2 h-4 w-4 text-muted-foreground" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56">
-            <DropdownMenuLabel>Filters by</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                Past 2 hours
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                Past 8 hours
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                Past 24 hours
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Select onValueChange={value => setDuration(value)}>
+          <SelectTrigger className="w-[150px]" >
+            <SelectValue placeholder="Choose Filter" />
+          </SelectTrigger>
+          <SelectContent >
+            <SelectGroup>
+              <SelectItem value="2">Past 2 hours</SelectItem>
+              <SelectItem value="8">Past 8 hours</SelectItem>
+              <SelectItem value="24">Past 24 hours</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
       </div>
     </div>
   );
