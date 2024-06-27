@@ -53,7 +53,7 @@ const DashboardComponent = () => {
         >
           <OverviewComponentContainer />
         </div>
-        <OrderFilter />
+        <OrderFilter setData={setData} data={data} />
         <Wrapper>
           {
             isLoading ? <OrdersTable data={data} /> : <TableSkeleton />
