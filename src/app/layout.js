@@ -1,6 +1,6 @@
-import { Archivo } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
-const archivo = Archivo({ subsets: ["latin"] });
+const archivo = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "DoKopi - Merchant",

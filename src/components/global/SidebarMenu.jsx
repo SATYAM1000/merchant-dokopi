@@ -111,7 +111,7 @@ const menuItems = [
   },
   {
     title: "Settings",
-    path: "/settings",
+    path: "/settings/store-details",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
