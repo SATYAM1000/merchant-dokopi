@@ -143,9 +143,7 @@ const OrdersChart = ({ data, filter = "today" }) => {
   };
 
   return (
-    <div className="w-full h-auto p-6 border bg-white shadow-sm rounded-md flex flex-col gap-4">
-      <p className="text-xl font-bold text-gray-900 ">Orders</p>
-
+    <div className="w-full h-full mt-4">
       <ChartComponent data={chartData} options={options} />
     </div>
   );

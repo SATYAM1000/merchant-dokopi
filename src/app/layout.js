@@ -55,7 +55,7 @@ export default async function RootLayout({ children }) {
                       <div className="mt-8 flex items-center justify-center">
                         <Status />
                       </div>
-                      <div className="pb-4 mt-6">
+                      <div className="pb-8 mt-6">
                         <UserAvatar />
                       </div>
                     </div>

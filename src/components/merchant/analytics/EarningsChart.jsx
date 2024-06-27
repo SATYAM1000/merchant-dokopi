@@ -2,11 +2,12 @@ import React from "react";
 import { Bar, Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import "chartjs-adapter-date-fns";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import OrdersChart from "./OrdersChart";
 
 Chart.register(...registerables);
 
-const EarningsChart = ({ data, filter = "today" }) => {
-
+const EarningsChart = ({ data, ordersData, filter = "today" }) => {
   const aggregateEarnings = (data) => {
     return data.reduce((acc, item) => {
       const date = new Date(item.date).toLocaleDateString();
@@ -87,6 +88,9 @@ const EarningsChart = ({ data, filter = "today" }) => {
 
   const options = {
     responsive: true,
+
+    maintainAspectRatio: true,
+
     plugins: {
       legend: {
         display: false,
@@ -120,7 +124,7 @@ const EarningsChart = ({ data, filter = "today" }) => {
       x: {
         type: "category",
         ticks: {
-          color: '#7f7f7f', // X-axis tick color
+          color: "#7f7f7f", // X-axis tick color
           font: {
             size: 12, // Font size of x-axis ticks
           },
@@ -149,11 +153,21 @@ const EarningsChart = ({ data, filter = "today" }) => {
   };
 
   return (
-    <div className="w-full h-auto p-6 border bg-white shadow-sm rounded-md flex flex-col gap-4">
-      <p className="text-xl font-bold text-gray-900 ">
-        Earnings
-      </p>
-      <ChartComponent data={chartData} options={options} />
+    <div className="w-full lg:w-3/5 h-auto px-6 pt-6 border bg-white shadow-sm rounded-md flex flex-col gap-4">
+      <Tabs defaultValue="earnings" className="w-full">
+        <TabsList>
+          <TabsTrigger value="earnings">Earnings</TabsTrigger>
+          <TabsTrigger value="orders">Orders</TabsTrigger>
+        </TabsList>
+        <TabsContent value="earnings">
+          <div className="w-full h-full mt-4">
+            <ChartComponent data={chartData} options={options} />
+          </div>
+        </TabsContent>
+        <TabsContent value="orders">
+          <OrdersChart data={ordersData} filter={filter} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

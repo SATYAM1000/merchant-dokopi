@@ -28,14 +28,14 @@ const BalanceCard = () => {
               </TooltipContent>
             </Tooltip>
           </div>
-          <div className="flex items-center gap-5 justify-between text-2xl font-medium">
+          <div className="flex items-center gap-5 justify-center  text-2xl font-medium">
             <span className="shrink-0">
-              <p className="font-semibold mt-2">₹ 200</p>
+              <p className="font-semibold mt-2">₹ - </p>
             </span>
 
-            <div className={` flex items-center justify-center gap-2 }`}>
+            <div className={` flex items-center justify-center gap-2  }`}>
               <p className={`text-sm `}>
-                Last settled on 01/01/2022
+                Last settled on -
               </p>
             </div>
           </div>

@@ -35,7 +35,7 @@ const AnalyticsCard = ({ item }) => {
               </TooltipContent>
             </Tooltip>
           </div>
-          <div className="flex items-center gap-5 justify-between text-2xl font-medium">
+          <div className="w-full flex items-center gap-5 justify-between text-2xl font-medium">
             <span className="shrink-0">
               <p className="font-semibold mt-2 text-black">{item?.value}</p>
             </span>
@@ -86,7 +86,7 @@ const AnalyticsCard = ({ item }) => {
                 }`}
               >
                 {item?.change} % &nbsp;
-                <span>last period</span>
+                <span>change</span>
               </p>
             </div>
           </div>

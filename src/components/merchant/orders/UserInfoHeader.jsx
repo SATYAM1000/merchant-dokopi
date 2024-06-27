@@ -5,8 +5,13 @@ import { Download } from "lucide-react";
 import axios from "axios";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { ClipLoader } from "react-spinners";
 import { toast } from "sonner";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const UserInfoHeader = ({ order }) => {
   const [isDownloading, setIsDownloading] = useState(false);
@@ -88,43 +93,61 @@ const UserInfoHeader = ({ order }) => {
         </div>
         <div className="flex items-center justify-center gap-6">
           <div className="flex items-center justify-center  border rounded p-1.5 gap-1.5">
-            <div className="flex items-center justify-center cursor-pointer">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.75"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="lucide lucide-square-check-big"
-              >
-                <path d="m9 11 3 3L22 4" />
-                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-              </svg>
-            </div>
+            
+              <Tooltip>
+                <TooltipTrigger>
+                  <div className="flex items-center justify-center cursor-pointer">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.75"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="lucide lucide-square-check-big"
+                    >
+                      <path d="m9 11 3 3L22 4" />
+                      <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                    </svg>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-xs">Mark as printed</p>
+                </TooltipContent>
+              </Tooltip>
+            
 
             <div className="h-6 w-0.5 bg-gray-200"></div>
 
-            <div className="flex items-center justify-center cursor-pointer">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.75"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="lucide lucide-ban"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <path d="m4.9 4.9 14.2 14.2" />
-              </svg>
-            </div>
+            
+              <Tooltip>
+                <TooltipTrigger>
+                  <div className="flex items-center justify-center cursor-pointer">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.75"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="lucide lucide-ban"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="m4.9 4.9 14.2 14.2" />
+                    </svg>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-xs">Cancel this order</p>
+                </TooltipContent>
+              </Tooltip>
+            
           </div>
 
           <div

@@ -76,7 +76,7 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
             </Avatar>
 
             {/* ----checkbox-------- */}
-            <div className="w-6 h-6 absolute -bottom-1 -right-4 border-white rounded-full cursor-pointer bg-gray-200 border-2 mr-3 flex items-center justify-center">
+            <div className={`w-6 h-6 absolute -bottom-1 -right-4 border-white rounded-full cursor-pointer border-2 mr-3 flex items-center justify-center ${orderStatus === "delivered" ? "bg-white" : "bg-gray-200"}`}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -109,7 +109,7 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
             {/* Order Time */}
             <p
               className={`text-xs font-medium leading-none ${
-                order?.isViewed ? "text-gray-600" : "text-green-600"
+                order?.isViewed ? "text-gray-700" : "text-green-600"
               }`}
             >
               {getTimeFromISO(order?.createdAt)}
@@ -121,7 +121,7 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
               <div className="flex items-center text-blue-500">
                 <LiaCheckDoubleSolid size={18} />
               </div>
-              <span className="text-gray-600">
+              <span className="text-gray-700">
                 {order?.userId && order?.totalPrice
                   ? `${order.userId.name} paid ₹ ${
                       order.totalPrice - order.platformFee
@@ -134,7 +134,7 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
               <div
                 className={`text-xs h-5 w-5 font-medium flex items-center justify-center rounded-full ${
                   order?.isViewed
-                    ? "bg-gray-100 text-gray-600"
+                    ? "bg-gray-100 text-gray-700"
                     : "bg-green-600 text-white"
                 }`}
               >

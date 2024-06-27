@@ -13,6 +13,8 @@ import OrdersChart from "./OrdersChart";
 import ChartsSkelton from "./ChartsSkelton";
 import { IndianRupee, ListOrdered, Notebook } from "lucide-react";
 import BalanceCard from "./BalanceCard";
+import SettlementsCard from "./SettlementsCard";
+import SettlementsCardSkelton from "./SettlementsCardSkelton";
 
 const Analytics = () => {
   const currentUser = useCurrentUser();
@@ -89,24 +91,18 @@ const Analytics = () => {
         </div>
       </div>
 
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="w-full h-full overflow-hidden  flex flex-col lg:flex-row gap-6">
         {analyticsData ? (
           <EarningsChart
             data={analyticsData?.earningsChartData}
+            ordersData={analyticsData?.ordersChartData}
             filter={selectedOption?.value}
           />
         ) : (
           <ChartsSkelton />
         )}
 
-        {analyticsData ? (
-          <OrdersChart
-            data={analyticsData?.ordersChartData}
-            filter={selectedOption?.value}
-          />
-        ) : (
-          <ChartsSkelton />
-        )}
+        {analyticsData ? <SettlementsCard /> : <SettlementsCardSkelton />}
       </div>
     </section>
   );
