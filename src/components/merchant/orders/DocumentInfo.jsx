@@ -95,12 +95,12 @@ const DocumentInfo = ({ cartItems }) => {
                 </div>
               </div>
               <div className="flex items-center gap-4">
-                <div className="text-white bg-emerald-500 font-medium flex items-center justify-center cursor-pointer h-8 w-8 p-1 rounded-full">
+                <div className="text-white bg-green-600 font-medium flex items-center justify-center cursor-pointer h-8 w-8 p-1 rounded-full">
                   <p className="font-medium">{item?.fileCopiesCount || 1}</p>
                 </div>
                 <div
                   onClick={() => handleDownload(item, index)}
-                  className="text-white font-medium flex items-center justify-center cursor-pointer h-8 w-8 bg-emerald-500  p-1 rounded-full"
+                  className="text-white font-medium flex items-center justify-center cursor-pointer h-8 w-8 bg-green-600  p-1 rounded-full"
                 >
                   {loadingStates[index] ? (
                     <div className="w-6 h-6">

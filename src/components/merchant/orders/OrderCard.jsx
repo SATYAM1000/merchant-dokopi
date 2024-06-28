@@ -8,8 +8,13 @@ import axios from "axios";
 import { API_DOMAIN } from "@/lib/constants";
 import { fetchAccessToken } from "@/actions/access-token";
 import { toast } from "sonner";
+import { LuCheckCheck } from "react-icons/lu";
+import { PiSealCheckFill } from "react-icons/pi";
+
 
 const OrderCard = ({ order, onOrderClick, isSelected }) => {
+  if (!order || !order?.userId?.name) return null;
+
   const [orderStatus, setOrderStatus] = useState(order.orderStatus);
 
   const handleCustomCheckBoxClick = async (e) => {
@@ -50,14 +55,10 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
       } `}
     >
       <div
-        className={`w-full h-full rounded-md flex items-center gap-4 p-2 border-l-4 border-white ${
+        className={`w-full h-full rounded-md flex items-center gap-4 p-2 border-l-4   ${
           isSelected
-            ? "bg-[#f5f5f5] border-l-4 border-emerald-500"
-            : orderStatus === "delivered"
-            ? "bg-white hover:bg-[#f5f5f5] hover:border-[#f5f5f5]"
-            : orderStatus === "rejected"
-            ? "bg-red-100"
-            : "bg-white hover:bg-[#f5f5f5] hover:border-[#f5f5f5]"
+            ? "bg-[#f5f5f5] border-l-4 border-green-600"
+            : "bg-white border-l-4 border-white"
         }`}
       >
         {/* User Image */}
@@ -77,11 +78,11 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
 
             {/* ----checkbox-------- */}
             <div
-              className={`w-6 h-6 absolute -bottom-1 -right-4 border-white rounded-full cursor-pointer border-2 mr-3 flex items-center justify-center ${
+              className={`w-5 h-5 absolute -bottom-1 -right-4  rounded-full cursor-pointer mr-3 flex items-center justify-center ${
                 orderStatus === "delivered" ? "bg-white" : "bg-gray-100"
               }`}
             >
-              <svg
+              {/* <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
                 height="20"
@@ -92,14 +93,13 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 className={`${
-                  orderStatus === "delivered"
-                    ? "block text-emerald-500"
-                    : "hidden"
+                  orderStatus === "delivered" ? "block text-white" : "hidden"
                 }`}
               >
                 <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
                 <path d="m9 11 3 3L22 4" />
-              </svg>
+              </svg> */}
+              <PiSealCheckFill size={20} className={`${orderStatus === "delivered" ? "block text-green-600" : "hidden"}`} />
             </div>
           </div>
         </div>
@@ -122,8 +122,8 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
           <div className="flex items-center justify-between mt-1">
             <div className="text-sm text-gray-700 leading-none flex items-center gap-1">
               {/* Order Information */}
-              <div className="flex items-center text-blue-500">
-                <LiaCheckDoubleSolid size={18} />
+              <div className="flex items-center text-blue-600">
+                <LuCheckCheck size={18} />
               </div>
               <span className=" text-[14px]">
                 {order?.userId && order?.totalPrice
