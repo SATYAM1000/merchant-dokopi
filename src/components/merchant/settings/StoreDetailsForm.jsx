@@ -179,7 +179,8 @@ const StoreDetailsForm = () => {
           />
         </div>
       </div>
-      <div className="w-full flex items-center justify-end ">
+      <div className="w-full flex items-center justify-end gap-6 ">
+        <Button variant="destructive">Delete my store</Button>
         <Button variant="default" type="submit">
           Submit
         </Button>

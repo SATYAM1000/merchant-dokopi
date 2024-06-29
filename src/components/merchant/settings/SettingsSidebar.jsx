@@ -11,7 +11,7 @@ const SettingsSidebar = () => {
 
   return (
     <>
-      <div className="bg-white">
+      <div className="bg-white h-fit sticky top-6">
         <div
           id="docs-sidebar"
           className={`hs-overlay [--auto-close:lg] ${
