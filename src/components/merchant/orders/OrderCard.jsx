@@ -58,7 +58,7 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
         className={`w-full h-full rounded-md flex items-center gap-4 p-2 border-l-4   ${
           isSelected
             ? "bg-[#f5f5f5] border-l-4 border-green-600"
-            : "bg-white border-l-4 border-white"
+            : "bg-white hover:bg-[#f5f5f5] border-l-4 border-white"
         }`}
       >
         {/* User Image */}
@@ -82,23 +82,7 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
                 orderStatus === "delivered" ? "bg-white" : "bg-gray-100"
               }`}
             >
-              {/* <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className={`${
-                  orderStatus === "delivered" ? "block text-white" : "hidden"
-                }`}
-              >
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                <path d="m9 11 3 3L22 4" />
-              </svg> */}
+             
               <PiSealCheckFill size={20} className={`${orderStatus === "delivered" ? "block text-green-600" : "hidden"}`} />
             </div>
           </div>
