@@ -1,9 +1,88 @@
+"use client";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import React from "react";
+import axios from "axios";
+import { API_DOMAIN } from "@/lib/constants";
+import { fetchAccessToken } from "@/actions/access-token";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { toast } from "sonner";
+import { ClipLoader } from "react-spinners";
 
 const StoreImagesUpload = () => {
+  const currentUser = useCurrentUser();
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [uploadedImages, setUploadedImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  if (!currentUser) return null;
+  useEffect(() => {
+    const fetchXeroxStoreImages = async () => {
+      try {
+        const response = await axios.get(
+          `${API_DOMAIN}/api/v1/merchant/store/store-images/${currentUser.storeId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${await fetchAccessToken()}`,
+            },
+          }
+        );
+        const data = response.data?.data;
+        setUploadedImages(data);
+      } catch (error) {
+        console.error("Error fetching xerox store images:", error);
+      }
+    };
+
+    fetchXeroxStoreImages();
+  }, []);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0]; // Get the selected file
+    if (file) {
+      const reader = new FileReader(); // Create a file reader
+      reader.onloadend = () => {
+        // Set the preview image URL
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file); // Read the file as a data URL
+      setSelectedFile(file); // Set the selected file in state
+    }
+  };
+
+  const handleUpload = async () => {
+    try {
+      setIsLoading(true);
+      if (uploadedImages.length >= 5) {
+        toast.error("Maximum 5 images can be uploaded");
+        setIsLoading(false);
+        return;
+      }
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+
+      const response = await axios.post(
+        `${API_DOMAIN}/api/v1/merchant/store/store-images/${currentUser.storeId}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${await fetchAccessToken()}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      toast.success("Image uploaded successfully");
+    } catch (error) {
+      toast.error("Something went wrong");
+      console.error("Error uploading image:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
-    <section className="w-full bg-white h-fit px-6 py-6 ">
+    <section className="w-full bg-white h-fit px-6 py-6">
       <div>
         <h3 className="text-[#1A181E] font-medium">Store Images</h3>
         <p className="text-[#808080] text-sm">
@@ -12,35 +91,43 @@ const StoreImagesUpload = () => {
       </div>
       <div className="mt-6">
         <div>
-          <label className="w-32 h-32 flex flex-col items-center justify-center p-3 bg-white rounded border-2 border-black/[0.12] cursor-pointer">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="lucide lucide-image-up w-10 h-10 text-gray-600"
-            >
-              <path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21" />
-              <path d="m14 19.5 3-3 3 3" />
-              <path d="M17 22v-5.5" />
-              <circle cx="9" cy="9" r="2" />
-            </svg>
-            <span className="mt-2 text-xs text-gray-600 font-medium">
-              Upload Images
+          <label className="w-28 h-28 overflow-hidden flex flex-col items-center justify-center p-1 bg-white rounded border border-[#D9D9D9] cursor-pointer">
+            {previewImage ? (
+              <img
+                src={previewImage}
+                alt="Preview"
+                className="w-24 h-24 object-cover rounded"
+              />
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-image-up w-10 h-10 text-gray-600"
+              >
+                <path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21" />
+                <path d="m14 19.5 3-3 3 3" />
+                <path d="M17 22v-5.5" />
+                <circle cx="9" cy="9" r="2" />
+              </svg>
+            )}
+            <span className="mt-4 text-xs text-gray-600 font-medium">
+              {previewImage ? "Change Image" : "Upload Images"}
             </span>
-            <input type="file" className="hidden" />
+            <input type="file" className="hidden" onChange={handleFileChange} />
           </label>
         </div>
       </div>
 
       <div className="mt-6 w-full flex items-center justify-end">
-        <Button type="submit">
-          Save
+        <Button size="sm" type="button" onClick={handleUpload}>
+          {isLoading ? <ClipLoader color="white" size={20} /> : "Upload"}
         </Button>
       </div>
     </section>

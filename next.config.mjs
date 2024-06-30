@@ -39,6 +39,11 @@ const nextConfig = {
         protocol: "https",
         hostname: "user-images.githubusercontent.com",
       },
+      {
+        protocol: "https",
+        hostname: "two.satyamx55.bucket.s3.ap-south-1.amazonaws.com",
+        
+      },
     ],
   },
 };
