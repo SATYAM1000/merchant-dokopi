@@ -302,8 +302,8 @@ const StoreDetailsForm = ({ googleMapApiKey }) => {
     <>
       {initialLoading ? (
         <>
-          <section className="relative w-full h-[calc(100vh-64px)] flex items-center justify-center">
-            <ClipLoader color="blue" size={60} />
+          <section className="relative w-full h-[calc(100vh-200px)] flex items-center justify-center">
+            <ClipLoader color="#1A181E" size={40} />
           </section>
         </>
       ) : (

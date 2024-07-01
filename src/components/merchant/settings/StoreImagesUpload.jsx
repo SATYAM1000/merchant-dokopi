@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { API_DOMAIN } from "@/lib/constants";
@@ -8,45 +8,34 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { toast } from "sonner";
 import { ClipLoader } from "react-spinners";
 
-const StoreImagesUpload = () => {
+const StoreImagesUpload = ({ setUploadedImages, uploadedImages }) => {
   const currentUser = useCurrentUser();
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
-  const [uploadedImages, setUploadedImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   if (!currentUser) return null;
-  useEffect(() => {
-    const fetchXeroxStoreImages = async () => {
-      try {
-        const response = await axios.get(
-          `${API_DOMAIN}/api/v1/merchant/store/store-images/${currentUser.storeId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${await fetchAccessToken()}`,
-            },
-          }
-        );
-        const data = response.data?.data;
-        setUploadedImages(data);
-      } catch (error) {
-        console.error("Error fetching xerox store images:", error);
-      }
-    };
-
-    fetchXeroxStoreImages();
-  }, []);
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0]; // Get the selected file
+    const file = event.target.files[0];
+    if (!file) return;
+    const fileExtension = file?.name.split(".").pop();
+
+    if (
+      fileExtension !== "jpg" &&
+      fileExtension !== "png" &&
+      fileExtension !== "jpeg"
+    ) {
+      toast.error("Only .jpg, .png, and .jpeg files are allowed");
+      return;
+    }
     if (file) {
-      const reader = new FileReader(); // Create a file reader
+      const reader = new FileReader();
       reader.onloadend = () => {
-        // Set the preview image URL
         setPreviewImage(reader.result);
       };
-      reader.readAsDataURL(file); // Read the file as a data URL
-      setSelectedFile(file); // Set the selected file in state
+      reader.readAsDataURL(file);
+      setSelectedFile(file);
     }
   };
 
@@ -56,6 +45,7 @@ const StoreImagesUpload = () => {
       if (uploadedImages.length >= 5) {
         toast.error("Maximum 5 images can be uploaded");
         setIsLoading(false);
+
         return;
       }
       const formData = new FormData();
@@ -72,11 +62,15 @@ const StoreImagesUpload = () => {
         }
       );
 
+      const newImage = response.data?.data;
+      setUploadedImages([...uploadedImages, newImage]);
+
       toast.success("Image uploaded successfully");
     } catch (error) {
       toast.error("Something went wrong");
       console.error("Error uploading image:", error);
     } finally {
+      setPreviewImage(null);
       setIsLoading(false);
     }
   };
@@ -96,7 +90,7 @@ const StoreImagesUpload = () => {
               <img
                 src={previewImage}
                 alt="Preview"
-                className="w-24 h-24 object-cover rounded"
+                className="object-contain rounded overflow-hidden"
               />
             ) : (
               <svg

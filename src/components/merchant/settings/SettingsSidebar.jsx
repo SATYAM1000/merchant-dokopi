@@ -1,55 +1,60 @@
 "use client";
-import { icons } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
+import { FaStore, FaImages, FaClock, FaUserCircle } from "react-icons/fa";
+import { RiMoneyRupeeCircleFill } from "react-icons/ri";
+import { BiSolidBank, BiSupport } from "react-icons/bi";
 
 const SettingsSidebar = () => {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [activeAccordion, setActiveAccordion] = useState(null);
+  const [hoveredItem, setHoveredItem] = useState(null);
 
   return (
-    <>
-      <div className="bg-white h-fit sticky top-6">
-        <div
-          id="docs-sidebar"
-          className={`hs-overlay [--auto-close:lg] ${
-            isSidebarOpen
-              ? "hs-overlay-open:translate-x-0"
-              : "-translate-x-full"
-          } transition-all duration-300 transform hidden  w-64 bg-white border-e border-gray-200  pb-10 overflow-y-auto lg:block lg:translate-x-0 lg:end-auto lg:bottom-0 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300`}
+    <div className="bg-white h-fit sticky top-6">
+      <div
+        id="docs-sidebar"
+        className={`hs-overlay [--auto-close:lg] ${
+          isSidebarOpen ? "hs-overlay-open:translate-x-0" : "-translate-x-full"
+        } transition-all duration-300 transform hidden  w-64 bg-white border-e border-gray-200  pb-10 overflow-y-auto lg:block lg:translate-x-0 lg:end-auto lg:bottom-0 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300`}
+      >
+        <nav
+          className="hs-accordion-group p-6 w-full flex flex-col flex-wrap"
+          data-hs-accordion-always-open
         >
-          <nav
-            className="hs-accordion-group p-6 w-full flex flex-col flex-wrap"
-            data-hs-accordion-always-open
-          >
-            <ul className="space-y-1.5">
-              {sidebarMenuItems.map((item, index) => (
-                <li key={index}>
-                  <Link
-                    className={`flex items-center gap-x-3.5 py-2 text-sm text-gray-900 font-medium  hover:text-indigo-600 ${
-                      pathname === item.path
-                        ? "text-indigo-600 border-b border-black/[0.15]"
-                        : "border-b border-black/[0.15]"
-                    }`}
-                    href={item.path}
-                  >
-                    <span className="flex items-center hover:text-indigo-600">
-                      {item.icon}
-                    </span>
-                    <span className="font-medium">{item.title}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-        {/* End Sidebar */}
+          <ul className="space-y-1.5">
+            {sidebarMenuItems.map((item, index) => (
+              <li
+                key={index}
+                onMouseEnter={() => setHoveredItem(index)}
+                onMouseLeave={() => setHoveredItem(null)}
+              >
+                <Link
+                  className={`flex items-center gap-x-3.5 py-2 text-sm text-gray-900 font-medium  hover:text-indigo-600 ${
+                    pathname === item.path
+                      ? "text-indigo-600 border-b border-black/[0.15]"
+                      : "border-b border-black/[0.15]"
+                  }`}
+                  href={item.path}
+                >
+                  <span className="flex items-center">
+                    {pathname === item.path || hoveredItem === index
+                      ? item.selectedIcon
+                      : item.icon}
+                  </span>
+                  <span className="font-medium">{item.title}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
-    </>
+      {/* End Sidebar */}
+    </div>
   );
 };
+
 
 export default SettingsSidebar;
 
@@ -57,6 +62,7 @@ const sidebarMenuItems = [
   {
     title: "Store details",
     path: "/settings/store-details",
+    selectedIcon: <FaStore className="h-5 w-5" aria-hidden="true" />,
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -81,6 +87,7 @@ const sidebarMenuItems = [
   {
     title: "Store Images",
     path: "/settings/store-images",
+    selectedIcon: <FaImages className="h-5 w-5" aria-hidden="true" />,
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -103,6 +110,7 @@ const sidebarMenuItems = [
   {
     title: "Store timing",
     path: "/settings/store-timing",
+    selectedIcon: <FaClock className="h-5 w-5" aria-hidden="true" />,
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -124,6 +132,9 @@ const sidebarMenuItems = [
   {
     title: "Pricing",
     path: "/settings/pricing",
+    selectedIcon: (
+      <RiMoneyRupeeCircleFill className="h-5 w-5" aria-hidden="true" />
+    ),
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -148,6 +159,7 @@ const sidebarMenuItems = [
   {
     title: "Bank details",
     path: "/settings/bank-details",
+    selectedIcon: <BiSolidBank className="h-5 w-5" aria-hidden="true" />,
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -173,6 +185,8 @@ const sidebarMenuItems = [
   {
     title: "Staff accounts",
     path: "/",
+    selectedIcon: <FaUserCircle className="h-5 w-5" aria-hidden="true" />,
+
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -199,6 +213,7 @@ const sidebarMenuItems = [
   {
     title: "Support",
     path: "/",
+    selectedIcon: <BiSupport className="h-5 w-5" aria-hidden="true" />,
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
