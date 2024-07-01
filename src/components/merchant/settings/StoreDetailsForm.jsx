@@ -15,8 +15,23 @@ import axios from "axios";
 import { fetchAccessToken } from "@/actions/access-token";
 import { toast } from "sonner";
 import { ClipLoader } from "react-spinners";
+import LocationPicker from "./LocationPicker";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
-const StoreDetailsForm = () => {
+
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { MapPin, MapPinned } from "lucide-react";
+
+const StoreDetailsForm = ({ googleMapApiKey }) => {
   const currentUser = useCurrentUser();
   if (!currentUser) {
     return null;
@@ -24,6 +39,7 @@ const StoreDetailsForm = () => {
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [initialFormData, setInitialFormData] = useState(null);
+
   const [formData, setFormData] = useState({
     storeRefrenceId: "",
     storeName: "",
@@ -125,17 +141,20 @@ const StoreDetailsForm = () => {
   };
 
   const handleSelectChange = (value) => {
-    setFormData({
-      ...formData,
+    if (!availableStates.includes(value)) {
+      availableStates.push(value);
+    }
+    setFormData((prevData) => ({
+      ...prevData,
       storeLocation: {
-        ...formData.storeLocation,
+        ...prevData.storeLocation,
         storeState: value,
       },
-    });
-    setFormErrors({
-      ...formErrors,
+    }));
+    setFormErrors((prevErrors) => ({
+      ...prevErrors,
       storeState: "",
-    });
+    }));
   };
 
   const validateForm = () => {
@@ -231,6 +250,50 @@ const StoreDetailsForm = () => {
       setLoading(false);
     }
   };
+
+  const handleZipCodeChange = async (e) => {
+    try {
+      const zipCode = e.target.value;
+      setFormData({
+        ...formData,
+        storeLocation: {
+          ...formData.storeLocation,
+          storeZipCode: zipCode,
+        },
+      });
+
+      if (zipCode.length === 6) {
+        const res = await axios.get(
+          `https://api.postalpincode.in/pincode/${zipCode}`
+        );
+        if (res.data[0].Status === "Success") {
+          const { District, State } = res.data[0].PostOffice[0];
+          setFormData((prevData) => ({
+            ...prevData,
+            storeLocation: {
+              ...prevData.storeLocation,
+              storeCity: District,
+              storeState: State,
+            },
+          }));
+
+          if (!availableStates.includes(State)) {
+            availableStates.push(State);
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching location", error);
+    }
+  };
+
+  const availableStates = [formData.storeLocation.storeState];
+
+  useEffect(() => {
+    if (formData.storeLocation.storeState) {
+      handleSelectChange(formData.storeLocation.storeState);
+    }
+  }, [formData.storeLocation.storeState]);
 
   const hasChanges =
     JSON.stringify(formData) !== JSON.stringify(initialFormData);
@@ -371,26 +434,43 @@ const StoreDetailsForm = () => {
                     placeholder=""
                     autoComplete="off"
                   />
-                  <p className="cursor-pointer" onClick={detectLocation}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="lucide lucide-locate"
-                    >
-                      <line x1="2" x2="5" y1="12" y2="12" />
-                      <line x1="19" x2="22" y1="12" y2="12" />
-                      <line x1="12" x2="12" y1="2" y2="5" />
-                      <line x1="12" x2="12" y1="19" y2="22" />
-                      <circle cx="12" cy="12" r="7" />
-                    </svg>
-                  </p>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <FaMapMarkerAlt className="cursor-pointer" />
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-md">
+                      <DialogHeader>
+                        <DialogTitle>Select latitude and longitude</DialogTitle>
+                        <DialogDescription>
+                          Select the latitude and longitude of your store.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <LocationPicker
+                        googleMapApiKey={googleMapApiKey}
+                        initialLatLng={{
+                          lat: formData.storeLocation.storeLatitude,
+                          lng: formData.storeLocation.storeLongitude,
+                        }}
+                        onLocationChange={(location) =>
+                          setFormData((prevData) => ({
+                            ...prevData,
+                            storeLocation: {
+                              ...prevData.storeLocation,
+                              storeLatitude: location.lat,
+                              storeLongitude: location.lng,
+                            },
+                          }))
+                        }
+                      />
+                      <DialogFooter className="sm:justify-start">
+                        <DialogClose asChild>
+                          <Button type="button" variant="secondary">
+                            Save
+                          </Button>
+                        </DialogClose>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
                 </div>
 
                 {formErrors.storeLatitude && (
@@ -427,30 +507,53 @@ const StoreDetailsForm = () => {
               <div className="w-full px-3">
                 <label
                   className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                  htmlFor="storeLandmark"
+                  htmlFor="storeZip"
                 >
-                  Landmark
+                  Zip
                 </label>
                 <input
-                  className="appearance-none block w-full text-gray-700 border border-[#D9D9D9] rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="storeLandmark"
-                  name="storeLocation.storeLandmark"
+                  className="appearance-none block w-full mb-3 text-gray-700 border border-[#D9D9D9] rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="storeZip"
+                  name="storeLocation.storeZipCode"
                   type="text"
-                  value={formData.storeLocation.storeLandmark}
-                  onChange={handleChange}
+                  value={formData.storeLocation.storeZipCode}
+                  onChange={handleZipCodeChange}
                   placeholder=""
+                  autoComplete="off"
                 />
-                {formErrors.storeLandmark && (
+                {formErrors.storeZipCode && (
                   <p className="text-red-500 text-xs italic">
-                    {formErrors.storeLandmark}
+                    {formErrors.storeZipCode}
                   </p>
                 )}
               </div>
             </div>
           </div>
 
-          <div className="flex flex-wrap -mx-3 mb-6">
-            <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+          <div className="w-full grid grid-cols-3">
+            <div className=" w-full px-3">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                htmlFor="storeLandmark"
+              >
+                Landmark
+              </label>
+              <input
+                className="appearance-none block w-full text-gray-700 border border-[#D9D9D9] rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="storeLandmark"
+                name="storeLocation.storeLandmark"
+                type="text"
+                value={formData.storeLocation.storeLandmark}
+                onChange={handleChange}
+                placeholder=""
+              />
+              {formErrors.storeLandmark && (
+                <p className="text-red-500 text-xs italic">
+                  {formErrors.storeLandmark}
+                </p>
+              )}
+            </div>
+            <div className="w-full px-3">
               <label
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 htmlFor="storeCity"
@@ -473,29 +576,39 @@ const StoreDetailsForm = () => {
                 </p>
               )}
             </div>
-            <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+            <div className="w-full px-3">
               <label
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 htmlFor="storeState"
               >
                 State
               </label>
+
               <Select
                 name="storeLocation.storeState"
                 onValueChange={handleSelectChange}
-                defaultValue={formData.storeLocation.storeState}
+                value={formData.storeLocation.storeState}
               >
-                <SelectTrigger className="w-full font-medium text-[14px] appearance-none text-gray-700 border border-[#D9D9D9] rounded py-5 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500  ">
+                <SelectTrigger className="w-full font-medium text-[14px] appearance-none text-gray-700 border border-[#D9D9D9] rounded py-5 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                   <SelectValue placeholder="Select State" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="capitalize">
                   <SelectGroup>
-                    <SelectItem value="karnataka">Karnataka</SelectItem>
-                    <SelectItem value="kerala">Kerala</SelectItem>
-                    <SelectItem value="tamilnadu">Tamilnadu</SelectItem>
-                    <SelectItem value="andhra">Andhra</SelectItem>
-                    <SelectItem value="kashmir">Kashmir</SelectItem>
-                    <SelectItem value="maharastra">Maharastra</SelectItem>
+                    {availableStates.map((state) => (
+                      <SelectItem key={state} value={state}>
+                        {state}
+                      </SelectItem>
+                    ))}
+
+                    <SelectItem disabled value="Andhra Pradesh">
+                      Andhra Pradesh
+                    </SelectItem>
+                    <SelectItem disabled value="Bihar">
+                      Bihar
+                    </SelectItem>
+                    <SelectItem disabled value="Chandigarh">
+                      Chandigarh
+                    </SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
@@ -505,31 +618,8 @@ const StoreDetailsForm = () => {
                 </p>
               )}
             </div>
-            <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-              <label
-                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                htmlFor="storeZip"
-              >
-                Zip
-              </label>
-              <input
-                className="appearance-none block w-full mb-3 text-gray-700 border border-[#D9D9D9] rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                id="storeZip"
-                name="storeLocation.storeZipCode"
-                type="text"
-                value={formData.storeLocation.storeZipCode}
-                onChange={handleChange}
-                placeholder=""
-                autoComplete="off"
-              />
-              {formErrors.storeZipCode && (
-                <p className="text-red-500 text-xs italic">
-                  {formErrors.storeZipCode}
-                </p>
-              )}
-            </div>
           </div>
-          <div className="w-full flex items-center justify-end gap-6 ">
+          <div className="w-full flex items-center justify-end gap-6 mt-6">
             <Button size="sm" variant="destructive">
               Delete my store
             </Button>

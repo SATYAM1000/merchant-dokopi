@@ -1,8 +1,8 @@
 import StoreDetails from "@/components/merchant/settings/StoreDetails";
 import React from "react";
 
-const StoreDetailsPage = () => {
-  return <StoreDetails />;
-};
+const googleMapApiKey = process.env.GOOGLE_MAP_API_KEY;
 
-export default StoreDetailsPage;
+export default async function StoreDetailsPage() {
+  return <StoreDetails googleMapApiKey={googleMapApiKey} />;
+}

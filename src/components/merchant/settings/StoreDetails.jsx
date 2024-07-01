@@ -1,7 +1,7 @@
 import React from "react";
 import StoreDetailsForm from "./StoreDetailsForm";
 
-const StoreDetails = () => {
+const StoreDetails = ({ googleMapApiKey }) => {
   return (
     <section className="w-full bg-white h-fit px-6 py-6  ">
       <div>
@@ -11,7 +11,7 @@ const StoreDetails = () => {
         </p>
       </div>
       <div className="w-full">
-        <StoreDetailsForm />
+        <StoreDetailsForm googleMapApiKey={googleMapApiKey} />
       </div>
     </section>
   );

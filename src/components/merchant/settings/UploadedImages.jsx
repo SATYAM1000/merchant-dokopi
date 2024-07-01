@@ -26,7 +26,6 @@ const UploadedImages = () => {
           }
         );
         const data = response.data?.data;
-        console.log("your data is ", data);
 
         setUploadedImages(data);
       } catch (error) {
@@ -59,53 +58,55 @@ const UploadedImages = () => {
           Your uploaded images will be displayed on your store.
         </p>
       </div>
-      {
-        isLoading ?(<>
-        <div className="w-full mt-6 h-28 flex items-center justify-center ">
+      {isLoading ? (
+        <>
+          <div className="w-full mt-6 h-28 flex items-center justify-center ">
             <ClipLoader color="blue" loading={isLoading} size={30} />
-        </div>
-        </>):(<div className="w-full mt-6 flex items-center gap-12">
-            {uploadedImages?.map((image, index) => (
-              <div
-                key={index}
-                className="relative w-28 h-28 rounded-md overflow-hidden"
-                onMouseEnter={() => handleMouseEnter(index)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <img
-                  src={image}
-                  alt="uploaded image"
-                  className="w-28 h-28 object-cover rounded-md "
-                />
-    
-                {hoveredImageIndex === index && (
-                  <div className="absolute top-0 right-0 p-1.5 w-full h-full bg-black/[0.3] text-white  flex ">
-                    <div
-                      className="cursor-pointer h-5 w-5 flex items-center justify-center p-0.5 rounded-full bg-white text-gray-800"
-                      onClick={() => handleDeleteImage(index)}
+          </div>
+        </>
+      ) : (
+        <div className="w-full mt-6 flex items-center gap-12">
+          {uploadedImages?.map((image, index) => (
+            <div
+              key={index}
+              className="relative w-28 h-28 rounded-md overflow-hidden"
+              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseLeave={handleMouseLeave}
+            >
+              <img
+                src={image}
+                alt="uploaded image"
+                className="w-28 h-28 object-cover rounded-md "
+              />
+
+              {hoveredImageIndex === index && (
+                <div className="absolute top-0 right-0 p-1.5 w-full h-full bg-black/[0.3] text-white  flex ">
+                  <div
+                    className="cursor-pointer h-5 w-5 flex items-center justify-center p-0.5 rounded-full bg-white text-gray-800"
+                    onClick={() => handleDeleteImage(index)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="lucide lucide-x"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="lucide lucide-x"
-                      >
-                        <path d="M18 6 6 18" />
-                        <path d="m6 6 12 12" />
-                      </svg>
-                    </div>
+                      <path d="M18 6 6 18" />
+                      <path d="m6 6 12 12" />
+                    </svg>
                   </div>
-                )}
-              </div>
-            ))}
-          </div>)
-      }
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 };
