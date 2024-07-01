@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import Wrapper from "@/components/global/Wrapper";
 
 import OrdersTable from "./OrdersTable";
-import OverviewComponentContainer from "./OverviewComponentContainer";
 import OrderFilter from "./Filter";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import axios from "axios";
@@ -15,7 +14,8 @@ import TableSkeleton from "./TableSkeleton";
 
 const DashboardComponent = () => {
   const { storeId } = useCurrentUser();
-  const [data, setData] = useState([])
+  const [Filterdata, setFilterData] = useState([]);
+  const [originalData, setOriginalDate] = useState(Filterdata)
   const [isLoading, setisLoading] = useState(false)
   const fetchOrdersData = async () => {
     try {
@@ -30,7 +30,8 @@ const DashboardComponent = () => {
         return;
       }
       else {
-        setData(data.data)
+        setFilterData(data.data);
+        setOriginalDate(data.data)
         console.log(data.data)
       }
     } catch (error) {
@@ -48,17 +49,11 @@ const DashboardComponent = () => {
   return (
     <section className="min-h-[calc(100vh-64px)] w-full">
       <div className="w-full h-auto flex flex-col gap-0 ">
-        <div
-          className={`w- full flex items - center mb - 6 justify - between bg - gray - 100 px - 6 py - 4 border - b`}
-        >
-          <OverviewComponentContainer />
-        </div>
-        <OrderFilter setData={setData} data={data} />
+        <OrderFilter setFilterData={setFilterData} originalData={originalData} />
         <Wrapper>
           {
-            isLoading ? <OrdersTable data={data} /> : <TableSkeleton />
+            isLoading ? <OrdersTable data={Filterdata} /> : <TableSkeleton />
           }
-
         </Wrapper>
       </div>
     </section>

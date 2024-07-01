@@ -4,7 +4,7 @@ import React from 'react'
 
 const TablePagination = ({ table }) => {
     return (
-        <div className="flex items-center justify-end space-x-2 py-4">
+        <div className="flex items-center justify-end space-x-2 py-3">
             <div className="flex-1 text-sm text-muted-foreground">
                 {table.getFilteredRowModel().rows.length} Total Fields
             </div>
