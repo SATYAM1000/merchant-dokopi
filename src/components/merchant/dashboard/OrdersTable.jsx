@@ -16,7 +16,7 @@ import ShowTableRow from "./table/ShowTableRow";
 import TablePagination from "./table/TablePagination";
 
 function DataTableDemo({ data }) {
-  if (!data) {
+  if (data.lenght == 0) {
     return null;
   }
   const [sorting, setSorting] = React.useState([])

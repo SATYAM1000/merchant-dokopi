@@ -15,7 +15,8 @@ import TableSkeleton from "./TableSkeleton";
 
 const DashboardComponent = () => {
   const { storeId } = useCurrentUser();
-  const [data, setData] = useState([])
+  const [Filterdata, setFilterData] = useState([]);
+  const [originalData, setOriginalDate] = useState(Filterdata)
   const [isLoading, setisLoading] = useState(false)
   const fetchOrdersData = async () => {
     try {
@@ -30,7 +31,8 @@ const DashboardComponent = () => {
         return;
       }
       else {
-        setData(data.data)
+        setFilterData(data.data);
+        setOriginalDate(data.data)
         console.log(data.data)
       }
     } catch (error) {
@@ -53,10 +55,10 @@ const DashboardComponent = () => {
         >
           <OverviewComponentContainer />
         </div>
-        <OrderFilter setData={setData} data={data} />
+        <OrderFilter setFilterData={setFilterData} originalData={originalData} />
         <Wrapper>
           {
-            isLoading ? <OrdersTable data={data} /> : <TableSkeleton />
+            isLoading ? <OrdersTable data={Filterdata} /> : <TableSkeleton />
           }
 
         </Wrapper>
