@@ -1,7 +1,5 @@
 "use client";
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { removeCondition } from "@/redux/store/pricingSlice";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -43,8 +41,6 @@ const HeaderOptions = [
 
 const ConditionsTable = ({ priceList = [] }) => {
   // console.log(priceList)
-  const dispatch = useDispatch();
-  const { pricing } = useSelector((state) => state.pricing);
   const getAmountInINR = (amount) => {
     const calculated_amount = new Intl.NumberFormat("en-IN", {
       style: "currency",
@@ -65,7 +61,7 @@ const ConditionsTable = ({ priceList = [] }) => {
             }
           </tr>
         </thead>
-      
+
         <tbody>
           {
             priceList?.map((price, priceIndex) => {
