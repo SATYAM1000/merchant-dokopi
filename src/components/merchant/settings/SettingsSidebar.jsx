@@ -33,17 +33,17 @@ const SettingsSidebar = () => {
                 <Link
                   className={`flex items-center gap-x-3.5 py-2 text-sm text-gray-900 font-medium  hover:text-indigo-600 ${
                     pathname === item.path
-                      ? "text-indigo-600 border-b border-black/[0.15]"
-                      : "border-b border-black/[0.15]"
+                      ? "text-indigo-600 border-b border-[#E5E5E5]"
+                      : "border-b border-[#E5E5E5]"
                   }`}
                   href={item.path}
                 >
                   <span className="flex items-center">
                     {pathname === item.path || hoveredItem === index
-                      ? item.selectedIcon
+                      ? item.icon
                       : item.icon}
                   </span>
-                  <span className="font-medium">{item.title}</span>
+                  <span className="font-medium text-[15px]">{item.title}</span>
                 </Link>
               </li>
             ))}
@@ -212,7 +212,7 @@ const sidebarMenuItems = [
   },
   {
     title: "Support",
-    path: "/",
+    path: "/settings/support",
     selectedIcon: <BiSupport className="h-5 w-5" aria-hidden="true" />,
     icon: (
       <svg

@@ -307,6 +307,7 @@ const StoreDetailsForm = ({ googleMapApiKey }) => {
           </section>
         </>
       ) : (
+        
         <form
           className="w-full mt-6"
           onSubmit={handleSubmit}
