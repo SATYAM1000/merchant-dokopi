@@ -32,7 +32,6 @@ const DashboardComponent = () => {
       else {
         setFilterData(data.data);
         setOriginalDate(data.data)
-        console.log(data.data)
       }
     } catch (error) {
       toast.error("failed to fetch the orders details")
