@@ -54,9 +54,9 @@ export default async function RootLayout({ children }) {
 
                       {/* User Profile Section */}
                       <div>
-                        <div className="mt-8 flex items-center justify-center">
+                        {/* <div className="mt-8 flex items-center justify-center">
                           <Status />
-                        </div>
+                        </div> */}
                         <div className="pb-8 mt-6">
                           <UserAvatar />
                         </div>
