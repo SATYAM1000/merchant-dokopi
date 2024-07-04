@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card";
 import ClipLoader from "react-spinners/ClipLoader";
 import { MoveRight } from "lucide-react";
-
+i;
 const DoKopiSignUp = () => {
   const [showLoader, setShowLoader] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(false);

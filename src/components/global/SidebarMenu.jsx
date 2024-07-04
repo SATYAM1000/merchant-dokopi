@@ -5,6 +5,12 @@ import { usePathname } from "next/navigation";
 
 const SidebarMenu = () => {
   const pathname = usePathname();
+  if (
+    pathname === "/getting-started" ||
+    pathname === "/auth/sign-in" ||
+    pathname === "/auth/sign-up"
+  )
+    return null;
   return (
     <>
       {menuItems.map((item, index) => (

@@ -29,7 +29,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { MapPin, MapPinned } from "lucide-react";
 
 const StoreDetailsForm = ({ googleMapApiKey }) => {
   const currentUser = useCurrentUser();
@@ -596,7 +595,7 @@ const StoreDetailsForm = ({ googleMapApiKey }) => {
                 <SelectContent className="capitalize">
                   <SelectGroup>
                     {availableStates.map((state) => (
-                      <SelectItem key={state} value={state}>
+                      <SelectItem key={state} value={state || "Not Available"}>
                         {state}
                       </SelectItem>
                     ))}

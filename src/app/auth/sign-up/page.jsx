@@ -5,7 +5,10 @@ import DoKopiSignUp from "@/components/merchant/auth/DoKopiSignUp";
 
 export default async function SignUpPage() {
   const session = await auth();
-  if (session) {
+  if (session && session.user.storeId === null) {
+    redirect("/getting-started");
+  }
+  if (session && session.user.storeId !== null) {
     redirect("/");
   }
   return <DoKopiSignUp />;

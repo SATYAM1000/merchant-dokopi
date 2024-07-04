@@ -14,8 +14,10 @@ import OrderCardSkelton from "./OrderCardSkelton";
 import { formatDate } from "@/lib/format-date";
 import { toast } from "sonner";
 
+
 const OrdersComponent = () => {
   const currentUser = useCurrentUser();
+  console.log("current user is ", currentUser)
   if (!currentUser) return null;
 
   const [showLoader, setShowLoader] = useState(true);
@@ -30,7 +32,7 @@ const OrdersComponent = () => {
       setShowLoader(loader);
       const token = await fetchAccessToken();
 
-      let url = `${API_DOMAIN}/api/v1/merchant/orders/${currentUser.storeId}`;
+      let url = `${API_DOMAIN}/api/v1/merchant/orders/${currentUser.storeId || localStorage.getItem("storeId")}`;
       if (date) {
         const formattedDate = formatDate(date);
         url += `?date=${encodeURIComponent(formattedDate)}`;

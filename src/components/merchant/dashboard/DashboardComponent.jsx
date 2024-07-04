@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { fetchAccessToken } from "@/actions/access-token";
 import TableSkeleton from "./TableSkeleton";
 
+
 const DashboardComponent = () => {
   const { storeId } = useCurrentUser();
   const [Filterdata, setFilterData] = useState([]);
@@ -19,7 +20,7 @@ const DashboardComponent = () => {
   const [isLoading, setisLoading] = useState(false)
   const fetchOrdersData = async () => {
     try {
-      const { data } = await axios.get(`${API_DOMAIN}/api/v1/merchant/orders/dashboard/${storeId}`, {
+      const { data } = await axios.get(`${API_DOMAIN}/api/v1/merchant/orders/dashboard/${storeId || localStorage.getItem("storeId")}`, {
         headers: {
           Authorization: `Bearer ${await fetchAccessToken()
             }`

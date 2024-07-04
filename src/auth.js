@@ -17,11 +17,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (account?.provider === "google") {
         const existingUser = await User.findOne({ email: user.email });
         if (existingUser?.isBlocked) return false;
-        if (existingUser?.role !== "MERCHANT") return false;
         if (existingUser) {
           user.id = existingUser._id;
           user.role = existingUser.role;
-
           return true;
         }
 
@@ -39,8 +37,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.email = token.email;
         session.user.image = token.picture || token.image;
         session.user.role = token.role;
-        session.user.storeId = token.storeId;
-        session.user.storeStatus = token.storeStatus;
+        if (token.storeId) {
+          session.user.storeId = token.storeId;
+          session.user.storeStatus = token.storeStatus;
+        }else{
+          session.user.storeId = null;
+          session.user.storeStatus = null;
+        }
       }
 
       return session;
@@ -60,6 +63,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (storeInfo) {
           token.storeId = storeInfo._id;
           token.storeStatus = storeInfo?.storeCurrentStatus || "closed";
+        } else {
+          token.storeId =null;
+          token.storeStatus = null;
         }
         token.role = user.role;
         token.name = user.name;

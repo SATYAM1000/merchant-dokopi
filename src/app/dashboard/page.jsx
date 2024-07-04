@@ -2,5 +2,9 @@ import DashboardComponent from "@/components/merchant/dashboard/DashboardCompone
 import React from "react";
 
 export default async function MerchantDashboardPage() {
-  return <DashboardComponent />;
+  return (
+    <>
+      <DashboardComponent />
+    </>
+  );
 }

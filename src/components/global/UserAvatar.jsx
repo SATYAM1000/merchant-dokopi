@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, startTransition, useEffect } from "react";
+import React, { useState, startTransition } from "react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 
@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { History, Headphones, LogOut, Bell } from "lucide-react";
+import { Headphones, LogOut } from "lucide-react";
 
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { ClipLoader } from "react-spinners";
@@ -27,7 +27,7 @@ const UserAvatar = () => {
     startTransition(() => {
       setShowLoader(true);
       signOut({
-        callbackUrl: "/",
+        callbackUrl: "/auth/sign-in",
       }).finally(() => {
         setShowLoader(false);
       });

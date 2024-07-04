@@ -50,8 +50,7 @@ const AddConditionModal = ({ isOpen, onClose, onSave }) => {
               <SelectGroup>
                 <SelectItem value="quantity">Quantity</SelectItem>
                 <SelectItem
-                  value="
-                paper_type"
+                  value="paper_type"
                 >
                   Paper Type
                 </SelectItem>

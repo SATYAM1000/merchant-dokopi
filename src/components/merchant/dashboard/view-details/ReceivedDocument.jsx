@@ -4,7 +4,6 @@ import Link from "next/link";
 import React from "react";
 
 const ReceivedDocument = ({ docs }) => {
-  console.log(docs)
   return (
     <div className="space-y-6 w-[100%] max-h-[67vh] rounded-md relative hide-scrollbar flex flex-col gap-2">
       <ul className="space-y-4 rounded-md">
