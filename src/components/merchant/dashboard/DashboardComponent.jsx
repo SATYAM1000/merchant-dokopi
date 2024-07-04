@@ -20,7 +20,7 @@ const DashboardComponent = () => {
   const [isLoading, setisLoading] = useState(false)
   const fetchOrdersData = async () => {
     try {
-      const { data } = await axios.get(`${API_DOMAIN}/api/v1/merchant/orders/dashboard/${storeId || localStorage.getItem("storeId")}`, {
+      const { data } = await axios.get(`${API_DOMAIN}/api/v1/merchant/orders/dashboard/${storeId}`, {
         headers: {
           Authorization: `Bearer ${await fetchAccessToken()
             }`

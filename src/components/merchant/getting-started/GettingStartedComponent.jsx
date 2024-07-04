@@ -15,6 +15,7 @@ const Confetti = dynamic(() => import("react-confetti"), { ssr: false });
 const GettingStartedComponent = () => {
   const [showLoader, setShowLoader] = useState(false);
   const currentUser = useCurrentUser();
+  console.log(currentUser);
   const [loading, setLoading] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -23,6 +24,7 @@ const GettingStartedComponent = () => {
     storeName: "",
     phoneNumber: "",
     storeEmail: currentUser?.email,
+    userId: currentUser?.id,
   });
 
   const [errors, setErrors] = useState({
@@ -75,7 +77,7 @@ const GettingStartedComponent = () => {
           toast.error(res.data.msg);
           return;
         }
-        localStorage.setItem("storeId", res.data?.newXeroxStoreId);
+
         setLoading(false);
         setShowConfetti(true);
         setSuccess(true);
@@ -103,11 +105,10 @@ const GettingStartedComponent = () => {
           }
         });
       }, 1000);
-  
+
       return () => clearInterval(timer);
     }
   }, [success]);
-  
 
   const [windowDimensions, setWindowDimensions] = useState({
     width: 0,

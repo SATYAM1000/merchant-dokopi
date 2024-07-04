@@ -45,8 +45,6 @@ const Analytics = () => {
       );
 
       setAnalyticsData(data);
-
-      console.log(data.earningsChartData);
     } catch (error) {
       console.log(error);
     } finally {
