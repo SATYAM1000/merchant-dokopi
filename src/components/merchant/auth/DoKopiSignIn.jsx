@@ -30,7 +30,7 @@ const DoKopiSignIn = () => {
   };
 
   return (
-    <section className="w-full h-full">
+    <section className="w-full h-full bg-grid-small-black/[0.13]">
       <div className={" w-full h-full flex items-center justify-center"}>
         <Card className="w-[350px] shadow-md border-2 rounded-3xl border-r-8 border-black border-b-8">
           <CardHeader>

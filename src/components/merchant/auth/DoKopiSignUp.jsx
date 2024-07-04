@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/card";
 import ClipLoader from "react-spinners/ClipLoader";
 import { MoveRight } from "lucide-react";
-i;
 const DoKopiSignUp = () => {
   const [showLoader, setShowLoader] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(false);
@@ -29,7 +28,7 @@ const DoKopiSignUp = () => {
     });
   };
   return (
-    <section className="w-full h-full">
+    <section className="w-full h-full bg-grid-small-black/[0.15]">
       <div className={" w-full h-full flex items-center justify-center"}>
         <Card className="w-[350px] shadow-md border-2 rounded-3xl border-r-8 border-black border-b-8">
           <CardHeader>
