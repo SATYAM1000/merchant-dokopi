@@ -4,8 +4,9 @@ import React, { useRef, useEffect, useState } from "react";
 const LocationPicker = ({ googleMapApiKey, onLocationChange, initialLatLng }) => {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
-  const [latLng, setLatLng] = useState(initialLatLng); 
+  const [latLng, setLatLng] = useState(initialLatLng);
   const [map, setMap] = useState(null);
+  const [zoomLevel, setZoomLevel] = useState(14);
 
   useEffect(() => {
     const loadGoogleMapsScript = () => {
@@ -26,7 +27,7 @@ const LocationPicker = ({ googleMapApiKey, onLocationChange, initialLatLng }) =>
 
       const mapInstance = new window.google.maps.Map(mapRef.current, {
         center: latLng,
-        zoom: 17,
+        zoom: zoomLevel,
       });
 
       setMap(mapInstance);
@@ -53,10 +54,14 @@ const LocationPicker = ({ googleMapApiKey, onLocationChange, initialLatLng }) =>
         onLocationChange({ lat: newLat, lng: newLng });
         setLatLng({ lat: newLat, lng: newLng });
       });
+
+      mapInstance.addListener("zoom_changed", () => {
+        setZoomLevel(mapInstance.getZoom());
+      });
     };
 
     loadGoogleMapsScript();
-  }, [googleMapApiKey, latLng, onLocationChange]);
+  }, [googleMapApiKey, latLng, onLocationChange, zoomLevel]);
 
   useEffect(() => {
     if (map && latLng) {
@@ -66,7 +71,7 @@ const LocationPicker = ({ googleMapApiKey, onLocationChange, initialLatLng }) =>
   }, [latLng, map]);
 
   useEffect(() => {
-    if (!initialLatLng && navigator.geolocation) {
+    if ((!initialLatLng || (initialLatLng.lat === 0 && initialLatLng.lng === 0)) && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const initialPosition = {
@@ -80,7 +85,7 @@ const LocationPicker = ({ googleMapApiKey, onLocationChange, initialLatLng }) =>
           setLatLng({ lat: 18.5204, lng: 73.8567 });
         }
       );
-    } else if (!initialLatLng) {
+    } else if (!initialLatLng || (initialLatLng.lat === 0 && initialLatLng.lng === 0)) {
       console.error("Geolocation is not supported by this browser.");
       setLatLng({ lat: 18.5204, lng: 73.8567 });
     }

@@ -68,7 +68,7 @@ const StoreSetUpComponent = ({ storeSetUpActiveStep }) => {
         {steps.map((step, index) => (
           <Step key={step.label} completed={activeStep > index}>
             <StepLabel>
-              <span className="text-[#1A181E] font-medium text-[16px]">
+              <span className="text-[#1A181E] text-[16px]">
                 {step.label}
               </span>
             </StepLabel>

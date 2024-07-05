@@ -17,8 +17,8 @@ const SidebarMenu = () => {
         <Link
           key={index}
           href={item.path}
-          className={`flex items-center justify-center px-4 py-2.5 text-sm font-medium transition-all duration-200 text-gray-900 rounded-lg  ${
-            pathname === item.path ? "bg-gray-100  " : "hover:bg-gray-100"
+          className={`flex items-center justify-center px-4 py-2.5 text-sm font-medium transition-all border border-white duration-200 text-gray-900 rounded-lg  ${
+            pathname === item.path ? "bg-gray-200 border-gray-600/[0.16]  " : "hover:bg-gray-100 border-gray-600/[0.16]"
           }`}
         >
           {item.icon}
