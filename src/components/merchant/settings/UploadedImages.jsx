@@ -72,10 +72,11 @@ const UploadedImages = ({ uploadedImages, setUploadedImages }) => {
                 onMouseEnter={() => handleMouseEnter(index)}
                 onMouseLeave={handleMouseLeave}
               >
-                <img
+                <Image
                   src={image}
+                  fill
                   alt="uploaded image"
-                  className="w-28 h-28 object-cover rounded-md "
+                  className="w-28 h-28 object-contain rounded-md "
                 />
 
                 {hoveredImageIndex === index && (
