@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-
 import { ScrollArea } from "@/components/ui/scroll-area";
 import OrderCard from "./OrderCard";
 import { format } from "date-fns";
@@ -15,14 +14,14 @@ const OrdersContainer = ({
 }) => {
   if (!activeOrders || activeOrders.length === 0)
     return (
-      <div className="flex flex-col items-center justify-center mt-16">
+      <div className="flex flex-col items-center justify-center w-full h-[calc(100vh-80px)]">
         <Image
-          src="/main/no-orders.svg"
+          src="https://user-images.githubusercontent.com/507615/54591670-ac0a0180-4a65-11e9-846c-e55ffce0fe7b.png"
           width={200}
           height={200}
           alt="No orders"
         />
-        <p className="font-medium">
+        <p className="mt-8 text-[#6B7280]">
           No orders found{" "}
           <span>
             {date ? (
@@ -40,8 +39,8 @@ const OrdersContainer = ({
   const [animationParent] = useAutoAnimate();
 
   return (
-    <ScrollArea type="scroll" className="h-[calc(100vh-150px)] w-full mt-1">
-      <div ref={animationParent} className="flex flex-col gap-1">
+    <ScrollArea type="scroll" className="h-[calc(100vh-80px)] w-full">
+      <div ref={animationParent} className="flex flex-col">
         {activeOrders.map((order) => (
           <OrderCard
             key={order.orderNumber}

@@ -20,7 +20,9 @@ const OrdersComponent = () => {
   if (!currentUser) return null;
 
   const [showLoader, setShowLoader] = useState(true);
-  const [isStoreSetupCompleted, setIsStoreSetupCompleted] = useState(false);
+  const [isStoreSetupCompleted, setIsStoreSetupCompleted] = useState(
+    currentUser?.isStoreSetUpCompleted
+  );
 
   const [activeOrders, setActiveOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -57,9 +59,7 @@ const OrdersComponent = () => {
         error.response?.status === 400 &&
         error.response?.data?.code === "SETUP_INCOMPLETE"
       ) {
-        setIsStoreSetupCompleted(false);
         const res = error?.response?.data?.storeSetUpProgress;
-
         let active = 0;
         if (!res.step1) {
           active = 0;
@@ -70,7 +70,6 @@ const OrdersComponent = () => {
         } else if (!res.step4) {
           active = 3;
         }
-
         setStoreSetUpActiveStep(active);
       } else {
         toast.error(
@@ -178,15 +177,11 @@ const OrdersComponent = () => {
 
   return (
     <div className="w-full h-full bg-[#f5f5f5] text-black/[0.90] overflow-hidden flex">
-      {!isStoreSetupCompleted  ? (
-        <section className="w-full h-full flex items-center justify-center">
-          <StoreSetUpComponent storeSetUpActiveStep={storeSetUpActiveStep} />
-        </section>
-      ) : (
+      {isStoreSetupCompleted ? (
         <>
           {/* Left Side */}
           <div className="w-full md:w-1/2 lg:w-1/4 h-full">
-            <div className="w-full h-full flex flex-col gap-4 px-2 py-4 bg-white border-r">
+            <div className="w-full h-full flex flex-col gap-0 relative bg-white border-r">
               <Header
                 date={date}
                 setDate={setDate}
@@ -225,6 +220,10 @@ const OrdersComponent = () => {
             </div>
           )}
         </>
+      ) : (
+        <section className="w-full h-full flex items-center justify-center">
+          <StoreSetUpComponent storeSetUpActiveStep={storeSetUpActiveStep} />
+        </section>
       )}
     </div>
   );

@@ -15,6 +15,7 @@ import { IndianRupee, ListOrdered, Notebook } from "lucide-react";
 import BalanceCard from "./BalanceCard";
 import SettlementsCard from "./SettlementsCard";
 import SettlementsCardSkelton from "./SettlementsCardSkelton";
+import { toast } from "sonner";
 
 const Analytics = () => {
   const currentUser = useCurrentUser();
@@ -45,9 +46,9 @@ const Analytics = () => {
       );
 
       setAnalyticsData(data);
-      console.log("analytics data is ",data);
     } catch (error) {
       console.log(error);
+      toast.error(error?.response?.data?.msg || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -75,33 +76,38 @@ const Analytics = () => {
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-2 gap-6 md:gap-12">
-          {dataToShow ? (
-            <>
-              {dataToShow.map((item, i) => (
-                <AnalyticsCard key={i} item={item} />
-              ))}
-              <BalanceCard />
-            </>
-          ) : (
+          {loading ? (
             Array.from({ length: 4 }).map((_, i) => (
               <AnalyticsCardSkelton key={i} />
             ))
+          ) : (
+            <>
+              {dataToShow &&
+                dataToShow.map((item, i) => (
+                  <AnalyticsCard key={i} item={item} />
+                ))}
+              <BalanceCard />
+            </>
           )}
         </div>
       </div>
 
       <div className="w-full h-full overflow-hidden  flex flex-col lg:flex-row gap-6">
-        {analyticsData ? (
-          <EarningsChart
-            data={analyticsData?.earningsChartData}
-            ordersData={analyticsData?.ordersChartData}
-            filter={selectedOption?.value}
-          />
-        ) : (
+        {loading ? (
           <ChartsSkelton />
+        ) : analyticsData ? (
+          <EarningsChart analyticsData={analyticsData} />
+        ) : (
+          <>
+            <p>Something went wrong</p>
+          </>
         )}
 
-        {analyticsData ? <SettlementsCard /> : <SettlementsCardSkelton />}
+        {loading ? (
+          <SettlementsCardSkelton />
+        ) : (
+          analyticsData && <SettlementsCard />
+        )}
       </div>
     </section>
   );

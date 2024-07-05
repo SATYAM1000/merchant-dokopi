@@ -7,7 +7,7 @@ const OrderCardSkelton = () => {
   return (
     <ScrollArea className="h-[calc(100vh-120px)] w-full mt-2">
       <div className="flex flex-col gap-1">
-        {Array.from({ length: 17 }).map((_, i) => (
+        {Array.from({ length: 30 }).map((_, i) => (
           <div
             className={`text-sm h-18 cursor-default transition-all duration-500`}
           >

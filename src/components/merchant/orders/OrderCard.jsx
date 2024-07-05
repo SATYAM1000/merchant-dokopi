@@ -3,14 +3,12 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { getTimeFromISO } from "@/lib/get-time";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LiaCheckDoubleSolid } from "react-icons/lia";
 import axios from "axios";
 import { API_DOMAIN } from "@/lib/constants";
 import { fetchAccessToken } from "@/actions/access-token";
 import { toast } from "sonner";
 import { LuCheckCheck } from "react-icons/lu";
 import { PiSealCheckFill } from "react-icons/pi";
-
 
 const OrderCard = ({ order, onOrderClick, isSelected }) => {
   if (!order || !order?.userId?.name) return null;
@@ -19,10 +17,10 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
 
   const handleCustomCheckBoxClick = async (e) => {
     e.stopPropagation();
-    const newStatus = orderStatus === "delivered" ? "processing" : "delivered";
-    setOrderStatus(newStatus);
 
     try {
+      const newStatus =
+      orderStatus === "delivered" ? "processing" : "delivered";
       const { data } = await axios.put(
         `${API_DOMAIN}/api/v1/merchant/orders/change-status/${order._id}/${newStatus}`,
         {},
@@ -33,8 +31,10 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
         }
       );
       toast.success(data?.msg || "Status changed successfully");
+    
+      setOrderStatus(newStatus);
     } catch (error) {
-      console.log(error);
+      console.log("error is",error);
       toast.error(error.response?.data?.msg || "Something went wrong");
     }
   };
@@ -50,15 +50,13 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
   return (
     <div
       onClick={handleClick}
-      className={`text-sm h-18 cursor-default hover:border-none transition-all duration-500 ${
-        isSelected ? " border-b border-white" : "border-b"
+      className={`text-sm h-18 cursor-default border-b transition-all duration-500 ${
+        isSelected ? "" : ""
       } `}
     >
       <div
-        className={`w-full h-full rounded-md flex items-center gap-4 p-2 border-l-4   ${
-          isSelected
-            ? "bg-[#f5f5f5] border-l-4 border-green-600"
-            : "bg-white hover:bg-[#f5f5f5] border-l-4 border-white"
+        className={`w-full h-full flex items-center gap-4 p-2    ${
+          isSelected ? "bg-[#f5f5f5] " : "bg-white hover:bg-[#f5f5f5]"
         }`}
       >
         {/* User Image */}
@@ -79,11 +77,17 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
             {/* ----checkbox-------- */}
             <div
               className={`w-5 h-5 absolute -bottom-1 -right-4  rounded-full cursor-pointer mr-3 flex items-center justify-center ${
-                orderStatus === "delivered" ? "bg-white" : "bg-gray-100"
+                orderStatus === "delivered" ? "bg-white" : "bg-white"
               }`}
             >
-             
-              <PiSealCheckFill size={20} className={`${orderStatus === "delivered" ? "block text-green-600" : "hidden"}`} />
+              <PiSealCheckFill
+                size={20}
+                className={`${
+                  orderStatus === "delivered"
+                    ? "block text-green-600"
+                    :"block text-gray-300"
+                }`}
+              />
             </div>
           </div>
         </div>
@@ -96,8 +100,8 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
             </h4>
             {/* Order Time */}
             <p
-              className={`text-xs font-medium leading-none ${
-                order?.isViewed ? "text-gray-700" : "text-green-600"
+              className={`text-xs font-medium  ${
+                order?.isViewed ? "text-[#6B7280]" : "text-green-600"
               }`}
             >
               {getTimeFromISO(order?.createdAt)}
@@ -109,7 +113,7 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
               <div className="flex items-center text-blue-600">
                 <LuCheckCheck size={18} />
               </div>
-              <span className=" text-[14px]">
+              <span className=" text-[13px] text-[#6B7280]">
                 {order?.userId && order?.totalPrice
                   ? `${order.userId.name} paid ₹ ${
                       order.totalPrice - order.platformFee
@@ -122,11 +126,11 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
               <div
                 className={`text-xs h-5 w-5 font-medium flex items-center justify-center rounded-full ${
                   order?.isViewed
-                    ? "bg-gray-100 text-gray-700"
+                    ? "bg-transparent text-[#6B7280]"
                     : "bg-green-600 text-white"
                 }`}
               >
-                <span>{order?.cartItems?.length || 0}</span>
+                <span className="text-xs">{order?.cartItems?.length || 0}</span>
               </div>
             </div>
           </div>
