@@ -69,7 +69,7 @@ const StoreTiming = () => {
     setStoreHours((prev) => {
       const updatedStoreHours = {
         ...prev,
-        [day]: { ...prev[day], isOpen: !prev[day].isOpen },
+        [day]: { ...prev[day], isOpen: !prev[day]?.isOpen },
       };
       validateStoreHours(updatedStoreHours);
       return updatedStoreHours;
@@ -92,7 +92,7 @@ const StoreTiming = () => {
     const errors = {};
 
     for (const day of days) {
-      if (hours[day].isOpen) {
+      if (hours[day]?.isOpen) {
         const openTime = hours[day].open;
         const closeTime = hours[day].close;
         if (!openTime || !closeTime) {

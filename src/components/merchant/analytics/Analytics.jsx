@@ -45,6 +45,7 @@ const Analytics = () => {
       );
 
       setAnalyticsData(data);
+      console.log("analytics data is ",data);
     } catch (error) {
       console.log(error);
     } finally {
