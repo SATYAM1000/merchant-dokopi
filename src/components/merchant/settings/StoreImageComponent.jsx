@@ -8,7 +8,7 @@ import { fetchAccessToken } from "@/actions/access-token";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { ClipLoader } from "react-spinners";
 
-const StoreImageComponent = () => {
+const StoreImageComponent = ({ cloudFrontURL }) => {
   const currentUser = useCurrentUser();
   const [isLoading, setIsLoading] = useState(true);
   const [uploadedImages, setUploadedImages] = useState([]);
@@ -45,6 +45,7 @@ const StoreImageComponent = () => {
       />
       {!isLoading ? (
         <UploadedImages
+          cloudFrontURL={cloudFrontURL}
           uploadedImages={uploadedImages}
           setUploadedImages={setUploadedImages}
         />

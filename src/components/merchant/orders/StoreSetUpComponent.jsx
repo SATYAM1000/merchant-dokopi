@@ -35,7 +35,7 @@ const steps = [
 ];
 
 const StoreSetUpComponent = ({ storeSetUpActiveStep }) => {
-  const [activeStep, setActiveStep] = useState(storeSetUpActiveStep);
+  const [activeStep, setActiveStep] = useState(storeSetUpActiveStep || 0);
   useEffect(() => {
     setActiveStep(storeSetUpActiveStep);
   }, [storeSetUpActiveStep]);
@@ -68,7 +68,7 @@ const StoreSetUpComponent = ({ storeSetUpActiveStep }) => {
         {steps.map((step, index) => (
           <Step key={step.label} completed={activeStep > index}>
             <StepLabel>
-              <span className="text-[#1A181E] text-[16px]">
+              <span className="text-[#1A181E] font-normal text-[16px]">
                 {step.label}
               </span>
             </StepLabel>

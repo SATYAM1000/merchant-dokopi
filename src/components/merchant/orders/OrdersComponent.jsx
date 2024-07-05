@@ -178,7 +178,7 @@ const OrdersComponent = () => {
 
   return (
     <div className="w-full h-full bg-[#f5f5f5] text-black/[0.90] overflow-hidden flex">
-      {!isStoreSetupCompleted ? (
+      {!isStoreSetupCompleted  ? (
         <section className="w-full h-full flex items-center justify-center">
           <StoreSetUpComponent storeSetUpActiveStep={storeSetUpActiveStep} />
         </section>

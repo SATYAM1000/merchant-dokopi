@@ -2,5 +2,10 @@ import StoreImageComponent from "@/components/merchant/settings/StoreImageCompon
 import React from "react";
 
 export default async function () {
-  return <StoreImageComponent />;
+  const cloudFrontURL = process.env.CLOUDFRONT_URL;
+  return (
+    <>
+      <StoreImageComponent cloudFrontURL={cloudFrontURL} />
+    </>
+  );
 }

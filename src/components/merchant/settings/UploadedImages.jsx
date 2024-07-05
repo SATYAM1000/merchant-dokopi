@@ -8,7 +8,11 @@ import { ClipLoader } from "react-spinners";
 import { toast } from "sonner";
 import Image from "next/image";
 
-const UploadedImages = ({ uploadedImages, setUploadedImages }) => {
+const UploadedImages = ({
+  uploadedImages,
+  setUploadedImages,
+  cloudFrontURL,
+}) => {
   const currentUser = useCurrentUser();
   if (!currentUser) return null;
 
@@ -73,7 +77,7 @@ const UploadedImages = ({ uploadedImages, setUploadedImages }) => {
                 onMouseLeave={handleMouseLeave}
               >
                 <img
-                  src={image}
+                  src={`${cloudFrontURL}/${image}`}
                   alt="uploaded image"
                   className="object-contain rounded overflow-hidden"
                 />
