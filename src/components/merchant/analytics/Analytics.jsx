@@ -9,7 +9,6 @@ import { fetchAccessToken } from "@/actions/access-token";
 import { API_DOMAIN } from "@/lib/constants";
 import AnalyticsCardSkelton from "./AnalyticsCardSkelton";
 import EarningsChart from "./EarningsChart";
-import OrdersChart from "./OrdersChart";
 import ChartsSkelton from "./ChartsSkelton";
 import { IndianRupee, ListOrdered, Notebook } from "lucide-react";
 import BalanceCard from "./BalanceCard";
@@ -19,6 +18,8 @@ import { toast } from "sonner";
 
 const Analytics = () => {
   const currentUser = useCurrentUser();
+
+  if (!currentUser?.storeId) return null;
 
   const [selectedOption, setSelectedOption] = useState({
     value: "thismonth",
@@ -31,6 +32,7 @@ const Analytics = () => {
 
   useEffect(() => {
     setDataToShow(getDataToShow(selectedOption.value, analyticsData));
+    console.log("data to show is ", analyticsData);
   }, [selectedOption, analyticsData]);
 
   const fetchAnalyticsData = async () => {
@@ -45,9 +47,11 @@ const Analytics = () => {
         }
       );
 
+      console.log("fetched data is ", data);
+
       setAnalyticsData(data);
     } catch (error) {
-      console.log(error);
+      console.log("error while fetchinf orders ", error);
       toast.error(error?.response?.data?.msg || "Something went wrong");
     } finally {
       setLoading(false);
@@ -93,14 +97,10 @@ const Analytics = () => {
       </div>
 
       <div className="w-full h-full overflow-hidden  flex flex-col lg:flex-row gap-6">
-        {loading ? (
+        {loading && analyticsData ? (
           <ChartsSkelton />
-        ) : analyticsData ? (
-          <EarningsChart analyticsData={analyticsData} />
         ) : (
-          <>
-            <p>Something went wrong</p>
-          </>
+          <EarningsChart data={analyticsData?.earningsChartData} ordersData={analyticsData?.ordersChartData} filter="thismonth" />
         )}
 
         {loading ? (

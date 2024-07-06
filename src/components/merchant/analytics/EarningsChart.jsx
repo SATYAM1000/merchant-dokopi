@@ -8,6 +8,7 @@ import OrdersChart from "./OrdersChart";
 Chart.register(...registerables);
 
 const EarningsChart = ({ data, ordersData, filter = "today" }) => {
+  if(!data) return null;
   const aggregateEarnings = (data) => {
     return data.reduce((acc, item) => {
       const date = new Date(item.date).toLocaleDateString();

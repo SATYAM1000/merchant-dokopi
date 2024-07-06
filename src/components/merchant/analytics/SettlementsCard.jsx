@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 
 const SettlementsCard = () => {
+  
   return (
     <div className="w-full lg:w-2/5 h-full p-6 border bg-white shadow-sm rounded-md flex flex-col gap-4">
       <p className=" font-medium text-black ">Last 10 Settlements</p>
