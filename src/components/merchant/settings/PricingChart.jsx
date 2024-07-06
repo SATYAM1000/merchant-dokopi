@@ -13,7 +13,6 @@ import AddConditionModal from "./AddConditionModal";
 
 const PricingChart = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [pricing, setPricing] = useState({});
 
   return (
     <section className="w-full h-fit">

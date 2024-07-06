@@ -9,99 +9,132 @@ import {
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { CalendarIcon, CircleX } from "lucide-react";
+import { useCurrentUser } from "@/hooks/use-current-user";
+
 const OrderFilter = ({ setFilterData, originalData }) => {
-  const [date, setDate] = useState();
-  // const [duration, setDuration] = React.useState()
+  const currentUser = useCurrentUser();
 
-  //for showing the 2month calendar from previous month and current month
+  const [date, setDate] = useState({ from: undefined, to: undefined });
+  const [showClearFilterIcon, setShowClearFilterIcon] = useState(false);
+
   const getPreviousMonthDate = () => {
-    var TodayDate = new Date();
+    const TodayDate = new Date();
     return new Date(TodayDate.getFullYear(), TodayDate.getMonth() - 1);
-  }
+  };
 
-  //filting the data according to the date
   const filterDatesInRange = (dataSet) => {
-    return dataSet.filter(dateString => {
-      const dateFromDate = new Date(dateString.Transaction_Time);
-      const StartDate = date.from
-      const EndDate = new Date(date.to.getFullYear(), date.to.getMonth(), date.to.getDate(), 23, 59, 59)
-      return dateFromDate >= StartDate && dateFromDate <= EndDate;
+    if (!date.from || !date.to) return dataSet;
+    return dataSet.filter((dateString) => {
+      const dateFromData = new Date(dateString.Transaction_Time);
+      const startDate = date.from;
+      const endDate = new Date(
+        date.to.getFullYear(),
+        date.to.getMonth(),
+        date.to.getDate(),
+        23,
+        59,
+        59
+      );
+      return dateFromData >= startDate && dateFromData <= endDate;
     });
   };
-  //manupation of showing clear icon for data filter
-  const [showClearFilterIcon, setShowClearFilterIcon] = useState(false)
-  // func for filter data 
+
   const showFilterData = () => {
-    const filterdataFromDateFilter = filterDatesInRange(originalData)
-    setFilterData(filterdataFromDateFilter)
-    setShowClearFilterIcon(true)
-  }
+    const filteredData = filterDatesInRange(originalData);
+    setFilterData(filteredData);
+    setShowClearFilterIcon(true);
+  };
 
-  //clear the data to original state
-  const ClearDateFilter = () => {
-    setDate(undefined)
+  const clearDateFilter = () => {
+    setDate({ from: undefined, to: undefined });
     setFilterData(originalData);
-    setShowClearFilterIcon(false)
-  }
-  return (
-    <div className={`w-full flex flex-col md:flex-row gap-4 md:gap-0 md:items-center md:justify-between bg-gray-100 px-6 py-4 border-b`}>
-      <h1 className="text-[22px] font-medium md:font-semibold text-foreground max-md:text-center">
-        Today's Orders
-      </h1>
-      <div className="flex flex-col md:flex-row md:items-center gap-6">
-        <div className="flex items-center justify-center gap-3 relative">
-          <Popover >
-            <PopoverTrigger asChild>
-              <Button
-                variant={"outline"}
-                className={cn(
-                  "w-[140px] hover:bg-white md:w-[280px] rounded-none justify-start text-left font-normal max-md:w-full",
-                  !date && "text-muted-foreground"
-                )}
-              >
-                <CalendarIcon className="mr-1 h-4 w-5" size={20} />
-                {date && date.from && date.to ? <>{format(date.from, "PP")} - {format(date.to, "PP")} </> : <span>Pick a date</span>}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-auto p-0 " align="start">
-              <Calendar
-                mode="range"
-                selected={date}
-                onSelect={setDate}
-                numberOfMonths={2}
-                disabled={{ after: new Date() }}
-                defaultMonth={getPreviousMonthDate()}
-              />
-            </PopoverContent>
-          </Popover>
-          {
-            showClearFilterIcon && <CircleX color="red" size={20} className="absolute -top-1 -right-1 cursor-pointer" onClick={ClearDateFilter} />
-          }
-        </div>
-        {/* To be done on Updation  */}
-        {/* <Select onValueChange={value => setDuration(value)}>
-          <SelectTrigger className="w-[150px]" >
-            <SelectValue placeholder="Choose Filter" />
-          </SelectTrigger>
-          <SelectContent >
-            <SelectGroup>
-              <SelectItem value="2">Past 2 hours</SelectItem>
-              <SelectItem value="8">Past 8 hours</SelectItem>
-              <SelectItem value="24">Past 24 hours</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select> */}
-        <Button onClick={showFilterData} disabled={!date || !date.from || !date.to}>Apply</Button>
+    setShowClearFilterIcon(false);
+  };
 
+  return (
+    <div className="w-full  h-auto flex flex-col md:flex-row gap-4 md:gap-0 md:items-center md:justify-between px-6 py-4">
+      <div className="w-full bg-gradient-to-r from-black to-indigo-600 flex items-center justify-between p-6 rounded-md">
+        <div>
+          <p className="font-medium text-white">Welcome back 👋,</p>
+          <h1 className="text-xl text-white capitalize font-bold text-foreground max-md:text-center">
+            {currentUser?.name}
+          </h1>
+        </div>
+        <div className="flex flex-col md:flex-row md:items-center gap-6">
+          <div className="flex items-center justify-center gap-8 relative">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "rounded-md bg-white text-black justify-start text-left font-normal max-md:w-full",
+                    !date?.from && "text-white"
+                  )}
+                >
+                  <CalendarIcon className="mr-1 h-4 w-5 text-black" size={20} />
+                  {date.from ? (
+                    <>{format(date.from, "PP")} </>
+                  ) : (
+                    <span className="text-black">From a date</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0 " align="start">
+                <Calendar
+                  mode="range"
+                  selected={date}
+                  onSelect={setDate}
+                  numberOfMonths={1}
+                  disabled={{ after: new Date() }}
+                  defaultMonth={getPreviousMonthDate()}
+                />
+              </PopoverContent>
+            </Popover>
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "rounded-md bg-transparent bg-white justify-start text-left font-normal max-md:w-full",
+                    !date.to && "text-white"
+                  )}
+                >
+                  <CalendarIcon className="text-black mr-1 h-4 w-5" size={20} />
+                  {date.to ? (
+                    <>{format(date.to, "PP")} </>
+                  ) : (
+                    <span className="text-black">To a date</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0 " align="start">
+                <Calendar
+                  mode="range"
+                  selected={date}
+                  onSelect={setDate}
+                  numberOfMonths={1}
+                  disabled={{ after: new Date() }}
+                  defaultMonth={getPreviousMonthDate()}
+                />
+              </PopoverContent>
+            </Popover>
+            {showClearFilterIcon && (
+              <div className="absolute -top-1 -right-1 cursor-pointer w-5 h-5 text-gray-700 bg-white rounded-full overflow-hidden flex items-center justify-center">
+                <CircleX size={20} onClick={clearDateFilter} />
+              </div>
+            )}
+          </div>
+
+          <Button
+            onClick={showFilterData}
+            variant="outline"
+            className="bg-white text-black font-medium"
+          >
+            Apply
+          </Button>
+        </div>
       </div>
     </div>
   );

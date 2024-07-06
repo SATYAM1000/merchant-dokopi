@@ -10,52 +10,59 @@ import { API_DOMAIN } from "@/lib/constants";
 import mongoose from "mongoose";
 import { toast } from "sonner";
 import { fetchAccessToken } from "@/actions/access-token";
-import TableSkeleton from "./TableSkeleton";
-
+import { ClipLoader } from "react-spinners";
 
 const DashboardComponent = () => {
   const { storeId } = useCurrentUser();
+  if (!storeId) return null;
   const [Filterdata, setFilterData] = useState([]);
-  const [originalData, setOriginalDate] = useState(Filterdata)
-  const [isLoading, setisLoading] = useState(false)
+  const [originalData, setOriginalDate] = useState(Filterdata);
+  const [isLoading, setisLoading] = useState(true);
   const fetchOrdersData = async () => {
     try {
-      const { data } = await axios.get(`${API_DOMAIN}/api/v1/merchant/orders/dashboard/${storeId}`, {
-        headers: {
-          Authorization: `Bearer ${await fetchAccessToken()
-            }`
+      const { data } = await axios.get(
+        `${API_DOMAIN}/api/v1/merchant/orders/dashboard/${storeId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${await fetchAccessToken()}`,
+          },
         }
-      })
+      );
       if (!data.success) {
-        toast.error("failed to fetch the orders details")
+        toast.error("failed to fetch the orders details");
         return;
-      }
-      else {
+      } else {
         setFilterData(data.data);
-        setOriginalDate(data.data)
+        setOriginalDate(data.data);
       }
     } catch (error) {
-      toast.error("failed to fetch the orders details")
+      toast.error("failed to fetch the orders details");
     } finally {
-      setisLoading(true)
+      setisLoading(false);
     }
-  }
+  };
   useEffect(() => {
     if (mongoose.Types.ObjectId.isValid(storeId)) {
-      fetchOrdersData()
+      fetchOrdersData();
     }
-
-  }, [storeId])
+  }, [storeId]);
   return (
-    <section className="min-h-[calc(100vh-64px)] w-full">
-      <div className="w-full h-auto flex flex-col gap-0 ">
-        <OrderFilter setFilterData={setFilterData} originalData={originalData} />
-        <Wrapper>
-          {
-            isLoading ? <OrdersTable data={Filterdata} /> : <TableSkeleton />
-          }
-        </Wrapper>
-      </div>
+    <section className="min-h-screen no-scrollbar w-full">
+      {isLoading ? (
+        <div className="w-full h-screen flex items-center justify-center">
+          <ClipLoader color="blue" size={40} />
+        </div>
+      ) : (
+        <div className="w-full h-auto flex flex-col gap-0 ">
+          <OrderFilter
+            setFilterData={setFilterData}
+            originalData={originalData}
+          />
+          <Wrapper>
+            <OrdersTable data={Filterdata} />
+          </Wrapper>
+        </div>
+      )}
     </section>
   );
 };
