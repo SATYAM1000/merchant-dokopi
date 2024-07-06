@@ -250,9 +250,9 @@ const GettingStartedComponent = () => {
       </motion.div>
       {showConfetti && (
         <Confetti
-          width={windowDimensions.width - 200}
-          height={windowDimensions.height - 200}
-          recycle={false}
+          width={windowDimensions.width }
+          height={windowDimensions.height }
+          recycle={true}
         />
       )}
     </section>
