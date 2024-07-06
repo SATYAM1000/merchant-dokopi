@@ -252,7 +252,7 @@ const GettingStartedComponent = () => {
         <Confetti
           width={windowDimensions.width }
           height={windowDimensions.height }
-          recycle={true}
+          recycle={false}
         />
       )}
     </section>

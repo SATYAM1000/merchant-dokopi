@@ -97,7 +97,7 @@ const Analytics = () => {
       </div>
 
       <div className="w-full h-full overflow-hidden  flex flex-col lg:flex-row gap-6">
-        {loading && analyticsData ? (
+        {loading && !analyticsData ? (
           <ChartsSkelton />
         ) : (
           <EarningsChart data={analyticsData?.earningsChartData} ordersData={analyticsData?.ordersChartData} filter="thismonth" />
