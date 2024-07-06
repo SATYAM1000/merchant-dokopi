@@ -5,6 +5,20 @@ import { usePathname } from "next/navigation";
 import { FaStore, FaImages, FaClock, FaUserCircle } from "react-icons/fa";
 import { RiMoneyRupeeCircleFill } from "react-icons/ri";
 import { BiSolidBank, BiSupport } from "react-icons/bi";
+import { MdOutlineStoreMallDirectory } from "react-icons/md";
+import { MdStore } from "react-icons/md";
+import { FaRegImages } from "react-icons/fa";
+import { RiMoneyRupeeCircleLine } from "react-icons/ri";
+import { MdOutlineAccessTimeFilled } from "react-icons/md";
+import { MdOutlineAccessTime } from "react-icons/md";
+import { RiBankLine } from "react-icons/ri";
+import { RiBankFill } from "react-icons/ri";
+import { FaRegUser } from "react-icons/fa6";
+import { FaUser } from "react-icons/fa6";
+
+import { PiHeadphonesDuotone } from "react-icons/pi";
+import { PiHeadphonesFill } from "react-icons/pi";
+
 
 const SettingsSidebar = () => {
   const pathname = usePathname();
@@ -31,7 +45,7 @@ const SettingsSidebar = () => {
                 onMouseLeave={() => setHoveredItem(null)}
               >
                 <Link
-                  className={`flex items-center gap-x-3.5 py-2 text-sm text-gray-900 font-medium  hover:text-indigo-600 ${
+                  className={`flex items-center gap-x-3.5 py-2 text-sm text-gray-600 font-medium  hover:text-indigo-600 ${
                     pathname === item.path
                       ? "text-indigo-600 border-b border-[#E5E5E5]"
                       : "border-b border-[#E5E5E5]"
@@ -40,10 +54,10 @@ const SettingsSidebar = () => {
                 >
                   <span className="flex items-center">
                     {pathname === item.path || hoveredItem === index
-                      ? item.icon
+                      ? item.selectedIcon
                       : item.icon}
                   </span>
-                  <span className="font-medium text-[15px]">{item.title}</span>
+                  <span className="font-medium text-[14px]">{item.title}</span>
                 </Link>
               </li>
             ))}
@@ -55,79 +69,30 @@ const SettingsSidebar = () => {
   );
 };
 
-
 export default SettingsSidebar;
 
 const sidebarMenuItems = [
   {
     title: "Store details",
     path: "/settings/store-details",
-    selectedIcon: <FaStore className="h-5 w-5" aria-hidden="true" />,
+    selectedIcon: <MdStore className="h-6 w-6" aria-hidden="true" />,
     icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="lucide lucide-store "
-      >
-        <path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7" />
-        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-        <path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4" />
-        <path d="M2 7h20" />
-        <path d="M22 7v3a2 2 0 0 1-2 2a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7" />
-      </svg>
+      <MdOutlineStoreMallDirectory className="h-6 w-6" aria-hidden="true" />
     ),
   },
   {
     title: "Store Images",
     path: "/settings/store-images",
     selectedIcon: <FaImages className="h-5 w-5" aria-hidden="true" />,
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="lucide lucide-image "
-      >
-        <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-        <circle cx="9" cy="9" r="2" />
-        <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-      </svg>
-    ),
+    icon: <FaRegImages className="h-5 w-5" aria-hidden="true" />,
   },
   {
     title: "Store timing",
     path: "/settings/store-timing",
-    selectedIcon: <FaClock className="h-5 w-5" aria-hidden="true" />,
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="lucide lucide-clock-12"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <polyline points="12 6 12 12" />
-      </svg>
+    selectedIcon: (
+      <MdOutlineAccessTimeFilled className="h-5 w-5" aria-hidden="true" />
     ),
+    icon: <MdOutlineAccessTime className="h-5 w-5" aria-hidden="true" />,
   },
   {
     title: "Pricing",
@@ -135,100 +100,24 @@ const sidebarMenuItems = [
     selectedIcon: (
       <RiMoneyRupeeCircleFill className="h-5 w-5" aria-hidden="true" />
     ),
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="lucide lucide-indian-rupee"
-      >
-        <path d="M6 3h12" />
-        <path d="M6 8h12" />
-        <path d="m6 13 8.5 8" />
-        <path d="M6 13h3" />
-        <path d="M9 13c6.667 0 6.667-10 0-10" />
-      </svg>
-    ),
+    icon: <RiMoneyRupeeCircleLine className="h-5 w-5" aria-hidden="true" />,
   },
   {
     title: "Bank details",
     path: "/settings/bank-details",
-    selectedIcon: <BiSolidBank className="h-5 w-5" aria-hidden="true" />,
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="lucide lucide-landmark"
-      >
-        <line x1="3" x2="21" y1="22" y2="22" />
-        <line x1="6" x2="6" y1="18" y2="11" />
-        <line x1="10" x2="10" y1="18" y2="11" />
-        <line x1="14" x2="14" y1="18" y2="11" />
-        <line x1="18" x2="18" y1="18" y2="11" />
-        <polygon points="12 2 20 7 4 7" />
-      </svg>
-    ),
+    selectedIcon: <RiBankFill className="h-5 w-5" aria-hidden="true" />,
+    icon: <RiBankLine className="h-5 w-5" />,
   },
   {
     title: "Staff accounts",
     path: "/",
-    selectedIcon: <FaUserCircle className="h-5 w-5" aria-hidden="true" />,
-
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="lucide lucide-scan-face"
-      >
-        <path d="M3 7V5a2 2 0 0 1 2-2h2" />
-        <path d="M17 3h2a2 2 0 0 1 2 2v2" />
-        <path d="M21 17v2a2 2 0 0 1-2 2h-2" />
-        <path d="M7 21H5a2 2 0 0 1-2-2v-2" />
-        <path d="M8 14s1.5 2 4 2 4-2 4-2" />
-        <path d="M9 9h.01" />
-        <path d="M15 9h.01" />
-      </svg>
-    ),
+    selectedIcon: <FaUser className="h-4 w-4" aria-hidden="true" />,
+    icon: <FaRegUser className="h-4 w-4" aria-hidden="true" />,
   },
   {
     title: "Support",
     path: "/settings/support",
-    selectedIcon: <BiSupport className="h-5 w-5" aria-hidden="true" />,
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="lucide lucide-headphones "
-      >
-        <path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3" />
-      </svg>
-    ),
+    selectedIcon: <PiHeadphonesFill className="h-5 w-5" aria-hidden="true" />,
+    icon: <PiHeadphonesDuotone className="h-5 w-5" aria-hidden="true" />,
   },
 ];
