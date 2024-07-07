@@ -14,8 +14,8 @@ const Sidebar = () => {
   )
     return null;
   return (
-    <div className="hidden md:flex md:w-16 h-screen md:flex-col shrink-0 overflow-hidden sticky left-0 top-0">
-      <div className="flex flex-col flex-grow pt-5 overflow-y-auto bg-white border-r">
+    <div className="hidden md:flex md:w-16 h-screen md:flex-col shrink-0 overflow-hidden sticky top-0">
+      <div className="flex flex-col h-full flex-grow pt-5 overflow-y-auto bg-white border-r">
         <div className="flex items-center flex-shrink-0 px-4">
           <Menu />
         </div>

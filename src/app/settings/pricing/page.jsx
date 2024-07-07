@@ -4,7 +4,7 @@ import React from "react";
 
 const PricingPage = () => {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="w-full flex flex-col gap-8">
       <StorePricing />
       <ConditionsList />
     </div>

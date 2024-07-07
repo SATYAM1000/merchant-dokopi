@@ -1,6 +1,7 @@
-import { Button } from "@/components/ui/button";
+
 import React from "react";
 import PricingChart from "./PricingChart";
+
 
 const StorePricing = () => {
   return (
@@ -17,5 +18,4 @@ const StorePricing = () => {
     </section>
   );
 };
-
 export default StorePricing;

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import OrderCard from "./OrderCard";
 import { format } from "date-fns";
 import Image from "next/image";
@@ -50,6 +50,8 @@ const OrdersContainer = ({
           />
         ))}
       </div>
+
+      {/* <ScrollBar orientation="vertical" className="w-1 border-l border-l-transparent" /> */}
     </ScrollArea>
   );
 };

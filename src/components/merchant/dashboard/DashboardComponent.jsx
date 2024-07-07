@@ -47,7 +47,7 @@ const DashboardComponent = () => {
     }
   }, [storeId]);
   return (
-    <section className="min-h-screen no-scrollbar w-full">
+    <section className="min-h-screen w-full overflow-hidden">
       {isLoading ? (
         <div className="w-full h-screen flex items-center justify-center">
           <ClipLoader color="blue" size={40} />

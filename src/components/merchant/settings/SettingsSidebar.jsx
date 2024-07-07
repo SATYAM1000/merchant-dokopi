@@ -2,23 +2,21 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
-import { FaStore, FaImages, FaClock, FaUserCircle } from "react-icons/fa";
-import { RiMoneyRupeeCircleFill } from "react-icons/ri";
-import { BiSolidBank, BiSupport } from "react-icons/bi";
-import { MdOutlineStoreMallDirectory } from "react-icons/md";
-import { MdStore } from "react-icons/md";
-import { FaRegImages } from "react-icons/fa";
-import { RiMoneyRupeeCircleLine } from "react-icons/ri";
-import { MdOutlineAccessTimeFilled } from "react-icons/md";
-import { MdOutlineAccessTime } from "react-icons/md";
-import { RiBankLine } from "react-icons/ri";
-import { RiBankFill } from "react-icons/ri";
-import { FaRegUser } from "react-icons/fa6";
-import { FaUser } from "react-icons/fa6";
-
-import { PiHeadphonesDuotone } from "react-icons/pi";
-import { PiHeadphonesFill } from "react-icons/pi";
-
+import { FaImages, FaUserCircle } from "react-icons/fa";
+import {
+  RiMoneyRupeeCircleFill,
+  RiMoneyRupeeCircleLine,
+  RiBankFill,
+  RiBankLine,
+} from "react-icons/ri";
+import {
+  MdOutlineStoreMallDirectory,
+  MdStore,
+  MdOutlineAccessTimeFilled,
+  MdOutlineAccessTime,
+} from "react-icons/md";
+import { FaRegImages, FaRegUser, FaUser } from "react-icons/fa6";
+import { PiHeadphonesDuotone, PiHeadphonesFill } from "react-icons/pi";
 
 const SettingsSidebar = () => {
   const pathname = usePathname();
@@ -26,45 +24,42 @@ const SettingsSidebar = () => {
   const [hoveredItem, setHoveredItem] = useState(null);
 
   return (
-    <div className="bg-white h-fit sticky top-6">
-      <div
-        id="docs-sidebar"
-        className={`hs-overlay [--auto-close:lg] ${
-          isSidebarOpen ? "hs-overlay-open:translate-x-0" : "-translate-x-full"
-        } transition-all duration-300 transform hidden  w-64 bg-white border-e border-gray-200  pb-10 overflow-y-auto lg:block lg:translate-x-0 lg:end-auto lg:bottom-0 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300`}
+    <div
+      id="docs-sidebar"
+      className={` sticky top-6 h-fit  transition-all duration-300 transform w-16 lg:w-64 bg-white border-e border-gray-200  pb-10 overflow-y-auto lg:block lg:translate-x-0 lg:end-auto lg:bottom-0 `}
+    >
+      <nav
+        className="p-3 lg:p-6 w-full flex flex-col flex-wrap"
+        data-hs-accordion-always-open
       >
-        <nav
-          className="hs-accordion-group p-6 w-full flex flex-col flex-wrap"
-          data-hs-accordion-always-open
-        >
-          <ul className="space-y-1.5">
-            {sidebarMenuItems.map((item, index) => (
-              <li
-                key={index}
-                onMouseEnter={() => setHoveredItem(index)}
-                onMouseLeave={() => setHoveredItem(null)}
+        <ul className="space-y-1.5">
+          {sidebarMenuItems.map((item, index) => (
+            <li
+              key={index}
+              onMouseEnter={() => setHoveredItem(index)}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
+              <Link
+                className={`flex items-center justify-center lg:justify-start gap-x-3.5 py-2 text-sm text-gray-600 font-medium  hover:text-indigo-600 ${
+                  pathname === item.path
+                    ? "text-indigo-600 border-b border-[#E5E5E5]"
+                    : "border-b border-[#E5E5E5]"
+                }`}
+                href={item.path}
               >
-                <Link
-                  className={`flex items-center gap-x-3.5 py-2 text-sm text-gray-600 font-medium  hover:text-indigo-600 ${
-                    pathname === item.path
-                      ? "text-indigo-600 border-b border-[#E5E5E5]"
-                      : "border-b border-[#E5E5E5]"
-                  }`}
-                  href={item.path}
-                >
-                  <span className="flex items-center">
-                    {pathname === item.path || hoveredItem === index
-                      ? item.selectedIcon
-                      : item.icon}
-                  </span>
-                  <span className="font-medium text-[14px]">{item.title}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-      {/* End Sidebar */}
+                <span className="flex items-center">
+                  {pathname === item.path || hoveredItem === index
+                    ? item.selectedIcon
+                    : item.icon}
+                </span>
+                <span className="hidden lg:inline font-medium text-[14px]">
+                  {item.title}
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </div>
   );
 };
@@ -110,7 +105,7 @@ const sidebarMenuItems = [
   },
   {
     title: "Staff accounts",
-    path: "/",
+    path: "/settings/staff-accounts",
     selectedIcon: <FaUser className="h-4 w-4" aria-hidden="true" />,
     icon: <FaRegUser className="h-4 w-4" aria-hidden="true" />,
   },

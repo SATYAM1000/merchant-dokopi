@@ -27,10 +27,10 @@ export default async function RootLayout({ children }) {
             <div className="flex flex-1 ">
               {session && session?.user?.storeId === null ? null : <Sidebar />}
               {/* Main Content */}
-              <div className="flex flex-col flex-1 min-h-[100vh]">
+              <div className="flex flex-col flex-1 min-h-screen">
                 <main className="w-full h-full">
                   <div className="w-full h-full">
-                    <div className=" mx-auto max-w-8xl w-full h-full ">
+                    <div className=" w-full h-full">
                       {session?.user?.storeId === null ? (
                         <GettingStartedComponent />
                       ) : (

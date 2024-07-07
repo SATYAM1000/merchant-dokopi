@@ -180,8 +180,8 @@ const OrdersComponent = () => {
       {isStoreSetupCompleted ? (
         <>
           {/* Left Side */}
-          <div className="w-full md:w-1/2 lg:w-1/4 h-full">
-            <div className="w-full h-full flex flex-col gap-0 relative bg-white border-r">
+          <div className="w-full md:w-1/2 lg:w-2/6 xl:w-1/4 h-full">
+            <div className="w-full  h-full flex flex-col gap-0 relative bg-white border-r">
               <Header
                 date={date}
                 setDate={setDate}
@@ -202,9 +202,9 @@ const OrdersComponent = () => {
 
           {/* Right Side */}
           {!selectedOrder ? (
-            <div className="hidden md:w-1/2 lg:w-3/4 h-full bg-gray-100 bg-contain bg-center md:flex flex-col"></div>
+            <div className="hidden md:w-1/2 lg:w-4/6 xl:w-3/4 h-full bg-gray-100 bg-contain bg-center md:flex flex-col"></div>
           ) : (
-            <div className="hidden md:w-1/2 lg:w-3/4 h-full w-full bg-custom-image bg-contain bg-center md:flex flex-col">
+            <div className="hidden md:w-1/2 lg:w-4/6 xl:w-3/4 h-full w-full bg-custom-image bg-contain bg-center md:flex flex-col">
               <UserInfoHeader order={selectedOrder} />
 
               {/* Documents */}

@@ -72,13 +72,15 @@ const UploadedImages = ({
             uploadedImages.map((image, index) => (
               <div
                 key={index}
-                className="relative w-28 h-28 rounded-md overflow-hidden"
+                className="relative w-28 h-28 rounded-md overflow-hidden flex items-center justify-center border border-[#D9D9D9] p-2"
                 onMouseEnter={() => handleMouseEnter(index)}
                 onMouseLeave={handleMouseLeave}
               >
-                <img
+                <Image
                   src={`${cloudFrontURL}/${image}`}
                   alt="uploaded image"
+                  width={300}
+                  height={300}
                   className="object-contain rounded overflow-hidden"
                 />
 

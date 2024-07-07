@@ -42,7 +42,12 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "two.satyamx55.bucket.s3.ap-south-1.amazonaws.com",
-        
+      },
+      {
+        protocol: "https",
+        hostname: "d28fpa5kkce5uk.cloudfront.net",
+        port: "",
+        pathname: "/**",
       },
     ],
   },

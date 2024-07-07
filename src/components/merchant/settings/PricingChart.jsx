@@ -15,8 +15,8 @@ const PricingChart = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <section className="w-full h-fit">
-      <div className="w-full flex items-center gap-8">
+    <section className="w-full h-fit flex flex-col gap-4">
+      <div className="w-full grid grid-cols-4 gap-2">
         <div className="">
           <label
             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -24,7 +24,6 @@ const PricingChart = () => {
           >
             Paper Size
           </label>
-
           <Select>
             <SelectTrigger className="w-[200px] font-medium text-[13px] appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500  ">
               <SelectValue placeholder="Select paper size" />
@@ -96,18 +95,17 @@ const PricingChart = () => {
             Base Price
           </label>
 
-          <div className="flex items-center gap-12">
-            <input
-              type="number"
-              id="base-price"
-              placeholder="0"
-              min="0"
-              className="mt-1 appearance-none w-[200px] font-medium text-[13px] bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-            />
-
-            <Button onClick={() => setIsModalOpen(true)}>Add Conditions</Button>
-          </div>
+          <input
+            type="number"
+            id="base-price"
+            placeholder="0"
+            min="0"
+            className="mt-1 appearance-none w-[200px] font-medium text-[13px] bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          />
         </div>
+      </div>
+      <div className="w-full flex items-center justify-end mt-6">
+        <Button onClick={() => setIsModalOpen(true)}>Add Conditions</Button>
       </div>
       <AddConditionModal
         isOpen={isModalOpen}
