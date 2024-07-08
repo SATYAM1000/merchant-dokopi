@@ -1,14 +1,8 @@
-import ConditionsList from "@/components/merchant/settings/ConditionsList";
-import StorePricing from "@/components/merchant/settings/StorePricing";
+import StoreMainPricingComponent from "@/components/merchant/settings/StoreMainPricingComponent";
 import React from "react";
 
 const PricingPage = () => {
-  return (
-    <div className="w-full flex flex-col gap-8">
-      <StorePricing />
-      <ConditionsList />
-    </div>
-  );
+  return <StoreMainPricingComponent />;
 };
 
 export default PricingPage;

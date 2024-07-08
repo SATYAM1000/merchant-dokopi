@@ -3,7 +3,7 @@ import React from "react";
 import PricingChart from "./PricingChart";
 
 
-const StorePricing = () => {
+const StorePricing = ({priceList, setpriceList, isStorePricingListExist, setIsStorePricingListExist}) => {
   return (
     <section className="w-full bg-white h-fit px-6 py-6  ">
       <div>
@@ -13,7 +13,7 @@ const StorePricing = () => {
         </p>
       </div>
       <div className="mt-8">
-        <PricingChart />
+        <PricingChart priceList={priceList} setpriceList={setpriceList} isStorePricingListExist={isStorePricingListExist} setIsStorePricingListExist={setIsStorePricingListExist} />
       </div>
     </section>
   );

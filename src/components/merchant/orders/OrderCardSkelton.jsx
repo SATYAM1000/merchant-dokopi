@@ -9,6 +9,7 @@ const OrderCardSkelton = () => {
       <div className="flex flex-col gap-1">
         {Array.from({ length: 30 }).map((_, i) => (
           <div
+            key={i}
             className={`text-sm h-18 cursor-default transition-all duration-500`}
           >
             <div

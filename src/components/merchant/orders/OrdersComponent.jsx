@@ -24,6 +24,7 @@ const OrdersComponent = () => {
     currentUser?.isStoreSetUpCompleted
   );
 
+
   const [activeOrders, setActiveOrders] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [selectedOrderId, setSelectedOrderId] = useState(null);
@@ -55,6 +56,8 @@ const OrdersComponent = () => {
     } catch (error) {
       if (error.response?.status === 404) {
         setActiveOrders([]);
+        setStoreSetUpActiveStep(null);
+        setIsStoreSetupCompleted(true);
       } else if (
         error.response?.status === 400 &&
         error.response?.data?.code === "SETUP_INCOMPLETE"
@@ -83,7 +86,7 @@ const OrdersComponent = () => {
 
   useEffect(() => {
     fetchOrdersForXeroxStore();
-  }, [date]);
+  }, [date,currentUser?.isStoreSetUpCompleted]);
 
   useEffect(() => {
     const initializeSocket = () => {

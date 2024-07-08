@@ -66,7 +66,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       const storeInfo = await XeroxStore.findOne({
         storeOwner: token.sub,
       }).select("_id storeCurrentStatus isStoreSetupComplete");
-      
+
       token.storeId = storeInfo ? storeInfo._id : null;
       token.storeStatus = storeInfo
         ? storeInfo.storeCurrentStatus || "closed"

@@ -25,16 +25,18 @@ const steps = [
   {
     label: "Step 3: Set Store Hours",
     description: "Set the opening and closing hours of your store.",
-    route: "/settings/store-hours",
+    route: "/settings/store-timing",
   },
   {
-    label: "Step 4: Set Pricing",
+    label: "Step 4: Set Store Pricing",
     description: "Set pricing for different services offered by your store.",
-    route: "/settings/store-pricing",
+    route: "/settings/pricing",
   },
 ];
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 const StoreSetUpComponent = ({ storeSetUpActiveStep }) => {
+  const user=useCurrentUser();
   const [activeStep, setActiveStep] = useState(storeSetUpActiveStep || 0);
   useEffect(() => {
     setActiveStep(storeSetUpActiveStep);
