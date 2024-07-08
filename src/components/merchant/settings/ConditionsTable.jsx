@@ -1,21 +1,31 @@
 "use client";
 import React from "react";
-import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { EllipsisVertical } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const HeaderOptions = [
   {
     index: 1,
-    heading: "Print Type",
+    heading: "Paper Size",
   },
+
   {
     index: 2,
     heading: "Printing Sides",
   },
   {
     index: 3,
-    heading: "Paper Size",
+    heading: "Print Type",
   },
+
   {
     index: 4,
     heading: "Base Price",
@@ -43,8 +53,6 @@ const HeaderOptions = [
 ];
 
 const ConditionsTable = ({ priceList = [] }) => {
-  console.log("Your store pricing is", priceList);
-
   const getAmountInINR = (amount) => {
     const calculated_amount = new Intl.NumberFormat("en-IN", {
       style: "currency",
@@ -60,7 +68,7 @@ const ConditionsTable = ({ priceList = [] }) => {
           <tr className="bg-gray-100">
             {HeaderOptions?.map((heading) => (
               <th
-                className="py-2 px-4 border-b text-center uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                className="px-2 py-3 border-b text-center uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 key={heading.index + heading.heading}
               >
                 {heading.heading}
@@ -71,17 +79,20 @@ const ConditionsTable = ({ priceList = [] }) => {
 
         <tbody>
           {priceList?.map((price, priceIndex) => {
-            const className = `py-2 px-4 border-b text-center capitalize`;
+            const className = `p-2 text-[13px] font-medium text-gray-600 border-b text-center capitalize`;
 
             return price.conditionsList.map((condition, conditionIndex) => (
-              <tr key={`${priceIndex}-${conditionIndex}`}>
+              <tr className="hover:bg-[#f5f5f5]" key={`${priceIndex}-${conditionIndex}`}>
+                <td className={className}>{price.paperSize}</td>
                 <td className={className}>
-                  {price.printType.split("_").join(" ")}
+                  {price.printType.split("_").join(" ") === "black and white"
+                    ? "B/W"
+                    : price.printType.split("_").join(" ")}
                 </td>
                 <td className={className}>
                   {price.printingSides.split("_").join(" ")}
                 </td>
-                <td className={className}>{price.paperSize}</td>
+
                 <td className={className}>{getAmountInINR(price.basePrice)}</td>
                 <td className={className}>
                   {condition.conditionName.split("_").join(" ")}
@@ -94,9 +105,23 @@ const ConditionsTable = ({ priceList = [] }) => {
                   {getAmountInINR(condition.conditionPrice)}
                 </td>
                 <td className={className}>
-                  <Button className="text-red-600" variant="ghost">
-                    <Trash2 />
-                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="py-1 px-0.5 border-none bg-transparent"
+                        onClick={() => console.log("delete")}
+                      >
+                        <EllipsisVertical className="w-5 h-5" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem>Edit</DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>Delete</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </td>
               </tr>
             ));

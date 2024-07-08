@@ -15,8 +15,8 @@ const PricingChart = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <section className="w-full h-fit flex flex-col gap-4">
-      <div className="w-full grid grid-cols-4 gap-2">
+    <section className="w-full h-fit">
+      <div className="w-full grid grid-cols-2 lg:grid-cols-5 gap-6">
         <div className="">
           <label
             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -25,7 +25,7 @@ const PricingChart = () => {
             Paper Size
           </label>
           <Select>
-            <SelectTrigger className="w-[200px] font-medium text-[13px] appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500  ">
+            <SelectTrigger className=" font-medium text-[13px] appearance-none text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500  ">
               <SelectValue placeholder="Select paper size" />
             </SelectTrigger>
             <SelectContent>
@@ -40,7 +40,7 @@ const PricingChart = () => {
           </Select>
         </div>
 
-        <div className="">
+        <div>
           <label
             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             htmlFor="print-type"
@@ -49,7 +49,7 @@ const PricingChart = () => {
           </label>
 
           <Select>
-            <SelectTrigger className="w-[200px] font-medium text-[13px] appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500  ">
+            <SelectTrigger className=" font-medium text-[13px] appearance-none text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500  ">
               <SelectValue placeholder="Select print type" />
             </SelectTrigger>
             <SelectContent>
@@ -66,7 +66,7 @@ const PricingChart = () => {
           </Select>
         </div>
 
-        <div className="">
+        <div>
           <label
             className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             htmlFor="print-sides"
@@ -75,7 +75,7 @@ const PricingChart = () => {
           </label>
 
           <Select>
-            <SelectTrigger className="w-[200px] font-medium text-[13px] appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500  ">
+            <SelectTrigger className=" font-medium text-[13px] appearance-none  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500  ">
               <SelectValue placeholder="Select print sides" />
             </SelectTrigger>
             <SelectContent>
@@ -89,7 +89,7 @@ const PricingChart = () => {
 
         <div className="">
           <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            className="block uppercase tracking-wide text-gray-700 text-xs font-bold  mb-1"
             htmlFor="base-price"
           >
             Base Price
@@ -100,13 +100,14 @@ const PricingChart = () => {
             id="base-price"
             placeholder="0"
             min="0"
-            className="mt-1 appearance-none w-[200px] font-medium text-[13px] bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            className="mt-1 md:w-[150px] lg:w-full appearance-none  font-medium text-[13px]  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
           />
         </div>
+        <div className=" flex items-center justify-end mt-6">
+          <Button onClick={() => setIsModalOpen(true)}>Add Conditions</Button>
+        </div>
       </div>
-      <div className="w-full flex items-center justify-end mt-6">
-        <Button onClick={() => setIsModalOpen(true)}>Add Conditions</Button>
-      </div>
+
       <AddConditionModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
