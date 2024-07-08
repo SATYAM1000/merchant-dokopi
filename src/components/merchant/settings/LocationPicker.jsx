@@ -1,12 +1,16 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
 
-const LocationPicker = ({ googleMapApiKey, onLocationChange, initialLatLng }) => {
+const LocationPicker = ({
+  googleMapApiKey,
+  onLocationChange,
+  initialLatLng,
+}) => {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
   const [latLng, setLatLng] = useState(initialLatLng);
   const [map, setMap] = useState(null);
-  const [zoomLevel, setZoomLevel] = useState(14);
+  const [zoomLevel, setZoomLevel] = useState(12);
 
   useEffect(() => {
     const loadGoogleMapsScript = () => {
@@ -71,7 +75,11 @@ const LocationPicker = ({ googleMapApiKey, onLocationChange, initialLatLng }) =>
   }, [latLng, map]);
 
   useEffect(() => {
-    if ((!initialLatLng || (initialLatLng.lat === 0 && initialLatLng.lng === 0)) && navigator.geolocation) {
+    if (
+      (!initialLatLng ||
+        (initialLatLng.lat === 0 && initialLatLng.lng === 0)) &&
+      navigator.geolocation
+    ) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const initialPosition = {
@@ -85,7 +93,10 @@ const LocationPicker = ({ googleMapApiKey, onLocationChange, initialLatLng }) =>
           setLatLng({ lat: 18.5204, lng: 73.8567 });
         }
       );
-    } else if (!initialLatLng || (initialLatLng.lat === 0 && initialLatLng.lng === 0)) {
+    } else if (
+      !initialLatLng ||
+      (initialLatLng.lat === 0 && initialLatLng.lng === 0)
+    ) {
       console.error("Geolocation is not supported by this browser.");
       setLatLng({ lat: 18.5204, lng: 73.8567 });
     }

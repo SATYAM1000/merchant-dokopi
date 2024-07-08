@@ -18,7 +18,6 @@ import { ClipLoader } from "react-spinners";
 import LocationPicker from "./LocationPicker";
 import { FaMapMarkerAlt } from "react-icons/fa";
 
-
 import {
   Dialog,
   DialogClose,
@@ -306,7 +305,6 @@ const StoreDetailsForm = ({ googleMapApiKey }) => {
           </section>
         </>
       ) : (
-        
         <form
           className="w-full mt-6"
           onSubmit={handleSubmit}
@@ -594,8 +592,8 @@ const StoreDetailsForm = ({ googleMapApiKey }) => {
                 </SelectTrigger>
                 <SelectContent className="capitalize">
                   <SelectGroup>
-                    {availableStates.map((state) => (
-                      <SelectItem key={state} value={state || "Not Available"}>
+                    {availableStates.map((state, index) => (
+                      <SelectItem key={index} value={state || "Not Available"}>
                         {state}
                       </SelectItem>
                     ))}
