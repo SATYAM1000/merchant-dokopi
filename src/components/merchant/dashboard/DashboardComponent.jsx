@@ -58,13 +58,13 @@ const DashboardComponent = () => {
             setFilterData={setFilterData}
             originalData={originalData}
           />
-          <Wrapper>
+          <Wrapper className={"max-lg:max-w-screen-md max-lg:overflow-x-scroll"}> 
             <OrdersTable data={Filterdata} />
           </Wrapper>
         </div>
       )}
     </section>
-  );
+  );  
 };
 
 export default DashboardComponent;

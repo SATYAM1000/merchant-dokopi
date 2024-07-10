@@ -46,7 +46,7 @@ function DataTableDemo({ data }) {
     },
   })
   return (
-    <div className="w-full">
+    <div >
       <TopTableFilter table={table} sorting={sorting} setSorting={setSorting} />
       <ShowTableRow table={table} columns={columns} />
       <TablePagination table={table} />
