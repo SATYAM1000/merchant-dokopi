@@ -30,7 +30,7 @@ const UserInfoHeader = ({ order }) => {
       setDownloadProgress(0);
 
       for (const item of order?.cartItems) {
-        const res = await axios.get(item?.fileURL, {
+        const res = await axios.get(`https://d28fpa5kkce5uk.cloudfront.net/${item.fileKey}`, {
           responseType: "blob",
           onDownloadProgress: (progressEvent) => {
             const progress = Math.round(

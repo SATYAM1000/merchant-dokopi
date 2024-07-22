@@ -7,6 +7,7 @@ import "react-circular-progressbar/dist/styles.css";
 import { toast } from "sonner";
 
 const DocumentInfo = ({ cartItems }) => {
+  console.log("cart items are ", cartItems);
   const [loadingStates, setLoadingStates] = useState({});
   const [progressStates, setProgressStates] = useState({});
 
@@ -15,9 +16,9 @@ const DocumentInfo = ({ cartItems }) => {
       setLoadingStates((prevState) => ({ ...prevState, [index]: true }));
       setProgressStates((prevState) => ({ ...prevState, [index]: 0 }));
 
-      if (!item?.fileURL) return;
+      if (!item?.fileKey) return;
 
-      const response = await axios.get(item.fileURL, {
+      const response = await axios.get(`https://d28fpa5kkce5uk.cloudfront.net/${item.fileKey}`, {
         responseType: "blob",
         onDownloadProgress: (progressEvent) => {
           const progress = Math.round(
@@ -35,7 +36,7 @@ const DocumentInfo = ({ cartItems }) => {
       link.href = url;
       link.setAttribute(
         "download",
-        item.fileOriginalName + `.${item.fileExtension}`
+        item.fileName + `.${item.fileExtension}`
       );
       document.body.appendChild(link);
       link.click();
@@ -67,36 +68,37 @@ const DocumentInfo = ({ cartItems }) => {
           key={index}
           className="bg-[#fff] relative rounded-lg border-b border-gray-800/[0.25] px-1 pb-6 pt-1 shadow "
         >
-          <div className="bg-[#f3f3f3] w-full rounded-sm p-4 flex flex-col">
+          <div className="bg-[#f3f3f3] w-full rounded-sm p-2 flex flex-col">
             <div className="w-full flex items-center justify-between">
               <div className="flex items-center gap-4">
-                {/* <Image
+                <Image
                   src={`${item?.iconPath}`}
                   alt="file icon"
                   width={32}
                   height={32}
-                /> */}
-                <div>
+                />
+                <div className="mt-1">
                   <p className="text-sm font-medium">
-                    {item?.fileOriginalName?.length > 15
-                      ? item?.fileOriginalName?.slice(0, 15) + "..."
-                      : item?.fileOriginalName}
+                    {item?.fileName?.length > 20
+                      ? `${item?.fileName?.slice(0, 20)}... ${
+                          item?.fileExtension
+                        }`
+                      : item?.fileName + `.${item?.fileExtension}`}
                   </p>
                   <div className="flex items-center gap-2">
                     <p className="text-xs text-gray-500">
-                      {item?.filePageCount}&nbsp;pages
+                      {item?.pageCount}&nbsp;pages
                     </p>
                     <p className="text-xs text-gray-500">
                       {item?.fileExtension.toUpperCase()}
                     </p>
-                    <p className="text-xs text-gray-500">{item?.fileSize}</p>
+                    <p className="text-xs text-gray-500">
+                      {convertBytes(item?.fileSize)}
+                    </p>
                   </div>
                 </div>
               </div>
               <div className="flex items-center gap-4">
-                <div className="text-white bg-green-600 font-medium flex items-center justify-center cursor-pointer h-8 w-8 p-1 rounded-full">
-                  <p className="font-medium">{item?.fileCopiesCount || 1}</p>
-                </div>
                 <div
                   onClick={() => handleDownload(item, index)}
                   className="text-white font-medium flex items-center justify-center cursor-pointer h-8 w-8 bg-green-600  p-1 rounded-full"
@@ -114,8 +116,8 @@ const DocumentInfo = ({ cartItems }) => {
                   ) : (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
+                      width="16"
+                      height="16"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
@@ -133,26 +135,27 @@ const DocumentInfo = ({ cartItems }) => {
               </div>
             </div>
           </div>
-          <div className="px-4 py-2">
+          <div className="px-4 py-2 text-[13px]">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium">Printing Mode</p>
-              <p className="text-sm text-gray-500">
-                {item?.filePrintMode === "simplex" && "Single Sided"}
-                {item?.filePrintMode === "duplex" && "Double Sided"}
-              </p>
+              <p className=" font-medium">Paper Size</p>
+              <p className=" text-gray-500">{item?.paperSize}</p>
             </div>
+
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium">Printing Type</p>
-              <p className="text-sm text-gray-500">
-                {item?.fileColorType === "color" && "Color"}
-                {item?.fileColorType === "black and white" && "Black and White"}
-                {item?.fileColorType === "mixed" && "Mixed"}
+              <p className=" font-medium">Print Type</p>
+              <p className=" text-gray-500 capitalize">{item?.printType.split("_")?.join(" ")}</p>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <p className=" font-medium">Printing Sides</p>
+              <p className=" text-gray-500 capitalize">
+                {item?.printSides.split("_")?.join(" ")}
               </p>
             </div>
             {item?.fileColorType === "mixed" && (
               <div>
-                <p className="text-sm font-medium">Color Pages</p>
-                <p className="text-sm text-gray-500">
+                <p className=" font-medium">Color Pages</p>
+                <p className=" text-gray-500">
                   1, 2, 3, 4, 5, 6, 7, 8, 9, 10
                 </p>
               </div>
@@ -160,8 +163,8 @@ const DocumentInfo = ({ cartItems }) => {
             {item?.messageForXeroxStore !== null &&
               item?.messageForXeroxStore?.length > 0 && (
                 <div>
-                  <p className="text-sm font-medium">Message</p>
-                  <p className="text-sm text-gray-500">
+                  <p className=" font-medium">Message</p>
+                  <p className=" text-gray-500">
                     {item?.messageForXeroxStore}
                   </p>
                 </div>
@@ -174,3 +177,14 @@ const DocumentInfo = ({ cartItems }) => {
 };
 
 export default DocumentInfo;
+
+function convertBytes(sizeInBytes) {
+  const KB = sizeInBytes / 1024;
+  const MB = sizeInBytes / (1024 * 1024);
+  if (MB > 1) {
+    return `${MB.toFixed(2)} MB`;
+  } else if (KB > 1) {
+    return `${KB.toFixed(2)} KB`;
+  }
+  return `${sizeInBytes} B`;
+}

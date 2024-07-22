@@ -37,7 +37,6 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { ClipLoader } from "react-spinners";
 
 const StoreSetUpComponent = ({ storeSetUpActiveStep }) => {
-  console.log("store setup active step ", storeSetUpActiveStep);
   if (!storeSetUpActiveStep) {
     return (
       <div className="w-full h-full flex items-center justify-center">
