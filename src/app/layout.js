@@ -16,6 +16,7 @@ import NextTopLoader from "nextjs-toploader";
 import Sidebar from "@/components/global/Sidebar";
 import GettingStartedComponent from "@/components/merchant/getting-started/GettingStartedComponent";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
+import { WarningBanner } from "@/components/merchant/auth/WarningBanner";
 
 export default async function RootLayout({ children }) {
   const session = await auth();
@@ -26,6 +27,8 @@ export default async function RootLayout({ children }) {
         <SessionProvider session={session}>
           <ReactQueryProvider>
             <TooltipProvider>
+             <WarningBanner/>
+
               <div className="flex flex-1 ">
                 {session && session?.user?.storeId === null ? null : (
                   <Sidebar />
