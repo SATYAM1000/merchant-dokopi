@@ -4,7 +4,6 @@ import Image from "next/image";
 import axios from "axios";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { LiaCheckDoubleSolid } from "react-icons/lia";
 import { toast } from "sonner";
 
 const DocumentInfo = ({ cartItems }) => {
@@ -71,16 +70,16 @@ const DocumentInfo = ({ cartItems }) => {
           <div className="bg-[#f3f3f3] w-full rounded-sm p-4 flex flex-col">
             <div className="w-full flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <Image
-                  src={`${item?.fileIconPath}`}
+                {/* <Image
+                  src={`${item?.iconPath}`}
                   alt="file icon"
                   width={32}
                   height={32}
-                />
+                /> */}
                 <div>
                   <p className="text-sm font-medium">
-                    {item?.fileOriginalName.length > 15
-                      ? item?.fileOriginalName.slice(0, 15) + "..."
+                    {item?.fileOriginalName?.length > 15
+                      ? item?.fileOriginalName?.slice(0, 15) + "..."
                       : item?.fileOriginalName}
                   </p>
                   <div className="flex items-center gap-2">
@@ -159,7 +158,7 @@ const DocumentInfo = ({ cartItems }) => {
               </div>
             )}
             {item?.messageForXeroxStore !== null &&
-              item?.messageForXeroxStore.length > 0 && (
+              item?.messageForXeroxStore?.length > 0 && (
                 <div>
                   <p className="text-sm font-medium">Message</p>
                   <p className="text-sm text-gray-500">

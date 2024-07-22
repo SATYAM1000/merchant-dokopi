@@ -48,7 +48,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.image = token.picture || token.image;
         session.user.role = token.role;
         session.user.storeId = token.storeId || null;
-        session.user.storeStatus = token.storeStatus || null;
         session.user.isStoreSetUpCompleted =
           token.isStoreSetUpCompleted || false;
       }
@@ -65,12 +64,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       const storeInfo = await XeroxStore.findOne({
         storeOwner: token.sub,
-      }).select("_id storeCurrentStatus isStoreSetupComplete");
+      }).select("_id isStoreSetupComplete");
 
       token.storeId = storeInfo ? storeInfo._id : null;
-      token.storeStatus = storeInfo
-        ? storeInfo.storeCurrentStatus || "closed"
-        : null;
       token.isStoreSetUpCompleted = storeInfo?.isStoreSetupComplete || false;
       token.role = user.role;
       token.name = user.name;

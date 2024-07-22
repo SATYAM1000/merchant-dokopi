@@ -34,9 +34,18 @@ const steps = [
   },
 ];
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { ClipLoader } from "react-spinners";
 
 const StoreSetUpComponent = ({ storeSetUpActiveStep }) => {
-  const user=useCurrentUser();
+  console.log("store setup active step ", storeSetUpActiveStep);
+  if (!storeSetUpActiveStep) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <ClipLoader color="blue" size={40} />
+      </div>
+    );
+  }
+  const user = useCurrentUser();
   const [activeStep, setActiveStep] = useState(storeSetUpActiveStep || 0);
   useEffect(() => {
     setActiveStep(storeSetUpActiveStep);

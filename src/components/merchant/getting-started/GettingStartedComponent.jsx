@@ -15,7 +15,6 @@ const Confetti = dynamic(() => import("react-confetti"), { ssr: false });
 const GettingStartedComponent = () => {
   const [showLoader, setShowLoader] = useState(false);
   const currentUser = useCurrentUser();
-  console.log(currentUser);
   const [loading, setLoading] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [success, setSuccess] = useState(false);
