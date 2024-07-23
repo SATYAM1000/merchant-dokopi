@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ClipLoader } from "react-spinners";
+import { WarningBanner } from "../auth/WarningBanner";
 
 const StoreSetUpComponent = lazy(() => import("./StoreSetUpComponent"));
 
@@ -178,21 +179,42 @@ const OrdersComponent = () => {
           }
         );
 
-        const activeOrders = queryClient.getQueryData([
-          "orders",
-          currentUser,
-          date,
-        ]);
-        queryClient.setQueryData(["orders", currentUser, date], (oldData) =>
-          oldData.map((ord) =>
-            ord._id === order._id
-              ? { ...ord, isOrderViewedByMerchant: true }
-              : ord
-          )
-        );
+        
+        queryClient.setQueryData(["orders", currentUser, date], (oldData) => {
+          if (Array.isArray(oldData)) {
+            return oldData.map((ord) =>
+              ord._id === order._id
+                ? { ...ord, isOrderViewedByMerchant: true }
+                : ord
+            );
+          } else {
+            console.warn("Old data is not an array:", oldData);
+            return [];
+          }
+        });
       } catch (error) {
         console.error("Error marking order as viewed:", error);
       }
+    }
+  };
+
+  const updateOrderStatus = (orderId, newStatus) => {
+    queryClient.setQueryData(["orders", currentUser, date], (oldData) => {
+      if (Array.isArray(oldData)) {
+        return oldData.map((order) =>
+          order._id === orderId ? { ...order, orderStatus: newStatus } : order
+        );
+      } else {
+        console.warn("Old data is not an array:", oldData);
+        return [];
+      }
+    });
+
+    if (selectedOrder && selectedOrder._id === orderId) {
+      setSelectedOrder((prevOrder) => ({
+        ...prevOrder,
+        orderStatus: newStatus,
+      }));
     }
   };
 
@@ -226,7 +248,10 @@ const OrdersComponent = () => {
             <div className="hidden md:w-1/2 lg:w-4/6 xl:w-3/4 h-full bg-gray-100 bg-contain bg-center md:flex flex-col"></div>
           ) : (
             <div className="hidden md:w-1/2 lg:w-4/6 xl:w-3/4 h-full w-full bg-custom-image bg-contain bg-center md:flex flex-col">
-              <UserInfoHeader order={selectedOrder} />
+              <UserInfoHeader
+                order={selectedOrder}
+                updateOrderStatus={updateOrderStatus}
+              />
 
               {/* Documents */}
               <div className="w-full h-full">
