@@ -28,6 +28,8 @@ const DashboardComponent = () => {
           },
         }
       );
+
+      console.log("fetched orders are ",data);
       if (!data.success) {
         toast.error("failed to fetch the orders details");
         return;
@@ -37,6 +39,7 @@ const DashboardComponent = () => {
       }
     } catch (error) {
       toast.error("failed to fetch the orders details");
+      console.log("failed to fetch the orders details", error);
     } finally {
       setisLoading(false);
     }
@@ -54,17 +57,23 @@ const DashboardComponent = () => {
         </div>
       ) : (
         <div className="w-full h-auto flex flex-col gap-0 ">
-          <OrderFilter
-            setFilterData={setFilterData}
-            originalData={originalData}
-          />
-          <Wrapper className={"max-lg:max-w-screen-md max-lg:overflow-x-scroll"}> 
+          <Wrapper
+            className={"max-lg:max-w-screen-md max-lg:overflow-x-scroll"}
+          >
+            <OrderFilter
+              setFilterData={setFilterData}
+              originalData={originalData}
+            />
+          </Wrapper>
+          <Wrapper
+            className={"max-lg:max-w-screen-md max-lg:overflow-x-scroll"}
+          >
             <OrdersTable data={Filterdata} />
           </Wrapper>
         </div>
       )}
     </section>
-  );  
+  );
 };
 
 export default DashboardComponent;

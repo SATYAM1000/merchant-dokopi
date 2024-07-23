@@ -4,6 +4,7 @@ import Link from "next/link";
 import React from "react";
 
 const ReceivedDocument = ({ docs }) => {
+  console.log("docs is ", docs);
   return (
     <div className="space-y-6 w-[100%] max-h-[67vh] rounded-md relative hide-scrollbar flex flex-col gap-2">
       <ul className="space-y-4 rounded-md">
@@ -12,13 +13,13 @@ const ReceivedDocument = ({ docs }) => {
           className="flex p-2 rounded-md items-center gap-4 pb-4 min-w-full"
         >
           <img
-            src={docs?.fileIconPath}
-            alt={docs?.fileOriginalName}
+            src={docs?.iconPath}
+            alt={docs?.fileName}
             className="h-16 w-16 rounded object-contain"
           />
           <div className="w-full">
             <h3 className="text-[15px] font-medium text-gray-900 ">
-              {docs?.fileOriginalName}
+              {docs?.fileName + "." + docs?.fileExtension}
             </h3>
             <dl className="mt-0.5 w-full space-y-px text-[11px] text-gray-700">
               <div className="flex items-center justify-between w-full ">
@@ -27,24 +28,20 @@ const ReceivedDocument = ({ docs }) => {
                     {docs?.fileSize}
                   </dd>
                   <dd className="inline font-medium">
-                    {docs?.filePageCount}&nbsp;Pages
+                    {docs?.pageCount}&nbsp;Pages
                   </dd>
                 </div>
-                <div
-                  className="cursor-pointer"
-                  onClick={() => removeFromCartHandler(docs?.id)}
-                >
-                </div>
+                
               </div>
               <div className="flex items-center flex-wrap gap-2 text-gray-700 text-[11px] ">
                 <dd className="inline capitalize">
-                  {docs?.filePaperType}
+                  {docs?.paperSize}
                 </dd>
                 <dd className="inline capitalize ">
-                  {docs?.filePrintMode}
+                  {docs?.printSides.split("_").join(" ")}
                 </dd>
                 <dd className="inline capitalize">
-                  {docs?.fileColorType}
+                  {docs?.printType.split("_").join(" ")}
                 </dd>
                 <dd className="inline capitalize">
                   {docs?.additionalServices}
@@ -53,7 +50,7 @@ const ReceivedDocument = ({ docs }) => {
               </div>
               <div className="flex">
                 <Button variant="link" size="xs" className="ml-auto">
-                  <Link href={docs.fileURL} target="_blank" className="text-blue-800">Download</Link>
+                  <Link href={`https://d28fpa5kkce5uk.cloudfront.net/${docs?.fileKey}`} target="_blank" className="text-blue-800">Download</Link>
                 </Button>
               </div>
             </dl>

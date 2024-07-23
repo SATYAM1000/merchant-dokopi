@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Image from "next/image";
+
 const ShowTableRow = ({ table, columns }) => {
   return (
     <div className="border rounded-sm">

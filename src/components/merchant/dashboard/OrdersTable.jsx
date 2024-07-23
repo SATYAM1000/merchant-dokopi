@@ -1,5 +1,5 @@
-'use client'
-import * as React from "react"
+"use client";
+import * as React from "react";
 
 import {
   getCoreRowModel,
@@ -7,8 +7,7 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
-
+} from "@tanstack/react-table";
 
 import { columns } from "./table/tableColumns";
 import TopTableFilter from "./table/TopTableFilter";
@@ -19,13 +18,10 @@ function DataTableDemo({ data }) {
   if (data.lenght == 0) {
     return null;
   }
-  const [sorting, setSorting] = React.useState([])
-  const [columnFilters, setColumnFilters] = React.useState(
-    []
-  )
-  const [columnVisibility, setColumnVisibility] =
-    React.useState({})
-  const [rowSelection, setRowSelection] = React.useState({})
+  const [sorting, setSorting] = React.useState([]);
+  const [columnFilters, setColumnFilters] = React.useState([]);
+  const [columnVisibility, setColumnVisibility] = React.useState({});
+  const [rowSelection, setRowSelection] = React.useState({});
   const table = useReactTable({
     data,
     columns,
@@ -44,15 +40,14 @@ function DataTableDemo({ data }) {
       columnVisibility,
       rowSelection,
     },
-  })
+  });
   return (
-    <div >
+    <div>
       <TopTableFilter table={table} sorting={sorting} setSorting={setSorting} />
       <ShowTableRow table={table} columns={columns} />
       <TablePagination table={table} />
     </div>
-  )
+  );
 }
 
-
-export default DataTableDemo
+export default DataTableDemo;

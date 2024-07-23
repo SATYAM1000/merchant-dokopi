@@ -53,7 +53,7 @@ const OrderFilter = ({ setFilterData, originalData }) => {
   };
 
   return (
-    <div className="w-full  h-auto flex flex-col md:flex-row gap-4 md:gap-0 md:items-center md:justify-between px-6 py-4">
+    <div className="w-full  h-auto flex flex-col md:flex-row gap-4 md:gap-0 md:items-center md:justify-between mt-4">
       <div className="w-full bg-gradient-to-r from-black to-indigo-600 flex items-center justify-between p-6 rounded-md">
         <div>
           <p className="font-medium text-white">Welcome back 👋,</p>
