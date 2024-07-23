@@ -18,26 +18,26 @@ const DocumentInfo = ({ cartItems }) => {
 
       if (!item?.fileKey) return;
 
-      const response = await axios.get(`https://d28fpa5kkce5uk.cloudfront.net/${item.fileKey}`, {
-        responseType: "blob",
-        onDownloadProgress: (progressEvent) => {
-          const progress = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          setProgressStates((prevState) => ({
-            ...prevState,
-            [index]: progress,
-          }));
-        },
-      });
+      const response = await axios.get(
+        `https://d28fpa5kkce5uk.cloudfront.net/${item.fileKey}`,
+        {
+          responseType: "blob",
+          onDownloadProgress: (progressEvent) => {
+            const progress = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setProgressStates((prevState) => ({
+              ...prevState,
+              [index]: progress,
+            }));
+          },
+        }
+      );
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute(
-        "download",
-        item.fileName + `.${item.fileExtension}`
-      );
+      link.setAttribute("download", item.fileName + `.${item.fileExtension}`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -66,7 +66,7 @@ const DocumentInfo = ({ cartItems }) => {
       {cartItems.map((item, index) => (
         <div
           key={index}
-          className="bg-[#fff] relative rounded-lg border-b border-gray-800/[0.25] px-1 pb-6 pt-1 shadow "
+          className="bg-[#fff] relative rounded-lg border-b border-gray-800/[0.25] px-1 pb-1 pt-1 shadow "
         >
           <div className="bg-[#f3f3f3] w-full rounded-sm p-2 flex flex-col">
             <div className="w-full flex items-center justify-between">
@@ -135,7 +135,17 @@ const DocumentInfo = ({ cartItems }) => {
               </div>
             </div>
           </div>
-          <div className="px-4 py-2 text-[13px]">
+          <div
+            className={`px-3 py-2 text-[13px] ${
+              item?.xeroxStoreMessage?.length > 0
+                ? "border-b border-gray-200"
+                : ""
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <p className=" font-medium">No. of Copies</p>
+              <p className=" text-gray-500">{item?.copiesCount}</p>
+            </div>
             <div className="flex items-center justify-between">
               <p className=" font-medium">Paper Size</p>
               <p className=" text-gray-500">{item?.paperSize}</p>
@@ -143,7 +153,9 @@ const DocumentInfo = ({ cartItems }) => {
 
             <div className="flex items-center justify-between">
               <p className=" font-medium">Print Type</p>
-              <p className=" text-gray-500 capitalize">{item?.printType.split("_")?.join(" ")}</p>
+              <p className=" text-gray-500 capitalize">
+                {item?.printType.split("_")?.join(" ")}
+              </p>
             </div>
 
             <div className="flex items-center justify-between">
@@ -152,23 +164,32 @@ const DocumentInfo = ({ cartItems }) => {
                 {item?.printSides.split("_")?.join(" ")}
               </p>
             </div>
-            {item?.fileColorType === "mixed" && (
-              <div>
-                <p className=" font-medium">Color Pages</p>
-                <p className=" text-gray-500">
-                  1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+
+            {item?.printType === "mixed" && (
+              <div className="flex items-center justify-between">
+                <p className=" font-medium">Color Type</p>
+                <p className=" text-gray-500 capitalize">
+                  {item?.mixedPrintType.split("_")?.join(" ")}
                 </p>
               </div>
             )}
-            {item?.messageForXeroxStore !== null &&
-              item?.messageForXeroxStore?.length > 0 && (
-                <div>
-                  <p className=" font-medium">Message</p>
-                  <p className=" text-gray-500">
-                    {item?.messageForXeroxStore}
-                  </p>
-                </div>
-              )}
+
+            {item?.printType === "mixed" && (
+              <div className="flex items-center justify-between">
+                <p className=" font-medium">Color Pages</p>
+                <p className=" text-gray-500 capitalize">
+                  {item?.colorPages.join(", ")}
+                </p>
+              </div>
+            )}
+          </div>
+          <div>
+            {item?.xeroxStoreMessage?.length > 0 && (
+              <div className="py-1 px-3 rounded-md  text-[13px] ">
+                <p className=" font-medium">Message</p>
+                <p className=" text-gray-500">{item?.xeroxStoreMessage}</p>
+              </div>
+            )}
           </div>
         </div>
       ))}

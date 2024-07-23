@@ -79,7 +79,10 @@ const OrdersComponent = () => {
         }
         setStoreSetUpActiveStep(active);
       } else {
-        console.error("Error while fetching orders:", error?.response?.data?.msg);
+        console.error(
+          "Error while fetching orders:",
+          error?.response?.data?.msg
+        );
       }
     }
   }, [isError, error]);
@@ -162,7 +165,7 @@ const OrdersComponent = () => {
     setSelectedOrder(order);
     setSelectedOrderId(order._id);
 
-    if (!order.isViewed) {
+    if (!order?.isOrderViewedByMerchant) {
       try {
         const token = await fetchAccessToken();
         await axios.put(
@@ -175,10 +178,16 @@ const OrdersComponent = () => {
           }
         );
 
-        // Update active orders to mark the order as viewed
+        const activeOrders = queryClient.getQueryData([
+          "orders",
+          currentUser,
+          date,
+        ]);
         queryClient.setQueryData(["orders", currentUser, date], (oldData) =>
           oldData.map((ord) =>
-            ord._id === order._id ? { ...ord, isViewed: true } : ord
+            ord._id === order._id
+              ? { ...ord, isOrderViewedByMerchant: true }
+              : ord
           )
         );
       } catch (error) {
@@ -234,9 +243,13 @@ const OrdersComponent = () => {
         </>
       ) : (
         <section className="w-full h-full flex items-center justify-center">
-          <Suspense fallback={<div>
-            <ClipLoader color="blue" size={40} />
-          </div>}>
+          <Suspense
+            fallback={
+              <div>
+                <ClipLoader color="blue" size={40} />
+              </div>
+            }
+          >
             <StoreSetUpComponent storeSetUpActiveStep={storeSetUpActiveStep} />
           </Suspense>
         </section>

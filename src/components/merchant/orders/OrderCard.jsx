@@ -101,7 +101,7 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
             {/* Order Time */}
             <p
               className={`text-xs font-medium  ${
-                order?.isViewed ? "text-[#6B7280]" : "text-green-600"
+                order?.isOrderViewedByMerchant ? "text-[#6B7280]" : "text-green-600"
               }`}
             >
               {getTimeFromISO(order?.createdAt)}
@@ -125,7 +125,7 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
             <div className="flex items-center gap-4">
               <div
                 className={`text-xs h-5 w-5 font-medium flex items-center justify-center rounded-full ${
-                  order?.isViewed
+                  order?.isOrderViewedByMerchant
                     ? "bg-transparent text-[#6B7280]"
                     : "bg-green-600 text-white"
                 }`}

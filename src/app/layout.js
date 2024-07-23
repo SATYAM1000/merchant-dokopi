@@ -22,12 +22,23 @@ export default async function RootLayout({ children }) {
   const session = await auth();
   return (
     <html lang="en">
+      <head>
+        <link rel="dns-prefetch" href="https://maps.googleapis.com" />
+        <link rel="dns-prefetch" href="https://api.dokopi.com" />
+        <link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
+        <link rel="dns-prefetch" href="https://d28fpa5kkce5uk.cloudfront.net" />
+
+        <link rel="preconnect" href="https://maps.googleapis.com" />
+        <link rel="preconnect" href="https://api.dokopi.com" />
+        <link rel="preconnect" href="https://lh3.googleusercontent.com" />
+        <link rel="preconnect" href="https://d28fpa5kkce5uk.cloudfront.net" />
+      </head>
       <body className={archivo.className}>
         <NextTopLoader color="#4f46e5" showSpinner={false} />
         <SessionProvider session={session}>
           <ReactQueryProvider>
             <TooltipProvider>
-             <WarningBanner/>
+              <WarningBanner />
 
               <div className="flex flex-1 ">
                 {session && session?.user?.storeId === null ? null : (

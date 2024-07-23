@@ -7,6 +7,7 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { toast } from "sonner";
 
+
 import {
   Tooltip,
   TooltipContent,
@@ -51,7 +52,7 @@ const UserInfoHeader = ({ order }) => {
           link.href = url;
           link.setAttribute(
             "download",
-            `${item.fileOriginalName}.${item.fileExtension}`
+            `${item?.fileName}.${item.fileExtension}`
           );
           document.body.appendChild(link);
           link.click();
@@ -96,7 +97,7 @@ const UserInfoHeader = ({ order }) => {
             
               <Tooltip>
                 <TooltipTrigger>
-                  <div className="flex items-center justify-center cursor-pointer">
+                  <div className="flex items-center justify-center cursor-pointer bg-green-200 text-green-600 rounded-sm p-1">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="20"
@@ -125,7 +126,7 @@ const UserInfoHeader = ({ order }) => {
             
               <Tooltip>
                 <TooltipTrigger>
-                  <div className="flex items-center justify-center cursor-pointer">
+                  <div className="flex items-center bg-red-200 text-red-600 p-1 rounded-sm justify-center cursor-pointer">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="20"
