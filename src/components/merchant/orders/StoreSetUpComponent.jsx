@@ -34,13 +34,13 @@ const steps = [
   },
 ];
 import { useCurrentUser } from "@/hooks/use-current-user";
-import { BounceLoader, ClipLoader } from "react-spinners";
+import { BounceLoader } from "react-spinners";
 
 const StoreSetUpComponent = ({
   storeSetUpActiveStep: storeSetUpActiveStep,
 }) => {
 
-  if (true) {
+  if (storeSetUpActiveStep === undefined || storeSetUpActiveStep === null) {
     return (
       <div className="w-full h-full flex items-center justify-center flex-col bg-gray-100">
         <BounceLoader color="blue" size={80} />
