@@ -67,11 +67,12 @@ const StoreImagesUpload = ({ setUploadedImages, uploadedImages }) => {
 
       toast.success("Image uploaded successfully");
     } catch (error) {
-      toast.error("Something went wrong");
+      toast.error(error.response?.data?.msg || "Failed to upload image");
       console.error("Error uploading image:", error);
     } finally {
       setPreviewImage(null);
       setIsLoading(false);
+      setSelectedFile(null);
     }
   };
 
@@ -114,13 +115,13 @@ const StoreImagesUpload = ({ setUploadedImages, uploadedImages }) => {
             <span className="mt-4 text-xs text-gray-600 font-medium">
               {previewImage ? "Change Image" : "Upload Images"}
             </span>
-            <input type="file" className="hidden" onChange={handleFileChange} />
+            <input type="file" className="hidden" accept="image/*"  onChange={handleFileChange} />
           </label>
         </div>
       </div>
 
       <div className="mt-6 w-full flex items-center justify-end">
-        <Button size="sm" type="button" onClick={handleUpload}>
+        <Button disabled={!selectedFile} size="sm" type="button" onClick={handleUpload}>
           {isLoading ? <ClipLoader color="white" size={20} /> : "Upload"}
         </Button>
       </div>
