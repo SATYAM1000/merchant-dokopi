@@ -15,32 +15,8 @@ import { toast } from "sonner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ClipLoader } from "react-spinners";
-import { WarningBanner } from "../auth/WarningBanner";
 
 const StoreSetUpComponent = lazy(() => import("./StoreSetUpComponent"));
-
-const fetchOrders = async ({ queryKey }) => {
-  const [_, currentUser, date] = queryKey;
-  try {
-    const token = await fetchAccessToken();
-    let url = `${API_DOMAIN}/api/v1/merchant/orders/${currentUser?.storeId}`;
-
-    const currentDate = date || new Date();
-    const formattedDate = format(currentDate, "yyyy-MM-dd");
-    url += `?date=${encodeURIComponent(formattedDate)}`;
-
-    const { data } = await axios.get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    return data?.data || [];
-  } catch (error) {
-    console.error("Error fetching orders:", error.response?.data);
-    throw error;
-  }
-};
 
 const OrdersComponent = () => {
   const currentUser = useCurrentUser();
@@ -67,18 +43,8 @@ const OrdersComponent = () => {
     if (isError) {
       console.error("Error while fetching orders:", error);
       if (error?.response?.data?.code === "SETUP_INCOMPLETE") {
-        const progress = error?.response?.data?.storeSetUpProgress;
-        let active = 0;
-        if (!progress.step1) {
-          active = 0;
-        } else if (!progress.step2) {
-          active = 1;
-        } else if (!progress.step3) {
-          active = 2;
-        } else if (!progress.step4) {
-          active = 3;
-        }
-        setStoreSetUpActiveStep(active);
+        const progress = error?.response?.data?.inCompleteStep;
+        setStoreSetUpActiveStep(progress);
       } else {
         console.error(
           "Error while fetching orders:",
@@ -179,7 +145,6 @@ const OrdersComponent = () => {
           }
         );
 
-        
         queryClient.setQueryData(["orders", currentUser, date], (oldData) => {
           if (Array.isArray(oldData)) {
             return oldData.map((ord) =>
@@ -284,3 +249,26 @@ const OrdersComponent = () => {
 };
 
 export default OrdersComponent;
+
+const fetchOrders = async ({ queryKey }) => {
+  const [_, currentUser, date] = queryKey;
+  try {
+    const token = await fetchAccessToken();
+    let url = `${API_DOMAIN}/api/v1/merchant/orders/${currentUser?.storeId}`;
+
+    const currentDate = date || new Date();
+    const formattedDate = format(currentDate, "yyyy-MM-dd");
+    url += `?date=${encodeURIComponent(formattedDate)}`;
+
+    const { data } = await axios.get(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return data?.data || [];
+  } catch (error) {
+    console.error("Error fetching orders:", error.response?.data);
+    throw error;
+  }
+};

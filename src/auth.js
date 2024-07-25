@@ -42,36 +42,48 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
     async session({ token, session }) {
       if (session.user) {
+        await connectToDB();
+        const storeInfo = await XeroxStore.findOne({
+          storeOwner: token.sub,
+        }).select("_id isStoreSetupComplete storeSetUpProgress");
+
         session.user.id = token.sub;
         session.user.name = token.name;
         session.user.email = token.email;
         session.user.image = token.picture || token.image;
         session.user.role = token.role;
-        session.user.storeId = token.storeId || null;
+        session.user.storeId = storeInfo ? storeInfo._id : null;
         session.user.isStoreSetUpCompleted =
-          token.isStoreSetUpCompleted || false;
+          storeInfo?.isStoreSetupComplete || false;
+        if (!storeInfo?.isStoreSetupComplete) {
+          const progress = storeInfo?.storeSetUpProgress || {};
+          if (!progress.step1) session.user.inCompleteStep = "0";
+          else if (!progress.step2) session.user.inCompleteStep = "1";
+          else if (!progress.step3) session.user.inCompleteStep = "2";
+          else if (!progress.step4) session.user.inCompleteStep = "3";
+          else session.inCompleteStep = null;
+        } else {
+          session.inCompleteStep = null;
+        }
       }
 
       return session;
     },
 
     async jwt({ token }) {
+      
       if (!token.sub || !mongoose.isValidObjectId(token.sub)) return token;
 
       await connectToDB();
       const user = await User.findById(token.sub);
       if (!user) return token;
 
-      const storeInfo = await XeroxStore.findOne({
-        storeOwner: token.sub,
-      }).select("_id isStoreSetupComplete");
-
-      token.storeId = storeInfo ? storeInfo._id : null;
-      token.isStoreSetUpCompleted = storeInfo?.isStoreSetupComplete || false;
-      token.role = user.role;
-      token.name = user.name;
-      token.email = user.email;
-      token.image = user.image;
+      Object.assign(token, {
+        role: user.role,
+        name: user.name,
+        email: user.email,
+        image: user.image,
+      });
 
       return token;
     },
