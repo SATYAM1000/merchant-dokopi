@@ -15,12 +15,13 @@ import { toast } from "sonner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ClipLoader } from "react-spinners";
+import { useSession } from "next-auth/react";
 
 const StoreSetUpComponent = lazy(() => import("./StoreSetUpComponent"));
 
 const OrdersComponent = () => {
   const currentUser = useCurrentUser();
-  if (!currentUser) return null;
+  const { update } = useSession();
 
   const queryClient = useQueryClient();
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -37,7 +38,15 @@ const OrdersComponent = () => {
     queryKey: ["orders", currentUser, date],
     queryFn: fetchOrders,
     enabled: !!currentUser,
+    refetchOnWindowFocus: false, 
+    retry: 3, 
   });
+
+  useEffect(() => {
+    if (currentUser) {
+      update();
+    }
+  }, []);
 
   useEffect(() => {
     if (isError) {
@@ -159,6 +168,7 @@ const OrdersComponent = () => {
         });
       } catch (error) {
         console.error("Error marking order as viewed:", error);
+        toast.error("Failed to mark the order as viewed. Please try again.");
       }
     }
   };
@@ -183,67 +193,65 @@ const OrdersComponent = () => {
     }
   };
 
+  if (!currentUser) return null;
+
+  if (currentUser?.isStoreSetUpCompleted === false) {
+    return (
+      <Suspense fallback={<ClipLoader />}>
+        <StoreSetUpComponent
+          storeSetUpActiveStep={parseInt(currentUser?.inCompleteStep)}
+        />
+      </Suspense>
+    );
+  }
+
   return (
     <div className="w-full h-full bg-[#f5f5f5] text-black/[0.90] overflow-hidden flex">
-      {currentUser.isStoreSetUpCompleted ? (
-        <>
-          {/* Left Side */}
-          <div className="w-full md:w-1/2 lg:w-2/6 xl:w-1/4 h-full">
-            <div className="w-full h-full flex flex-col gap-0 relative bg-white border-r">
-              <Header
+      <>
+        {/* Left Side */}
+        <div className="w-full md:w-1/2 lg:w-2/6 xl:w-1/4 h-full">
+          <div className="w-full h-full flex flex-col gap-0 relative bg-white border-r">
+            <Header
+              date={date}
+              setDate={setDate}
+              setSelectedOrder={setSelectedOrder}
+            />
+            {showLoader ? (
+              <OrderCardSkelton />
+            ) : (
+              <OrdersContainer
+                activeOrders={activeOrders}
+                onOrderClick={handleOrderClick}
+                selectedOrderId={selectedOrderId}
                 date={date}
-                setDate={setDate}
-                setSelectedOrder={setSelectedOrder}
               />
-              {showLoader ? (
-                <OrderCardSkelton />
-              ) : (
-                <OrdersContainer
-                  activeOrders={activeOrders}
-                  onOrderClick={handleOrderClick}
-                  selectedOrderId={selectedOrderId}
-                  date={date}
-                />
-              )}
+            )}
+          </div>
+        </div>
+
+        {/* Right Side */}
+        {!selectedOrder ? (
+          <div className="hidden md:w-1/2 lg:w-4/6 xl:w-3/4 h-full bg-gray-100 bg-contain bg-center md:flex flex-col"></div>
+        ) : (
+          <div className="hidden md:w-1/2 lg:w-4/6 xl:w-3/4 h-full w-full bg-custom-image bg-contain bg-center md:flex flex-col">
+            <UserInfoHeader
+              order={selectedOrder}
+              updateOrderStatus={updateOrderStatus}
+            />
+
+            {/* Documents */}
+            <div className="w-full h-full">
+              <ScrollArea className="h-[calc(100vh-150px)] w-full rounded-md bg-transparent text-black">
+                <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 p-4">
+                  {selectedOrder && (
+                    <DocumentInfo cartItems={selectedOrder.cartItems} />
+                  )}
+                </div>
+              </ScrollArea>
             </div>
           </div>
-
-          {/* Right Side */}
-          {!selectedOrder ? (
-            <div className="hidden md:w-1/2 lg:w-4/6 xl:w-3/4 h-full bg-gray-100 bg-contain bg-center md:flex flex-col"></div>
-          ) : (
-            <div className="hidden md:w-1/2 lg:w-4/6 xl:w-3/4 h-full w-full bg-custom-image bg-contain bg-center md:flex flex-col">
-              <UserInfoHeader
-                order={selectedOrder}
-                updateOrderStatus={updateOrderStatus}
-              />
-
-              {/* Documents */}
-              <div className="w-full h-full">
-                <ScrollArea className="h-[calc(100vh-150px)] w-full rounded-md bg-transparent text-black">
-                  <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 p-4">
-                    {selectedOrder && (
-                      <DocumentInfo cartItems={selectedOrder.cartItems} />
-                    )}
-                  </div>
-                </ScrollArea>
-              </div>
-            </div>
-          )}
-        </>
-      ) : (
-        <section className="w-full h-full flex items-center justify-center">
-          <Suspense
-            fallback={
-              <div>
-                <ClipLoader color="blue" size={40} />
-              </div>
-            }
-          >
-            <StoreSetUpComponent storeSetUpActiveStep={storeSetUpActiveStep} />
-          </Suspense>
-        </section>
-      )}
+        )}
+      </>
     </div>
   );
 };

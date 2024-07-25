@@ -71,7 +71,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     },
 
     async jwt({ token }) {
-      
       if (!token.sub || !mongoose.isValidObjectId(token.sub)) return token;
 
       await connectToDB();

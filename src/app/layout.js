@@ -20,6 +20,7 @@ import { WarningBanner } from "@/components/merchant/auth/WarningBanner";
 
 export default async function RootLayout({ children }) {
   const session = await auth();
+  
   return (
     <html lang="en">
       <head>

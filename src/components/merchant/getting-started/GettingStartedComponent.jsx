@@ -82,7 +82,7 @@ const GettingStartedComponent = () => {
         setSuccess(true);
         setTimeout(() => {
           window.location.href = "/";
-        }, 1000);
+        }, 2500);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
