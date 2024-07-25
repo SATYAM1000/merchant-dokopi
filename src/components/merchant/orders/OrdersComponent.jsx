@@ -38,7 +38,7 @@ const OrdersComponent = () => {
     queryKey: ["orders", currentUser, date],
     queryFn: fetchOrders,
     enabled: !!currentUser,
-    refetchOnWindowFocus: false, 
+    refetchOnWindowFocus: true, 
     retry: 3, 
   });
 
@@ -79,6 +79,7 @@ const OrdersComponent = () => {
 
       socket.on("paymentSuccess", (data) => {
         if (data.storeId === currentUser.storeId) {
+          toast.success("New order received");
           queryClient.invalidateQueries(["orders", currentUser, date]);
 
           if (Notification.permission === "granted") {
