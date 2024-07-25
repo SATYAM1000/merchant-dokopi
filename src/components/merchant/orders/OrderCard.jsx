@@ -9,6 +9,7 @@ import { fetchAccessToken } from "@/actions/access-token";
 import { toast } from "sonner";
 import { LuCheckCheck } from "react-icons/lu";
 import { PiSealCheckFill } from "react-icons/pi";
+import { MdCancel } from "react-icons/md";
 
 const OrderCard = ({ order, onOrderClick, isSelected }) => {
   if (!order || !order?.userId?.name) return null;
@@ -19,8 +20,12 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
     e.stopPropagation();
 
     try {
+      if (orderStatus?.orderStatus === "rejected") {
+        toast.error("Cannot change status of rejected order");
+        return;
+      }
       const newStatus =
-      orderStatus === "delivered" ? "processing" : "delivered";
+        orderStatus === "delivered" ? "processing" : "delivered";
       const { data } = await axios.put(
         `${API_DOMAIN}/api/v1/merchant/orders/change-status/${order._id}/${newStatus}`,
         {},
@@ -31,10 +36,10 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
         }
       );
       toast.success(data?.msg || "Status changed successfully");
-    
+
       setOrderStatus(newStatus);
     } catch (error) {
-      console.log("error is",error);
+      console.log("error is", error);
       toast.error(error.response?.data?.msg || "Something went wrong");
     }
   };
@@ -80,14 +85,20 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
                 orderStatus === "delivered" ? "bg-white" : "bg-white"
               }`}
             >
-              <PiSealCheckFill
-                size={20}
-                className={`${
-                  orderStatus === "delivered"
-                    ? "block text-green-600"
-                    :"block text-gray-300"
-                }`}
-              />
+              {orderStatus !== "rejected" && (
+                <PiSealCheckFill
+                  size={20}
+                  className={`${
+                    orderStatus === "delivered"
+                      ? "block text-green-600"
+                      : "block text-gray-300"
+                  }`}
+                />
+              )}
+
+              {orderStatus === "rejected" && (
+                <MdCancel className="text-red-600" size={20} />
+              )}
             </div>
           </div>
         </div>
@@ -101,7 +112,9 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
             {/* Order Time */}
             <p
               className={`text-xs font-medium  ${
-                order?.isOrderViewedByMerchant ? "text-[#6B7280]" : "text-green-600"
+                order?.isOrderViewedByMerchant
+                  ? "text-[#6B7280]"
+                  : "text-green-600"
               }`}
             >
               {getTimeFromISO(order?.createdAt)}
@@ -126,7 +139,7 @@ const OrderCard = ({ order, onOrderClick, isSelected }) => {
               <div
                 className={`text-xs h-5 w-5 font-medium flex items-center justify-center rounded-full ${
                   order?.isOrderViewedByMerchant
-                    ? "bg-transparent text-[#6B7280]"
+                    ? "bg-gray-200 text-[#6B7280]"
                     : "bg-green-600 text-white"
                 }`}
               >
