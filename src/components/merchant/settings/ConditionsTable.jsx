@@ -6,10 +6,15 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import axios from "axios";
+import { API_DOMAIN } from "@/lib/constants";
+import { toast } from "sonner";
+import { fetchAccessToken } from "@/actions/access-token";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { ClipLoader } from "react-spinners";
 
 const HeaderOptions = [
   {
@@ -52,13 +57,53 @@ const HeaderOptions = [
   },
 ];
 
-const ConditionsTable = ({ priceList = [] }) => {
+const ConditionsTable = ({ priceList = [], setpriceList }) => {
+  if (priceList === undefined || priceList === null || priceList.length === 0) {
+    return (
+      <div className="w-full h-full flex items-center justify-center mt-6">
+        <ClipLoader color="black" size={20} />
+      </div>
+    );
+  }
+  const user = useCurrentUser();
   const getAmountInINR = (amount) => {
     const calculated_amount = new Intl.NumberFormat("en-IN", {
       style: "currency",
       currency: "INR",
     }).format(amount);
     return calculated_amount;
+  };
+
+  const handleDelete = async (conditionId) => {
+    try {
+      const response = await axios.delete(
+        `${API_DOMAIN}/api/v1/store/pricing/delete/${user.storeId}/${conditionId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${await fetchAccessToken()}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        toast.success(response.data.msg);
+
+        const updatedPriceList = priceList.map((price) => {
+          return {
+            ...price,
+            conditionsList: price.conditionsList.filter(
+              (condition) => condition._id !== conditionId
+            ),
+          };
+        });
+
+        setpriceList(updatedPriceList);
+      } else {
+        toast.error(response.data.msg);
+      }
+    } catch (error) {
+      console.error("Error deleting price list:", error);
+    }
   };
 
   return (
@@ -82,7 +127,10 @@ const ConditionsTable = ({ priceList = [] }) => {
             const className = `p-2 text-[13px] font-medium text-gray-600 border-b text-center capitalize`;
 
             return price.conditionsList.map((condition, conditionIndex) => (
-              <tr className="hover:bg-[#f5f5f5]" key={`${priceIndex}-${conditionIndex}`}>
+              <tr
+                className="hover:bg-[#f5f5f5]"
+                key={`${priceIndex}-${conditionIndex}`}
+              >
                 <td className={className}>{price.paperSize}</td>
                 <td className={className}>
                   {price.printType.split("_").join(" ") === "black and white"
@@ -119,7 +167,11 @@ const ConditionsTable = ({ priceList = [] }) => {
                     <DropdownMenuContent>
                       <DropdownMenuItem>Edit</DropdownMenuItem>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem>Delete</DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => handleDelete(condition._id)}
+                      >
+                        Delete
+                      </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </td>

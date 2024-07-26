@@ -43,6 +43,29 @@ const PricingChart = ({
     return Object.keys(newErrors).length === 0;
   };
 
+  const priceExists = (newPrice) => {
+    return priceList.some((price) => {
+      console.log("price is ---->", price);
+      console.log("newPrice is ---->", newPrice);
+
+      return (
+        price.paperSize === newPrice.paperSize &&
+        price.printType === newPrice.printType &&
+        price.printingSides === newPrice.printingSides &&
+        price.conditionsList.some((condition) => {
+          return (
+            condition.conditionName === newPrice.newPricingRule.conditionName &&
+            condition.comparisonOperator ===
+              newPrice.newPricingRule.comparisonOperator &&
+            condition.conditionValue ===
+              newPrice.newPricingRule.conditionValue &&
+            condition.conditionPrice === newPrice.newPricingRule.conditionPrice
+          );
+        })
+      );
+    });
+  };
+
   const onSave = async ({
     conditionType,
     conditionOperator,
@@ -50,6 +73,24 @@ const PricingChart = ({
     conditionPrice,
   }) => {
     if (!validateForm()) {
+      return;
+    }
+
+    const newPrice = {
+      printType,
+      paperSize,
+      printingSides: printSides,
+      basePrice: Number(basePrice),
+      newPricingRule: {
+        conditionName: conditionType,
+        comparisonOperator: conditionOperator,
+        conditionValue: Number(conditionValue),
+        conditionPrice: Number(conditionPrice),
+      },
+    };
+
+    if (priceExists(newPrice)) {
+      toast.error("Price with this condition already exists.");
       return;
     }
 

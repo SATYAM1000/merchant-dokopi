@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
 
 const AddConditionModal = ({ isOpen, onClose, onSave }) => {
   const [conditionType, setConditionType] = useState("");
@@ -42,21 +43,27 @@ const AddConditionModal = ({ isOpen, onClose, onSave }) => {
         conditionValue,
         conditionPrice,
       });
-      onClose();
+    
     }
   };
 
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center  bg-gray-500 bg-opacity-50">
           <motion.div
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.5, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="bg-white p-8 max-w-sm w-full rounded-lg shadow-md"
+            className="bg-white p-8 max-w-sm w-full rounded-lg relative shadow-md"
           >
+            <div>
+              <X
+                className="w-7 h-7 cursor-pointer absolute right-6 top-4 p-1 flex items-center justify-center bg-gray-100 rounded-sm hover:bg-gray-200"
+                onClick={onClose}
+              />
+            </div>
             <h3 className="font-semibold mb-4">Add Condition</h3>
             <div className="mb-4">
               <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">

@@ -1,9 +1,12 @@
-
 import React from "react";
 import PricingChart from "./PricingChart";
 
-
-const StorePricing = ({priceList, setpriceList, isStorePricingListExist, setIsStorePricingListExist}) => {
+const StorePricing = ({
+  priceList,
+  setpriceList,
+  isStorePricingListExist,
+  setIsStorePricingListExist,
+}) => {
   return (
     <section className="w-full bg-white h-fit px-6 py-6  ">
       <div>
@@ -13,7 +16,12 @@ const StorePricing = ({priceList, setpriceList, isStorePricingListExist, setIsSt
         </p>
       </div>
       <div className="mt-8">
-        <PricingChart priceList={priceList} setpriceList={setpriceList} isStorePricingListExist={isStorePricingListExist} setIsStorePricingListExist={setIsStorePricingListExist} />
+        <PricingChart
+          priceList={priceList}
+          setpriceList={setpriceList}
+          isStorePricingListExist={isStorePricingListExist}
+          setIsStorePricingListExist={setIsStorePricingListExist}
+        />
       </div>
     </section>
   );

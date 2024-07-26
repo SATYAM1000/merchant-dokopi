@@ -2,7 +2,11 @@
 import React from "react";
 import ConditionsTable from "./ConditionsTable";
 
-const ConditionsList = ({ priceList, isStorePricingListExist }) => {
+const ConditionsList = ({
+  priceList,
+  setpriceList,
+  isStorePricingListExist,
+}) => {
   return (
     <section className="w-full bg-white h-fit px-6 py-6  ">
       <div>
@@ -13,7 +17,7 @@ const ConditionsList = ({ priceList, isStorePricingListExist }) => {
       </div>
       <div className="w-full">
         {isStorePricingListExist ? (
-          <ConditionsTable priceList={priceList} />
+          <ConditionsTable priceList={priceList} setpriceList={setpriceList} />
         ) : (
           <p className="text-gray-700 font-medium  mt-6 text-sm">
             No conditions exists.
