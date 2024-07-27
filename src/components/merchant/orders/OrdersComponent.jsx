@@ -38,8 +38,8 @@ const OrdersComponent = () => {
     queryKey: ["orders", currentUser, date],
     queryFn: fetchOrders,
     enabled: !!currentUser,
-    refetchOnWindowFocus: true, 
-    retry: 3, 
+    refetchOnWindowFocus: true,
+    retry: 3,
   });
 
   useEffect(() => {
@@ -80,7 +80,8 @@ const OrdersComponent = () => {
       socket.on("paymentSuccess", (data) => {
         if (data.storeId === currentUser.storeId) {
           toast.success("New order received");
-          queryClient.invalidateQueries(["orders", currentUser, date]);
+          const currentDate = format(new Date(), "yyyy-MM-dd");
+          queryClient.invalidateQueries(["orders", currentUser, currentDate]);
 
           if (Notification.permission === "granted") {
             const notification = new Notification("New Order", {
