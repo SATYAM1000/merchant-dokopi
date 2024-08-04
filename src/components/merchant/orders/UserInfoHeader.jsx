@@ -26,6 +26,7 @@ import { ClipLoader } from "react-spinners";
 import { Button } from "@/components/ui/button";
 import { API_DOMAIN } from "@/lib/constants";
 import { fetchAccessToken } from "@/actions/access-token";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const UserInfoHeader = ({ order, updateOrderStatus }) => {
   const [isDownloading, setIsDownloading] = useState(false);
@@ -177,29 +178,26 @@ const UserInfoHeader = ({ order, updateOrderStatus }) => {
           </span>
         </div>
         <div className="flex items-center justify-center gap-6">
-          <div className="flex items-center justify-center border rounded p-1 gap-1.5">
+          <div className="flex items-center justify-center rounded p-1 gap-1.5">
             <Tooltip>
               <TooltipTrigger>
-                <button
-                  onClick={handlePrintedButtonClick}
-                  className={`flex items-center justify-center cursor-pointer rounded-sm p-1 ${order?.orderStatus === "printed" ? "bg-green-100 text-green-500" : "bg-yellow-100 text-yellow-500"}`}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.75"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="lucide lucide-square-check-big"
+                <>
+                  <Button
+                    disabled={
+                      order?.orderStatus === "rejected" ||
+                      order?.orderStatus === "cancelled"
+                    }
+                    onClick={handlePrintedButtonClick}
+                    className={` cursor-pointer flex items-center justify-center gap-2  ${
+                      order?.orderStatus === "printed"
+                        ? "bg-green-600 text-white hover:bg-green-600 hover:text-white"
+                        : "bg-yellow-600 text-white hover:bg-yellow-600 hover:text-white"
+                    }`}
                   >
-                    <path d="m9 11 3 3L22 4" />
-                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-                  </svg>
-                </button>
+                    <Checkbox checked={order?.orderStatus === "printed"} />
+                    <span>Mark as Printed</span>
+                  </Button>
+                </>
               </TooltipTrigger>
               <TooltipContent>
                 <p className="text-xs">Mark as printed</p>
@@ -210,30 +208,17 @@ const UserInfoHeader = ({ order, updateOrderStatus }) => {
 
             <Tooltip>
               <TooltipTrigger>
-                <button
+                <Button
                   disabled={
                     order?.orderStatus === "rejected" ||
                     order?.orderStatus === "cancelled"
                   }
                   onClick={handleCancelButtonClick}
-                  className={`flex items-center bg-gray-100 text-red-500 p-1 rounded-sm justify-center cursor-pointer disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400`}
+                  className={` bg-red-600 text-white flex items-center justify-center gap-2 hover:bg-red-500 hover:text-white  disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400`}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.75"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="lucide lucide-ban"
-                  >
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="m4.9 4.9 14.2 14.2" />
-                  </svg>
-                </button>
+                  <Checkbox checked={order?.orderStatus === "rejected"} />
+                  <span>Cancel this order</span>
+                </Button>
               </TooltipTrigger>
               <TooltipContent>
                 <p className="text-xs">Cancel this order</p>

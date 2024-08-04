@@ -1,7 +1,7 @@
 // export const API_DOMAIN = "http://localhost:4000";
 export const API_DOMAIN = "https://api.dokopi.com";
 
-export const SOCKET_URL='https://api.dokopi.com'
+export const SOCKET_URL = "https://api.dokopi.com";
 
 export const days = [
   "Sunday",
@@ -62,4 +62,5 @@ export const timeOptions = [
   { value: "22:30", label: "10:30 PM" },
   { value: "23:00", label: "11:00 PM" },
   { value: "23:30", label: "11:30 PM" },
+  { value: "23:59", label: "11:59 PM" },
 ];

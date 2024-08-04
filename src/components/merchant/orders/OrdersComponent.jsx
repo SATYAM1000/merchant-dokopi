@@ -83,6 +83,8 @@ const OrdersComponent = () => {
           const currentDate = format(new Date(), "yyyy-MM-dd");
           queryClient.invalidateQueries(["orders", currentUser, currentDate]);
 
+          // Send notification
+
           if (Notification.permission === "granted") {
             const notification = new Notification("New Order", {
               body: `You have a new order.`,
