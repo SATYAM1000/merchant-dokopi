@@ -16,6 +16,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ClipLoader } from "react-spinners";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 const StoreSetUpComponent = lazy(() => import("./StoreSetUpComponent"));
 
@@ -235,7 +236,7 @@ const OrdersComponent = () => {
 
         {/* Right Side */}
         {!selectedOrder ? (
-          <div className="hidden md:w-1/2 lg:w-4/6 xl:w-3/4 h-full bg-gray-100 bg-contain bg-center md:flex flex-col"></div>
+          <div className="hidden md:w-1/2 lg:w-4/6 xl:w-3/4 h-full bg-gray-100 bg-contain bg-center md:flex items-center justify-center"></div>
         ) : (
           <div className="hidden md:w-1/2 lg:w-4/6 xl:w-3/4 h-full w-full bg-custom-image bg-contain bg-center md:flex flex-col">
             <UserInfoHeader

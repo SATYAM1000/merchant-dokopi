@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
-import { FaImages, FaUserCircle } from "react-icons/fa";
+import { FaImages } from "react-icons/fa";
 import {
   RiMoneyRupeeCircleFill,
   RiMoneyRupeeCircleLine,

@@ -45,9 +45,6 @@ const PricingChart = ({
 
   const priceExists = (newPrice) => {
     return priceList.some((price) => {
-      console.log("price is ---->", price);
-      console.log("newPrice is ---->", newPrice);
-
       return (
         price.paperSize === newPrice.paperSize &&
         price.printType === newPrice.printType &&
@@ -121,7 +118,6 @@ const PricingChart = ({
 
       if (response.status === 200) {
         toast.success(response.data.msg);
-        setIsModalOpen(false);
         setpriceList([...priceList, response.data.data]);
         setIsStorePricingListExist(true);
       } else {

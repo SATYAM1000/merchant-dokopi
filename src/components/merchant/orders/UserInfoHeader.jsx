@@ -148,7 +148,11 @@ const UserInfoHeader = ({ order, updateOrderStatus }) => {
       );
       if (res.data.success) {
         toast.success(res.data.msg || "Order marked as printed successfully");
-        updateOrderStatus(order._id, "printed");
+        if (order?.orderStatus === "printed") {
+          updateOrderStatus(order._id, "processing");
+        } else {
+          updateOrderStatus(order._id, "printed");
+        }
       } else {
         toast.error("Failed to change order status");
       }
@@ -183,18 +187,22 @@ const UserInfoHeader = ({ order, updateOrderStatus }) => {
               <TooltipTrigger>
                 <>
                   <Button
+                    size="sm"
                     disabled={
                       order?.orderStatus === "rejected" ||
                       order?.orderStatus === "cancelled"
                     }
                     onClick={handlePrintedButtonClick}
-                    className={` cursor-pointer flex items-center justify-center gap-2  ${
+                    className={` cursor-pointer flex items-center justify-center gap-2 text-[13px]  ${
                       order?.orderStatus === "printed"
-                        ? "bg-green-600 text-white hover:bg-green-600 hover:text-white"
-                        : "bg-yellow-600 text-white hover:bg-yellow-600 hover:text-white"
+                        ? "bg-green-100 text-green-500 border border-green-500 hover:bg-green-100 transition-all disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400"
+                        : "bg-white text-gray-900 border border-gray-200 hover:bg-gray-100 transition-all disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400"
                     }`}
                   >
-                    <Checkbox checked={order?.orderStatus === "printed"} />
+                    <Checkbox
+                      className="checked:bg-green-100 checked:border-green-300 checked:text-black  "
+                      checked={order?.orderStatus === "printed"}
+                    />
                     <span>Mark as Printed</span>
                   </Button>
                 </>
@@ -209,14 +217,15 @@ const UserInfoHeader = ({ order, updateOrderStatus }) => {
             <Tooltip>
               <TooltipTrigger>
                 <Button
+                  size="sm"
                   disabled={
                     order?.orderStatus === "rejected" ||
                     order?.orderStatus === "cancelled"
                   }
                   onClick={handleCancelButtonClick}
-                  className={` bg-red-600 text-white flex items-center justify-center gap-2 hover:bg-red-500 hover:text-white  disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400`}
+                  className={` bg-red-100 text-red-500 border border-red-300 text-[13px]  flex items-center justify-center gap-2 hover:bg-red-100 transition-all duration-300 hover:text-red-500  disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-200`}
                 >
-                  <Checkbox checked={order?.orderStatus === "rejected"} />
+                  <Checkbox className={`bg-red-100 border border-red-300`} checked={order?.orderStatus === "rejected"} />
                   <span>Cancel this order</span>
                 </Button>
               </TooltipTrigger>
