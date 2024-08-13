@@ -64,3 +64,11 @@ export const timeOptions = [
   { value: "23:30", label: "11:30 PM" },
   { value: "23:59", label: "11:59 PM" },
 ];
+
+export const EXPECTED_TIME_DURATION_LIST_FOR_INSTANR_ORDER = [
+  { value: "60", label: "1 minute" },
+  { value: "120", label: "2 minutes" },
+  { value: "300", label: "5 minutes" },
+  { value: "600", label: "10 minutes" },
+  { value: "900", label: "15 minutes" },
+];

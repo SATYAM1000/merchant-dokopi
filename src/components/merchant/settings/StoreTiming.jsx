@@ -167,6 +167,7 @@ const StoreTiming = () => {
           hours you choose.
         </p>
       </div>
+      
       {initialLoader ? (
         <div className="w-full h-[calc(100vh-200px)] flex justify-center items-center">
           <ClipLoader color="#1A181E" size={40} />
