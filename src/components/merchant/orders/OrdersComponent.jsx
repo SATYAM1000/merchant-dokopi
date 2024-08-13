@@ -16,11 +16,12 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ClipLoader } from "react-spinners";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const StoreSetUpComponent = lazy(() => import("./StoreSetUpComponent"));
 
 const OrdersComponent = () => {
+  const pathname = usePathname();
   const currentUser = useCurrentUser();
   const { update } = useSession();
 
@@ -145,6 +146,9 @@ const OrdersComponent = () => {
   const handleOrderClick = async (order) => {
     setSelectedOrder(order);
     setSelectedOrderId(order._id);
+    const newUrl = new URL(window.location);
+    newUrl.searchParams.set("orderId", order._id);
+    window.history.replaceState({}, "", newUrl);
 
     if (!order?.isOrderViewedByMerchant) {
       try {

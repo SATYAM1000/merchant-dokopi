@@ -18,6 +18,8 @@ import {
 import { FaRegImages, FaRegUser, FaUser } from "react-icons/fa6";
 import { PiHeadphonesDuotone, PiHeadphonesFill } from "react-icons/pi";
 
+import { AiFillPlusCircle, AiOutlinePlusCircle } from "react-icons/ai";
+
 const SettingsSidebar = () => {
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -102,6 +104,12 @@ const sidebarMenuItems = [
     path: "/settings/bank-details",
     selectedIcon: <RiBankFill className="h-5 w-5" aria-hidden="true" />,
     icon: <RiBankLine className="h-5 w-5" />,
+  },
+  {
+    title: "Store controls",
+    path: "/settings/store-controls",
+    selectedIcon: <AiFillPlusCircle className="h-5 w-5" aria-hidden="true" />,
+    icon: <AiOutlinePlusCircle className="h-5 w-5" aria-hidden="true" />,
   },
   {
     title: "Staff accounts",
