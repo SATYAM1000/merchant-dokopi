@@ -72,3 +72,11 @@ export const EXPECTED_TIME_DURATION_LIST_FOR_INSTANR_ORDER = [
   { value: "600", label: "10 minutes" },
   { value: "900", label: "15 minutes" },
 ];
+
+export const EXPECTED_TIME_DURATION_LIST_FOR_HOME_DELIVERY = [
+  { value: "30min", label: "30 minutes" },
+  { value: "45min", label: "45 minutes" },
+  { value: "1day", label: "1 Day" },
+  { value: "2day", label: "2 Days" },
+  { value: "1week", label: "1 Week" },
+];
