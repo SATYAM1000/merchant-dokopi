@@ -66,6 +66,7 @@ const OrdersComponent = () => {
   }, [isError, error]);
 
   useEffect(() => {
+    
     const initializeSocket = () => {
       const socket = io(SOCKET_URL, {
         reconnectionAttempts: 5,
@@ -218,8 +219,8 @@ const OrdersComponent = () => {
     <div className="w-full h-full bg-[#f5f5f5] text-black/[0.90] overflow-hidden flex">
       <>
         {/* Left Side */}
-        <div className="w-full md:w-1/2 lg:w-2/6 xl:w-1/4 h-full">
-          <div className="w-full h-full flex flex-col gap-0 relative bg-white border-r">
+        <div className="w-full h-full md:w-1/2 lg:w-2/6 xl:w-1/4">
+          <div className="relative flex flex-col w-full h-full gap-0 bg-white border-r">
             <Header
               date={date}
               setDate={setDate}
@@ -240,9 +241,9 @@ const OrdersComponent = () => {
 
         {/* Right Side */}
         {!selectedOrder ? (
-          <div className="hidden md:w-1/2 lg:w-4/6 xl:w-3/4 h-full bg-gray-100 bg-contain bg-center md:flex items-center justify-center"></div>
+          <div className="items-center justify-center hidden h-full bg-gray-100 bg-center bg-contain md:w-1/2 lg:w-4/6 xl:w-3/4 md:flex"></div>
         ) : (
-          <div className="hidden md:w-1/2 lg:w-4/6 xl:w-3/4 h-full w-full bg-custom-image bg-contain bg-center md:flex flex-col">
+          <div className="flex-col hidden w-full h-full bg-center bg-contain md:w-1/2 lg:w-4/6 xl:w-3/4 bg-custom-image md:flex">
             <UserInfoHeader
               order={selectedOrder}
               updateOrderStatus={updateOrderStatus}
@@ -251,7 +252,7 @@ const OrdersComponent = () => {
             {/* Documents */}
             <div className="w-full h-full">
               <ScrollArea className="h-[calc(100vh-150px)] w-full rounded-md bg-transparent text-black">
-                <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 p-4">
+                <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
                   {selectedOrder && (
                     <DocumentInfo cartItems={selectedOrder.cartItems} />
                   )}

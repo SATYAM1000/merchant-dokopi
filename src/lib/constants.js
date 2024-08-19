@@ -1,7 +1,5 @@
-// export const API_DOMAIN = "http://localhost:4000";
-export const API_DOMAIN = "https://api.dokopi.com";
-
-export const SOCKET_URL = "https://api.dokopi.com";
+export const API_DOMAIN = process.env.API_DOMAIN || "https://api.dokopi.com";
+export const SOCKET_URL = process.env.SOCKET_URL || "https://api.dokopi.com";
 
 export const days = [
   "Sunday",
