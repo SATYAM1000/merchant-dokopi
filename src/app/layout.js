@@ -20,10 +20,11 @@ import { WarningBanner } from "@/components/merchant/auth/WarningBanner";
 
 export default async function RootLayout({ children }) {
   const session = await auth();
-  
+
   return (
     <html lang="en">
       <head>
+        <link rel="manifest" href="/manifest.json" />
         <link rel="dns-prefetch" href="https://maps.googleapis.com" />
         <link rel="dns-prefetch" href="https://api.dokopi.com" />
         <link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
@@ -49,7 +50,7 @@ export default async function RootLayout({ children }) {
                 <div className="flex flex-col flex-1 min-h-screen">
                   <main className="w-full h-full">
                     <div className="w-full h-full">
-                      <div className=" w-full h-full">
+                      <div className="w-full h-full ">
                         {session?.user?.storeId === null ? (
                           <GettingStartedComponent />
                         ) : (
